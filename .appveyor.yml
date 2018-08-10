@@ -1,0 +1,15 @@
+image:
+- Ubuntu
+
+clone_depth: 3
+
+build: off
+
+init:
+- sh: sudo apt-get -yq update > /dev/null
+- sh: sudo apt-get install -yq --no-install-suggests --no-install-recommends octave > /dev/null
+
+test_script: 
+- cd tests
+- octave-cli -q test_matlab.m
+
