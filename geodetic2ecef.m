@@ -1,15 +1,13 @@
 function [x,y,z] = geodetic2ecef(spheroid, lat, lon, alt, angleUnit)
-%geodetic2ecef   convert from geodetic to ECEF coordiantes
+%% geodetic2ecef   convert from geodetic to ECEF coordiantes
 %
-% Inputs
-% ------
-% lat,lon, alt:  ellipsoid geodetic coordinates of point(s) (degrees, degrees, meters)
-% spheroid: referenceEllipsoid parameter struct
-% angleUnit: string for angular units. Default 'd': degrees
+%%% Inputs
+% * lat,lon, alt:  ellipsoid geodetic coordinates of point(s) (degrees, degrees, meters)
+% * spheroid: referenceEllipsoid parameter struct
+% * angleUnit: string for angular units. Default 'd': degrees
 %
-% outputs
-% -------
-% x,y,z:  ECEF coordinates of test point(s) (meters)
+%%% outputs
+% * x,y,z:  ECEF coordinates of test point(s) (meters)
 
 narginchk(3,5)
 
@@ -52,7 +50,7 @@ y = (N + alt) .* cos(lat) .* sin(lon);
 z = (N .* (spheroid.SemiminorAxis / spheroid.SemimajorAxis)^2 + alt) .* sin(lat);
         
 end
- 
+%%
 % Copyright (c) 2014-2018 Michael Hirsch, Ph.D.
 % Copyright (c) 2013, Felipe Geremia Nievinski
 %

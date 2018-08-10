@@ -1,19 +1,20 @@
 function [lat, lon, d] = lookAtSpheroid(lat0, lon0, h0, az, tilt, spheroid, angleUnit)
-% Calculates line-of-sight intersection with Earth (or other ellipsoid) surface from above surface ./ orbit
+%% LOOKATSPHEROID Calculates line-of-sight intersection with Earth (or other ellipsoid) surface from above surface ./ orbit
 %
-% Args:
-% lat0, lon0: latitude and longitude of starting point
-% h0: altitude of starting point in meters
-% az: azimuth angle of line-of-sight, clockwise from North
-% tilt: tilt angle of line-of-sight with respect to local vertical (nadir = 0)
+%%% Inputs
+% * lat0, lon0: latitude and longitude of starting point
+% * h0: altitude of starting point in meters
+% * az: azimuth angle of line-of-sight, clockwise from North
+% * tilt: tilt angle of line-of-sight with respect to local vertical (nadir = 0)
 %
-% Returns:
-% lat, lon: latitude and longitude where the line-of-sight intersects with the Earth ellipsoid
-% d: slant range in meters from the starting point to the intersect point
+%%% Outputs
+% * lat, lon: latitude and longitude where the line-of-sight intersects with the Earth ellipsoid
+% * d: slant range in meters from the starting point to the intersect point
 %
-%  Values will be NaN if the line of sight does not intersect.
+% Values will be NaN if the line of sight does not intersect.
 %
 % Algorithm based on https://medium.com/@stephenhartzell/satellite-line-of-sight-intersection-with-earth-d786b4a6a9b6 Stephen Hartzell
+
 narginchk(5,7)
 if nargin < 6 || isempty(spheroid), spheroid = wgs84Ellipsoid(); end
 if nargin < 7 || isempty(angleUnit), angleUnit='d'; end
@@ -48,16 +49,16 @@ radical = a.^2 .* b.^2 .* w.^2 + a.^2 .* c.^2 .* v.^2 - a.^2 .* v.^2 .* z.^2 + 2
 
 magnitude = a.^2 .* b.^2 .* w.^2 + a.^2 .* c.^2 .* v.^2 + b.^2 .* c.^2 .* u.^2;
 
-% Return nan if radical < 0 or d < 0 because LOS vector does not point towards Earth 
+%% Return nan if radical < 0 or d < 0 because LOS vector does not point towards Earth 
 d = (value - a .* b .* c .* sqrt(radical)) ./ magnitude;
 d(radical < 0 | d < 0) = nan; % separate line
 
 % altitude should be zero
 [lat, lon] = ecef2geodetic([], x + d .* u, y + d .* v, z + d .* w, angleUnit);
 
-end % function
+end
 
-
+%%
 % Copyright (c) 2018 Michael Hirsch, Ph.D.
 %
 % Redistribution and use in source and binary forms, with or without modification, are permitted provided that the following conditions are met:

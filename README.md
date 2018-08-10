@@ -12,7 +12,7 @@ Simply use `addpath` to this directory to use from your program for free, instea
 
 ```matlab
 addpath('matmap3d/matlab')
-
+```
 then use like:
 ```matlab
 [x,y,z] = geodetic2ecef([],lat,lon,alt)

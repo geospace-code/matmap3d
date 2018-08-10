@@ -1,16 +1,14 @@
 function [e, n, u] = aer2enu (az, el, slantRange, angleUnit)
-%aer2enu  convert azimuth, elevation, range to ENU coordinates
+%% aer2enu  convert azimuth, elevation, range to ENU coordinates
 %
-% Inputs
-% ------
-% az, el, slantrange: look angles and distance to point under test (degrees, degrees, meters)
-% az: azimuth clockwise from local north
-% el: elevation angle above local horizon
-% angleUnit: string for angular units. Default 'd': degrees
+%%% Inputs
+% * az, el, slantrange: look angles and distance to point under test (degrees, degrees, meters)
+% * az: azimuth clockwise from local north
+% * el: elevation angle above local horizon
+% * angleUnit: string for angular units. Default 'd': degrees
 %
-% Outputs
-% -------
-% e,n,u:  East, North, Up coordinates of test points (meters)
+%%% Outputs
+% * e,n,u:  East, North, Up coordinates of test points (meters)
 narginchk(3,4)
 
 if nargin==3 || isempty(angleUnit), angleUnit='d'; end
@@ -32,7 +30,7 @@ e = r .* sin(az);
 n = r .* cos(az);
 
 end
-
+%%
 % Copyright (c) 2014-2018 Michael Hirsch, Ph.D.
 % Copyright (c) 2013, Felipe Geremia Nievinski
 %

@@ -1,50 +1,44 @@
 function varargout = vdist(lat1,lon1,lat2,lon2)
-% VDIST - Using the WGS-84 Earth ellipsoid, compute the distance between
-%         two points within a few millimeters of accuracy, compute forward
-%         azimuth, and compute backward azimuth, all using a vectorized
-%         version of Vincenty's algorithm.
+%% VDIST - Using the WGS-84 Earth ellipsoid, compute the distance between two points 
 %
-% s = vdist(lat1,lon1,lat2,lon2)
-% [s,a12] = vdist(lat1,lon1,lat2,lon2)
-% [s,a12,a21] = vdist(lat1,lon1,lat2,lon2)
+% within a few millimeters of accuracy, compute forward
+% azimuth, and compute backward azimuth, all using a vectorized
+% version of Vincenty's algorithm.
 %
-% s = distance in meters (inputs may be scalars, vectors, or matrices)
-% a12 = azimuth in degrees from first point to second point (forward)
-% a21 = azimuth in degrees from second point to first point (backward)
-%       (Azimuths are in degrees clockwise from north.)
-% lat1 = GEODETIC latitude of first point (degrees)
-% lon1 = longitude of first point (degrees)
-% lat2, lon2 = second point (degrees)
+%  s = vdist(lat1,lon1,lat2,lon2)
+%  [s,a12] = vdist(lat1,lon1,lat2,lon2)
+%  [s,a12,a21] = vdist(lat1,lon1,lat2,lon2)
 %
-%  Original algorithm source:
-%  T. Vincenty, "Direct and Inverse Solutions of Geodesics on the Ellipsoid
-%  with Application of Nested Equations", Survey Review, vol. 23, no. 176,
-%  April 1975, pp 88-93.
-%  Available at: http://www.ngs.noaa.gov/PUBS_LIB/inverse.pdf
+% * s = distance in meters (inputs may be scalars, vectors, or matrices)
+% * a12 = azimuth in degrees from first point to second point (forward)
+% * a21 = azimuth in degrees from second point to first point (backward)
+%        (Azimuths are in degrees clockwise from north.)
+% * lat1 = GEODETIC latitude of first point (degrees)
+% * lon1 = longitude of first point (degrees)
+% * lat2, lon2 = second point (degrees)
 %
-% Notes: (1) lat1,lon1,lat2,lon2 can be any (identical) size/shape. Outputs
-%            will have the same size and shape.
-%        (2) Error correcting code, convergence failure traps, antipodal
-%            corrections, polar error corrections, WGS84 ellipsoid
-%            parameters, testing, and comments: Michael Kleder, 2004.
-%        (3) Azimuth implementation (including quadrant abiguity
-%            resolution) and code vectorization, Michael Kleder, Sep 2005.
-%        (4) Vectorization is convergence sensitive; that is, quantities
-%            which have already converged to within tolerance are not
-%            recomputed during subsequent iterations (while other
-%            quantities are still converging).
-%        (5) Vincenty describes his distance algorithm as precise to within
-%            0.01 millimeters, subject to the ellipsoidal model.
-%        (6) For distance calculations, essentially antipodal points are
+%%% Original algorithm source:
+%
+% T. Vincenty, "Direct and Inverse Solutions of Geodesics on the Ellipsoid with Application of Nested Equations", 
+% Survey Review, vol. 23, no. 176, April 1975, pp 88-93. <http://www.ngs.noaa.gov/PUBS_LIB/inverse.pdf>
+%
+% Notes: 
+% 
+% # lat1,lon1,lat2,lon2 can be any (identical) size/shape. Outputs will have the same size and shape.
+% # Error correcting code, convergence failure traps, antipodal corrections, polar error corrections, WGS84 ellipsoid parameters, testing, and comments: Michael Kleder, 2004.
+% # Azimuth implementation (including quadrant abiguity resolution) and code vectorization, Michael Kleder, Sep 2005.
+% # Vectorization is convergence sensitive; that is, quantities which have already converged to within tolerance are not recomputed during subsequent iterations (while other quantities are still converging).
+% # Vincenty describes his distance algorithm as precise to within 0.01 millimeters, subject to the ellipsoidal model.
+% # For distance calculations, essentially antipodal points are
 %            treated as exactly antipodal, potentially reducing accuracy
 %            slightly.
-%        (7) Distance failures for points exactly at the poles are
+% # Distance failures for points exactly at the poles are
 %            eliminated by moving the points by 0.6 millimeters.
-%        (8) The Vincenty distance algorithm was transcribed verbatim by
+% # The Vincenty distance algorithm was transcribed verbatim by
 %            Peter Cederholm, August 12, 2003. It was modified and
 %            translated to English by Michael Kleder.
 %            Mr. Cederholm's website is http://www.plan.aau.dk/~pce/
-%        (9) Distances agree with the Mapping Toolbox, version 2.2 (R14SP3)
+% # Distances agree with the Mapping Toolbox, version 2.2 (R14SP3)
 %            with a max relative difference of about 5e-9, except when the
 %            two points are nearly antipodal, and except when one point is
 %            near the equator and the two longitudes are nearly 180 degrees
@@ -54,16 +48,16 @@ function varargout = vdist(lat1,lon1,lat2,lon2)
 %            18322827.0131551
 %            >>distance(0.2,305,15,125,[6378137 0.08181919])
 %            0
-%       (10) Azimuths FROM the north pole (either forward starting at the
+% # Azimuths FROM the north pole (either forward starting at the
 %            north pole or backward when ending at the north pole) are set
 %            to 180 degrees by convention. Azimuths FROM the south pole are
 %            set to 0 degrees by convention.
-%       (11) Azimuths agree with the Mapping Toolbox, version 2.2 (R14SP3)
+% # Azimuths agree with the Mapping Toolbox, version 2.2 (R14SP3)
 %            to within about a hundred-thousandth of a degree, except when
 %            traversing to or from a pole, where the convention for this
 %            function is described in (10), and except in the cases noted
 %            above in (9).
-%       (12) No warranties; use at your own risk.
+% # No warranties; use at your own risk.
 
 narginchk(4,4)
 

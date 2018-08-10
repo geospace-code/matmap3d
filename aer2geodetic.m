@@ -1,18 +1,16 @@
 function [lat1, lon1, alt1] = aer2geodetic (az, el, slantRange, lat0, lon0, alt0, spheroid, angleUnit)
-%aer2geodetic  convert azimuth, elevation, range of target from observer to geodetic coordiantes
+%% aer2geodetic  convert azimuth, elevation, range of target from observer to geodetic coordiantes
 %
-% Inputs
-% ------
-% az, el, slantrange: look angles and distance to point under test (degrees, degrees, meters)
-% az: azimuth clockwise from local north
-% el: elevation angle above local horizon
-% lat0, lon0, alt0: ellipsoid geodetic coordinates of observer/reference (degrees, degrees, meters)
-% spheroid: referenceEllipsoid parameter struct
-% angleUnit: string for angular units. Default 'd': degrees
+%%% Inputs
+% * az, el, slantrange: look angles and distance to point under test (degrees, degrees, meters)
+% * az: azimuth clockwise from local north
+% * el: elevation angle above local horizon
+% * lat0, lon0, alt0: ellipsoid geodetic coordinates of observer/reference (degrees, degrees, meters)
+% * spheroid: referenceEllipsoid parameter struct
+% * angleUnit: string for angular units. Default 'd': degrees
 %
-% Outputs
-% -------
-% lat1,lon1,alt1: geodetic coordinates of test points (degrees,degrees,meters)
+%%% Outputs
+% * lat1,lon1,alt1: geodetic coordinates of test points (degrees,degrees,meters)
 narginchk(6,8)
 
 if nargin<7, spheroid = []; end
@@ -23,7 +21,7 @@ if nargin<8, angleUnit= [];  end
 [lat1, lon1, alt1] = ecef2geodetic(spheroid, x, y, z, angleUnit);
 
 end
-
+%%
 % Copyright (c) 2014-2018 Michael Hirsch, Ph.D.
 % Copyright (c) 2013, Felipe Geremia Nievinski
 %

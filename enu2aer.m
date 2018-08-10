@@ -1,16 +1,14 @@
 function [az, elev, slantRange] = enu2aer(east, north, up, angleUnit)
-%enu2aer   convert ENU to azimuth, elevation, slant range
+%% enu2aer   convert ENU to azimuth, elevation, slant range
 %
-% Inputs
-% ------
-% e,n,u:  East, North, Up coordinates of test points (meters)
-% angleUnit: string for angular units. Default 'd': degrees
+%%% Inputs
+% * e,n,u:  East, North, Up coordinates of test points (meters)
+% * angleUnit: string for angular units. Default 'd': degrees
 %
-% outputs
-% -------
-% az, el, slantrange: look angles and distance to point under test (degrees, degrees, meters)
-% az: azimuth clockwise from local north
-% el: elevation angle above local horizon
+%%% outputs
+% * az, el, slantrange: look angles and distance to point under test (degrees, degrees, meters)
+% * az: azimuth clockwise from local north
+% * el: elevation angle above local horizon
 
 narginchk(3,4)
 if nargin < 4 || isempty(angleUnit), angleUnit='d'; end
@@ -21,7 +19,6 @@ validateattributes(up, {'numeric'}, {'real'})
 validateattributes(angleUnit,{'string','char'},{'scalar'})
 
 %% compute
-
 
 r = hypot(east, north);
 slantRange = hypot(r,up);
@@ -35,7 +32,7 @@ if strcmpi(angleUnit(1),'d')
 end
   
 end
-
+%%
 % Copyright (c) 2014-2018 Michael Hirsch, Ph.D.
 % Copyright (c) 2013, Felipe Geremia Nievinski
 %

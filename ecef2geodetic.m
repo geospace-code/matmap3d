@@ -1,18 +1,17 @@
 function [lat,lon,alt] = ecef2geodetic(spheroid, x, y, z, angleUnit)
-%ecef2geodetic   convert ECEF to geodetic coordinates
+%% ecef2geodetic   convert ECEF to geodetic coordinates
 %
-% Inputs
-% ------
-% x,y,z:  ECEF coordinates of test point(s) (meters)
-% spheroid: referenceEllipsoid parameter struct
-% angleUnit: string for angular units. Default 'd': degrees
+%%% Inputs
+% * x,y,z:  ECEF coordinates of test point(s) (meters)
+% * spheroid: referenceEllipsoid parameter struct
+% * angleUnit: string for angular units. Default 'd': degrees
 %
-% Outputs
-% -------
-% lat,lon, alt:  ellipsoid geodetic coordinates of point(s) (degrees, degrees, meters)
+%%% Outputs
+% * lat,lon, alt:  ellipsoid geodetic coordinates of point(s) (degrees, degrees, meters)
 %
-% also see: http://www.oc.nps.edu/oc2902w/coord/coordcvt.pdf
-% Fortran reference at bottom of: http://www.astro.uni.torun.pl/~kb/Papers/geod/Geod-BG.htm
+% <http://www.oc.nps.edu/oc2902w/coord/coordcvt.pdf>
+% Fortran reference at bottom of:
+% <http://www.astro.uni.torun.pl/~kb/Papers/geod/Geod-BG.htm>
 narginchk(3,5)
 if isempty(spheroid)
   spheroid = wgs84Ellipsoid();
@@ -38,7 +37,7 @@ validateattributes(z, {'numeric'}, {'real'})
 validateattributes(angleUnit,{'string','char'},{'scalar'})
 
 %% compute
-
+%
 % Algorithm is based on 
 % http://www.astro.uni.torun.pl/~kb/Papers/geod/Geod-BG.htm
 % This algorithm provides a converging solution to the latitude equation
@@ -81,7 +80,7 @@ if strcmpi(angleUnit(1),'d')
 end
 
  end % function
-
+%%
 % Copyright (c) 2014-2018 Michael Hirsch, Ph.D.
 % Copyright (c) 2013, Felipe Geremia Nievinski
 %

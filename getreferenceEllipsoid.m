@@ -1,16 +1,12 @@
 function E = getreferenceEllipsoid(name) 
-%getreferenceEllipsoid   Select available ellipsoid 
+%% getreferenceEllipsoid   Select available ellipsoid 
 %
 % (named so as not to collide with Matlab Mapping Toolbox)
 %
-% inputs
-% ------
-% name: string of model name. Default: 'wgs84'
-%
-%
-% outputs
-% -------
-% E: referenceEllipsoid parameter struct
+%%% inputs
+% * name: string of model name. Default: 'wgs84'
+%%% outputs
+% * E: referenceEllipsoid parameter struct
 %
 narginchk(0,1)
 
@@ -22,9 +18,9 @@ end
 
 switch name
   case 'wgs84'
-     % WGS-84 ellipsoid parameters.
-     %   http://earth-info.nga.mil/GandG/tr8350_2.html
-     %   ftp://164.214.2.65/pub/gig/tr8350.2/wgs84fin.pdf
+     %% WGS-84 ellipsoid parameters.
+     % <http://earth-info.nga.mil/GandG/tr8350_2.html>
+     % <ftp://164.214.2.65/pub/gig/tr8350.2/wgs84fin.pdf>
      E.Code = 7030;
      E.Name = 'World Geodetic System 1984';
      E.LengthUnit = 'meter';
@@ -35,7 +31,7 @@ switch name
      %E.MeanRadius = meanradius(E);
      %E.Volume = spheroidvolume(E);
   case 'grs80'
-    % GRS-80 ellipsoid parameters
+    %% GRS-80 ellipsoid parameters
     % <http://itrf.ensg.ign.fr/faq.php?type=answer> (accessed 2018-01-22)
      E.Code = 7019;
      E.Name = 'Geodetic Reference System 1980';
@@ -78,7 +74,7 @@ ecc = sqrt ( (E.SemimajorAxis^2 - E.SemiminorAxis^2) / (E.SemimajorAxis^2));
 
 end % function
 
-
+%%
 % Copyright (c) 2014-2018 Michael Hirsch, Ph.D.
 % Copyright (c) 2013, Felipe Geremia Nievinski
 %

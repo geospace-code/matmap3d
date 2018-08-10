@@ -1,16 +1,14 @@
 function [e,n,u] = ecef2enu (x, y, z, lat0, lon0, alt0, spheroid, angleUnit)
-%ecef2enu  convert ECEF to ENU
+%% ecef2enu  convert ECEF to ENU
 %
-% Inputs
-% ------
-% x,y,z: Earth Centered Earth Fixed (ECEF) coordinates of test point (meters)
-% lat0, lon0, alt0: ellipsoid geodetic coordinates of observer/reference (degrees, degrees, meters)
-% spheroid: referenceEllipsoid parameter struct
-% angleUnit: string for angular units. Default 'd': degrees
+%%% Inputs
+% * x,y,z: Earth Centered Earth Fixed (ECEF) coordinates of test point (meters)
+% * lat0, lon0, alt0: ellipsoid geodetic coordinates of observer/reference (degrees, degrees, meters)
+% * spheroid: referenceEllipsoid parameter struct
+% * angleUnit: string for angular units. Default 'd': degrees
 %
-% outputs
-% -------
-% e,n,u:  East, North, Up coordinates of test points (meters)
+%%% outputs
+% * e,n,u:  East, North, Up coordinates of test points (meters)
 
 narginchk(6,8)
 
@@ -20,7 +18,7 @@ if nargin < 8, angleUnit = []; end
 [x0, y0, z0] = geodetic2ecef(spheroid, lat0, lon0, alt0, angleUnit);
 [e, n, u]    = ecef2enuv(x - x0, y - y0, z - z0, lat0, lon0, angleUnit);
 end
-
+%%
 % Copyright (c) 2014-2018 Michael Hirsch, Ph.D.
 % Copyright (c) 2013, Felipe Geremia Nievinski
 %

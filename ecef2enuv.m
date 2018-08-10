@@ -1,15 +1,13 @@
 function [e, n, Up] = ecef2enuv(u, v, w, lat0, lon0, angleUnit)
-%ecef2enuv convert *vector projection* UVW to ENU
+%% ecef2enuv convert *vector projection* UVW to ENU
 %
-% Inputs
-% ------
-% u,v,w: meters
-% lat0,lon0: geodetic latitude and longitude (degrees)
-% angleUnit: string for angular system. Default 'd' degrees
+%%% Inputs
+% * u,v,w: meters
+% * lat0,lon0: geodetic latitude and longitude (degrees)
+% * angleUnit: string for angular system. Default 'd' degrees
 %
-% Outputs
-% -------
-% e,n,Up:  East, North, Up vector
+%%% Outputs
+% * e,n,Up:  East, North, Up vector
 narginchk(5,6)
 if nargin<6 || isempty(angleUnit), angleUnit='d'; end
 
@@ -32,7 +30,7 @@ e  = -sin(lon0) .* u + cos(lon0) .* v;
 Up =  cos(lat0) .* t + sin(lat0) .* w;
 n  = -sin(lat0) .* t + cos(lat0) .* w;
 end
-
+%%
 % Copyright (c) 2014-2018 Michael Hirsch, Ph.D.
 % Copyright (c) 2013, Felipe Geremia Nievinski
 %

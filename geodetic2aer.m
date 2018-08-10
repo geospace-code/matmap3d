@@ -1,18 +1,16 @@
 function [az, el, slantRange] = geodetic2aer(lat, lon, alt, lat0, lon0, alt0, spheroid, angleUnit)
-%geodetic2aer   from an observer's perspective, convert target coordinates to azimuth, elevation, slant range.
+%% geodetic2aer   from an observer's perspective, convert target coordinates to azimuth, elevation, slant range.
 %
-% Inputs
-% ------
-% lat,lon, alt:  ellipsoid geodetic coordinates of point under test (degrees, degrees, meters)
-% lat0, lon0, alt0: ellipsoid geodetic coordinates of observer/reference (degrees, degrees, meters)
-% spheroid: referenceEllipsoid parameter struct
-% angleUnit: string for angular units. Default 'd': degrees, otherwise Radians
+%%% Inputs
+% * lat,lon, alt:  ellipsoid geodetic coordinates of point under test (degrees, degrees, meters)
+% * lat0, lon0, alt0: ellipsoid geodetic coordinates of observer/reference (degrees, degrees, meters)
+% * spheroid: referenceEllipsoid parameter struct
+% * angleUnit: string for angular units. Default 'd': degrees, otherwise Radians
 %
-% Outputs
-% -------
-% az, el, slantrange: look angles and distance to point under test (degrees, degrees, meters)
-% az: azimuth clockwise from local north
-% el: elevation angle above local horizon
+%%% Outputs
+% * az, el, slantrange: look angles and distance to point under test (degrees, degrees, meters)
+% * az: azimuth clockwise from local north
+% * el: elevation angle above local horizon
 narginchk(6,8)
 if nargin < 7, spheroid = []; end
 if nargin < 8, angleUnit = []; end
@@ -21,7 +19,7 @@ if nargin < 8, angleUnit = []; end
 [az, el, slantRange] = enu2aer(e, n, u, angleUnit);
   
 end
-
+%%
 % Copyright (c) 2014-2018 Michael Hirsch, Ph.D.
 % Copyright (c) 2013, Felipe Geremia Nievinski
 %

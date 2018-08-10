@@ -1,16 +1,14 @@
 function [lat, lon, alt] = enu2geodetic(e, n, u, lat0, lon0, alt0, spheroid, angleUnit)
-%enu2geodetic   convert from ENU to geodetic coordinates
+%% enu2geodetic   convert from ENU to geodetic coordinates
 %
-% Inputs
-% ------
-% e,n,u:  East, North, Up coordinates of point(s) (meters)
-% lat0, lon0, alt0: ellipsoid geodetic coordinates of observer/reference (degrees, degrees, meters)
-% spheroid: referenceEllipsoid parameter struct
-% angleUnit: string for angular units. Default 'd': degrees, otherwise Radians
+%%% Inputs
+% * e,n,u:  East, North, Up coordinates of point(s) (meters)
+% * lat0, lon0, alt0: ellipsoid geodetic coordinates of observer/reference (degrees, degrees, meters)
+% * spheroid: referenceEllipsoid parameter struct
+% * angleUnit: string for angular units. Default 'd': degrees, otherwise Radians
 %
-% outputs
-% -------
-% lat,lon,alt: geodetic coordinates of test points (degrees,degrees,meters)
+%%% outputs
+% * lat,lon,alt: geodetic coordinates of test points (degrees,degrees,meters)
 narginchk(6,8)
 if nargin<7, spheroid = []; end
 if nargin<8, angleUnit= []; end
@@ -19,7 +17,7 @@ if nargin<8, angleUnit= []; end
 [lat, lon, alt] = ecef2geodetic(spheroid, x, y, z,  angleUnit);
 
 end
-
+%%
 % Copyright (c) 2014-2018 Michael Hirsch, Ph.D.
 % Copyright (c) 2013, Felipe Geremia Nievinski
 %

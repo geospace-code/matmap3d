@@ -1,15 +1,14 @@
+
 function [u,v,w] = enu2uvw(east,north,up,lat0,lon0,angleUnit)
-%enu2uvw   convert from ENU to UVW coordinates
+%% enu2uvw   convert from ENU to UVW coordinates
 %
-% Inputs
-% ------
-% e,n,up:  East, North, Up coordinates of point(s) (meters)
-% lat0,lon0: geodetic coordinates of observer/reference point (degrees)
-% angleUnit: string for angular units. Default 'd': degrees
+%%% Inputs
+% * e,n,up:  East, North, Up coordinates of point(s) (meters)
+% * lat0,lon0: geodetic coordinates of observer/reference point (degrees)
+% * angleUnit: string for angular units. Default 'd': degrees
 %
-% outputs
-% -------
-% u,v,w:   coordinates of test point(s) (meters)
+%%% outputs
+% * u,v,w:   coordinates of test point(s) (meters)
 narginchk(5,6)  
 if nargin<6 || isempty(angleUnit), angleUnit='d'; end
 
@@ -33,7 +32,7 @@ u = cos(lon0) * t - sin(lon0) * east;
 v = sin(lon0) * t + cos(lon0) * east;
 
 end % function
-
+%%
 % Copyright (c) 2014-2018 Michael Hirsch, Ph.D.
 % Copyright (c) 2013, Felipe Geremia Nievinski
 %
