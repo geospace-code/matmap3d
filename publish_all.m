@@ -31,7 +31,7 @@ function publish_all(path)
 flist = dir([path, filesep, '*.m']);
 
 for i = 1:length(flist)
-  fn = publish([path,filesep,flist(i).name], 'evalCode', false);
+  fn = publish([path,filesep,flist(i).name], 'evalCode', false, 'outputDir', 'docs');
   [~,fname,ext] = fileparts(fn);
   fn = [fname, ext];
   
