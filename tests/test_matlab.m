@@ -87,13 +87,13 @@ if strcmp(angleUnit, 'd')
   az5 = [0., 10., 125.];
   tilt = [30, 45, 90];
 
-  [lat5, lon5, rng5] = lookAtSpheroid(lat, lon, alt, az5, 0., [], angleUnit);
+  [lat5, lon5, rng5] = lookAtSpheroid(lat, lon, alt, az5, 0.);
   assert_allclose(lat5, lat)
   assert_allclose(lon5, lon)
   assert_allclose(rng5, alt)
 
 
-  [lat5, lon5, rng5] = lookAtSpheroid(lat, lon, alt, az5, tilt, [], angleUnit);
+  [lat5, lon5, rng5] = lookAtSpheroid(lat, lon, alt, az5, tilt);
 
   truth = [42.00103959, lon, 230.9413173;
            42.00177328, -81.9995808, 282.84715651;

@@ -9,10 +9,12 @@ function [lat,lon,alt] = ecef2geodetic(spheroid, x, y, z, angleUnit)
 %%% Outputs
 % * lat,lon, alt:  ellipsoid geodetic coordinates of point(s) (degrees, degrees, meters)
 %
-% <http://www.oc.nps.edu/oc2902w/coord/coordcvt.pdf>
-% Fortran reference at bottom of:
-% <http://www.astro.uni.torun.pl/~kb/Papers/geod/Geod-BG.htm>
+% based on:
+% You, Rey-Jer. (2000). Transformation of Cartesian to Geodetic Coordinates without Iterations.
+% Journal of Surveying Engineering. doi: 10.1061/(ASCE)0733-9453
+
 narginchk(3,5)
+
 if isempty(spheroid)
   spheroid = wgs84Ellipsoid();
 elseif isnumeric(spheroid) && nargin == 3
@@ -37,44 +39,37 @@ validateattributes(z, {'numeric'}, {'real'})
 validateattributes(angleUnit,{'string','char'},{'scalar'})
 
 %% compute
-%
-% Algorithm is based on 
-% http://www.astro.uni.torun.pl/~kb/Papers/geod/Geod-BG.htm
-% This algorithm provides a converging solution to the latitude equation
-% in terms of the parametric or reduced latitude form (v)
-% This algorithm provides a uniform solution over all latitudes as it does
-% not involve division by cos(phi) or sin(phi)
+
 a = spheroid.SemimajorAxis; 
 b = spheroid.SemiminorAxis;
-r = hypot(x, y);
-% Constant required for Latitude equation
-rho = atan2(b * z, a * r);  
-% Constant required for latitude equation
-c = (a^2 - b^2) ./ hypot(a*r, b*z);  
-count = 0;
-% Starter for the Newtons Iteration Method
-vnew = atan2(a * z, b * r);  
-% Initializing the parametric latitude
-v = 0;
-while all(v ~= vnew) && count < 5
-%   disp([v,vnew])
- v = vnew;
-% Derivative of latitude equation
-w = 2 * (cos (v - rho) - c .* cos(2 * v)); 
-% Newtons Method for computing iterations  
-vnew = v - ((2 * sin (v - rho) - c .* sin(2 * v)) ./ w);  
-count = count+1;
-end %while
 
-%% Computing latitude from the root of the latitude equation
-lat = atan2(a * tan (vnew), b); 
-% Computing longitude
-lon = atan2(y, x); 
-% Computing h from latitude obtained 
-alt = ((r - a * cos (vnew)) .* cos (lat)) +  ...
-  ((z - b * sin (vnew)) .* sin (lat));
+r = sqrt(x.^2 + y.^2 + z.^2);
 
-if strcmpi(angleUnit(1),'d')
+E = sqrt(a.^2 - b.^2);
+
+% eqn. 4a
+u = sqrt(0.5 * (r.^2 - E.^2) + 0.5 * sqrt((r.^2 - E.^2).^2 + 4 * E.^2 .* z.^2));
+
+Q = hypot(x, y);
+
+huE = hypot(u, E);
+
+% eqn. 4b
+Beta = atan(huE ./ u .* z ./ hypot(x, y));
+
+% eqn. 13
+eps = ((b * u - a * huE + E.^2) .* sin(Beta)) ./ (a * huE ./ cos(Beta) - E.^2 .* cos(Beta));
+
+Beta = Beta + eps;
+%% final output
+lat = atan(a / b * tan(Beta));
+
+lon = atan2(y, x);
+
+% eqn. 7
+alt = sqrt((z - b * sin(Beta)).^2 + (Q - a * cos(Beta)).^2);
+
+if strcmpi(angleUnit(1), 'd')
   lat = rad2deg(lat);
   lon = rad2deg(lon);
 end
@@ -82,7 +77,6 @@ end
  end % function
 %%
 % Copyright (c) 2014-2018 Michael Hirsch, Ph.D.
-% Copyright (c) 2013, Felipe Geremia Nievinski
 %
 % Redistribution and use in source and binary forms, with or without modification, are permitted provided that the following conditions are met:
 % 1. Redistributions of source code must retain the above copyright notice, this list of conditions and the following disclaimer.

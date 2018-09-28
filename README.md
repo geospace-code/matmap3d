@@ -28,7 +28,7 @@ test_matlab
 
 ### Functions
 
-Popular mapping toolbox functions ported to Python include the
+Popular mapping toolbox functions ported to Matlab include the
 following, where the source coordinate system (before the "2") is
 converted to the desired coordinate system:
 
