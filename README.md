@@ -28,13 +28,14 @@ test_matlab
 
 ### Functions
 
-Popular mapping toolbox functions ported to Matlab include the
+Popular mapping & aerospace toolbox functions ported to Matlab include the
 following, where the source coordinate system (before the "2") is
 converted to the desired coordinate system:
 
     aer2ecef  aer2enu  aer2geodetic  aer2ned
     ecef2aer  ecef2enu  ecef2enuv  ecef2geodetic  ecef2ned  ecef2nedv
     enu2aer  enu2ecef   enu2geodetic
+    juliantime
     geodetic2aer  geodetic2ecef  geodetic2enu  geodetic2ned
     ned2aer  ned2ecef   ned2geodetic
     lookAtSpheroid

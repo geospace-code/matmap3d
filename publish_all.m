@@ -20,6 +20,7 @@
 % * <geodetic2enu.html geodetic2enu>
 % * <get_radius_normal.html get_radius_normal>
 % * <getreferenceEllipsoid.html getreferenceEllipsoid>
+% * <juliantime.html juliantime>
 % * <lookAtSpheroid.html lookAtSpheroid>
 % * <vdist.html vdist>
 % * <vreckon.html vreckon>
@@ -27,6 +28,8 @@
 
 
 function publish_all(path)
+
+if nargin < 1, path = '.'; end
 
 flist = dir([path, filesep, '*.m']);
 

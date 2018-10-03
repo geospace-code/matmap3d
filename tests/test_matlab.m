@@ -9,6 +9,7 @@ end
 %% reference inputs
 az = 33; el=70;
 lat = 42; lon= -82;
+t0 = datenum(2014,4,6,8,0,0);
 %% reference outputs
 
 lat1 = 42.0026; lon1 = -81.9978;
@@ -20,6 +21,8 @@ end
 test_transforms('d',lat,lon, lat1, lon1, az, el)
 
 test_transforms('r',deg2rad(lat),deg2rad(lon), deg2rad(lat1),deg2rad(lon1), deg2rad(az), deg2rad(el))
+
+test_time(t0)
 
 disp('OK: GNU Octave / Matlab code')
 
@@ -103,6 +106,12 @@ if strcmp(angleUnit, 'd')
 end
 end % function
 
+
+function test_time(t0)
+
+assert_allclose(juliantime(t0), 2.45675383333e6)
+
+end
 
 
 % Copyright (c) 2014-2018 Michael Hirsch, Ph.D.
