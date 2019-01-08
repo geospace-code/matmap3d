@@ -31,7 +31,7 @@ if nargin < 5 || isempty(angleUnit), angleUnit = 'd'; end
 validateattributes(spheroid,{'struct'},{'nonempty'})
 validateattributes(lat, {'numeric'}, {'real','>=',-90,'<=',90})
 validateattributes(lon, {'numeric'}, {'real'})
-validateattributes(alt, {'numeric'}, {'real','nonnegative'})
+validateattributes(alt, {'numeric'}, {'real'})
 validateattributes(angleUnit,{'string','char'},{'scalar'})
 
 %% compute
