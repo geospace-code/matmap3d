@@ -49,7 +49,7 @@ end
 end % function
 
 function v = spheroidvolume(E)
-validateattributes(E,{'struct'},{'nonempty'})
+validateattributes(E,{'struct'},{'scalar'})
 
 v = 4*pi/3 * E.SemimajorAxis^2 * E.SemiminorAxis;
 
@@ -58,7 +58,7 @@ assert(v>=0)
 end
 
 function r = meanradius(E)
-validateattributes(E,{'struct'},{'nonempty'})
+validateattributes(E,{'struct'},{'scalar'})
 
 r = (2*E.SemimajorAxis + E.SemiminorAxis) / 3;
 
@@ -67,8 +67,7 @@ assert(r>=0)
 end
 
 function ecc = get_eccentricity(E)
-narginchk(1,1)
-validateattributes(E,{'struct'},{'nonempty'})
+validateattributes(E,{'struct'},{'scalar'})
 
 ecc = sqrt ( (E.SemimajorAxis^2 - E.SemiminorAxis^2) / (E.SemimajorAxis^2)); 
 

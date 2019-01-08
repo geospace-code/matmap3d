@@ -39,7 +39,7 @@ validateattributes(verbose, {'numeric','logical'}, {'scalar'})
     match = false(size(actual));
     match(isnan(actual)) = true;
   else
-    match = true;
+    match = false;
   end
 
   

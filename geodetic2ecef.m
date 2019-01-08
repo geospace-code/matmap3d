@@ -26,9 +26,10 @@ elseif isnumeric(spheroid) && ischar(alt) && nargin == 4
   spheroid = wgs84Ellipsoid();
 end
 
-if nargin < 5 || isempty(angleUnit), angleUnit = 'd'; end
+% NOT nargin < 5 due to optional reordering
+if ~exist('angleUnit', 'var') || isempty(angleUnit), angleUnit = 'd'; end
 
-validateattributes(spheroid,{'struct'},{'nonempty'})
+validateattributes(spheroid,{'struct'},{'scalar'})
 validateattributes(lat, {'numeric'}, {'real','>=',-90,'<=',90})
 validateattributes(lon, {'numeric'}, {'real'})
 validateattributes(alt, {'numeric'}, {'real'})

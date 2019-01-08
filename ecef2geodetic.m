@@ -30,9 +30,10 @@ elseif isnumeric(spheroid) && ischar(z) && nargin == 4
   spheroid = wgs84Ellipsoid();
 end
 
-if nargin < 5 || isempty(angleUnit), angleUnit='d'; end
+% NOT nargin < 5 due to optional reordering
+if ~exist('angleUnit', 'var') || isempty(angleUnit), angleUnit = 'd'; end
 
-validateattributes(spheroid,{'struct'},{'nonempty'})
+validateattributes(spheroid,{'struct'},{'scalar'})
 validateattributes(x, {'numeric'}, {'real'})
 validateattributes(y, {'numeric'}, {'real'})
 validateattributes(z, {'numeric'}, {'real'})
@@ -67,7 +68,12 @@ lat = atan(a / b * tan(Beta));
 lon = atan2(y, x);
 
 % eqn. 7
-alt = sqrt((z - b * sin(Beta)).^2 + (Q - a * cos(Beta)).^2);
+alt = hypot(z - b * sin(Beta), Q - a * cos(Beta));
+
+% inside ellipsoid?
+inside = (x.^2 ./ a.^2) + (y.^2 ./ a.^2) + (z.^2 ./ b.^2) < 1;
+alt(inside) = -alt(inside);
+
 
 if strcmpi(angleUnit(1), 'd')
   lat = rad2deg(lat);

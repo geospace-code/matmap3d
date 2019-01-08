@@ -24,7 +24,7 @@ validateattributes(lon0, {'numeric'}, {'real','finite'})
 validateattributes(h0, {'numeric'}, {'real','nonnegative','finite'})
 validateattributes(az, {'numeric'}, {'real','finite'})
 validateattributes(tilt, {'numeric'}, {'real','nonnegative','<=',180})
-validateattributes(spheroid,{'struct'},{'nonempty'})
+validateattributes(spheroid,{'struct'},{'scalar'})
 validateattributes(angleUnit,{'string','char'},{'scalar'})
 %% computation
 

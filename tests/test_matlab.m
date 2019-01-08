@@ -56,11 +56,22 @@ assert_allclose([x2,y2,z2], [xl,yl,zl], rtol)
 
 %% ecef2geodetic is self-contained, iterative algorithm.
 [lat2, lon2, alt2] = ecef2geodetic(E, x1, y1, z1, angleUnit); % round-trip
-assert_allclose([lat2, lon2, alt2], [lat, lon, alt], rtol)
+assert_allclose([lat2, lon2, alt2], [lat, lon, alt], rtol, [], [], ['ecef2geodetic: ',angleUnit])
 
 [lat2, lon2, alt2] = ecef2geodetic(x1, y1, z1, angleUnit); % simple input
-assert_allclose([lat2, lon2, alt2], [lat, lon, alt], rtol)
+assert_allclose([lat2, lon2, alt2], [lat, lon, alt], rtol, [], [], ['ecef2geodetic: ',angleUnit])
 
+% singularity check
+[lat7, lon7, alt7] = ecef2geodetic(E.SemimajorAxis-1, 0, 0);
+assert_allclose([lat7, lon7, alt7], [0, 0, -1], [],  [], [], ['ecef2geodetic: ',angleUnit])
+
+[lat7, lon7, alt7] = ecef2geodetic(0, E.SemimajorAxis-1, 0);
+assert_allclose([lat7, lon7, alt7], [0, 90, -1], [],  [], [], ['ecef2geodetic: ',angleUnit])
+
+[lat7, lon7, alt7] = ecef2geodetic(0, 0, E.SemiminorAxis-1);
+assert_allclose([lat7, lon7, alt7], [90, 0, -1], [],  [], [], ['ecef2geodetic: ',angleUnit])
+
+%% enu2aer
 [az2, el2, rng2] = enu2aer(e1,n1,u1, angleUnit); % round-trip
 assert_allclose([az2,el2,rng2],[az,el,srange], rtol)
 
