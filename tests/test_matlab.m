@@ -6,6 +6,8 @@ if nargin == 0 || ~vendor
   addpath([fpath,filesep,'..'])
 end
 
+if isoctave, warning('off', 'Octave:divide-by-zero'), end
+
 %% reference inputs
 az = 33; el=70;
 lat = 42; lon= -82;
@@ -15,12 +17,12 @@ t0 = datenum(2014,4,6,8,0,0);
 lat1 = 42.0026; lon1 = -81.9978;
 
 if isoctave
-  test_transforms([],lat,lon, lat1, lon1, az, el)
+  test_transforms([],lat,lon, lat1, lon1, az, el, 90)
 end
 
-test_transforms('d',lat,lon, lat1, lon1, az, el)
+test_transforms('d',lat,lon, lat1, lon1, az, el, 90)
 
-test_transforms('r',deg2rad(lat),deg2rad(lon), deg2rad(lat1),deg2rad(lon1), deg2rad(az), deg2rad(el))
+test_transforms('r',deg2rad(lat),deg2rad(lon), deg2rad(lat1),deg2rad(lon1), deg2rad(az), deg2rad(el), pi/2)
 
 test_time(t0)
 
@@ -28,74 +30,162 @@ disp('OK: GNU Octave / Matlab code')
 
 end % function
 
-function test_transforms(angleUnit,lat,lon,lat1,lon1,az,el)
+function test_transforms(angleUnit,lat,lon,lat1,lon1,az,el,a90)
 
 alt1 = 1.1397e3; % aer2geodetic
 alt = 200; srange = 1e3;
 er = 186.277521; nr = 286.84222; ur = 939.69262; % aer2enu
-xl = 660.930e3; yl = -4701.424e3; zl = 4246.579e3; % aer2ecef
-x0 = 660.675e3; y0 = -4700.949e3; z0 = 4245.738e3; % geodetic2ecef, ecef2geodetic
-rtol=1e-5;
+xl = 6.609301927610815e+5; yl = -4.701424222957011e6; zl = 4.246579604632881e+06; % aer2ecef
+x0 = 660.6752518e3; y0 = -4700.9486832e3; z0 = 4245.7376622e3; % geodetic2ecef, ecef2geodetic
+
+atol_dist = 1e-3;  % 1 mm
+
 E = wgs84Ellipsoid();
+ea = E.SemimajorAxis;
+eb = E.SemiminorAxis;
 
 angleUnit=char(angleUnit);
 
-%% aer2ecef contains:
-[x1,y1,z1] = geodetic2ecef(E,lat,lon,alt, angleUnit);
-assert_allclose([x1,y1,z1],[x0,y0,z0], rtol,[], [],['geodetic2ecef: ',angleUnit])
+function test_geodetic2ecef()
+  [x,y,z] = geodetic2ecef(E,lat,lon,alt, angleUnit);
+  assert_allclose([x,y,z],[x0,y0,z0])
 
-[x1,y1,z1] = geodetic2ecef(lat,lon,alt, angleUnit); % simple input
-assert_allclose([x1,y1,z1],[x0,y0,z0], rtol,[], [],['geodetic2ecef: ',angleUnit])
-
-
-[e1,n1,u1] = aer2enu(az, el, srange, angleUnit);
-assert_allclose([e1,n1,u1], [er,nr,ur], rtol)
-
-[x2,y2,z2] = aer2ecef(az,el,srange,lat,lon,alt,E, angleUnit);
-assert_allclose([x2,y2,z2], [xl,yl,zl], rtol)
-
-%% ecef2geodetic is self-contained, iterative algorithm.
-[lat2, lon2, alt2] = ecef2geodetic(E, x1, y1, z1, angleUnit); % round-trip
-assert_allclose([lat2, lon2, alt2], [lat, lon, alt], rtol, [], [], ['ecef2geodetic: ',angleUnit])
-
-[lat2, lon2, alt2] = ecef2geodetic(x1, y1, z1, angleUnit); % simple input
-assert_allclose([lat2, lon2, alt2], [lat, lon, alt], rtol, [], [], ['ecef2geodetic: ',angleUnit])
-
-% singularity check
-[lat7, lon7, alt7] = ecef2geodetic(E.SemimajorAxis-1, 0, 0);
-assert_allclose([lat7, lon7, alt7], [0, 0, -1], [],  [], [], ['ecef2geodetic: ',angleUnit])
-
-[lat7, lon7, alt7] = ecef2geodetic(0, E.SemimajorAxis-1, 0);
-assert_allclose([lat7, lon7, alt7], [0, 90, -1], [],  [], [], ['ecef2geodetic: ',angleUnit])
-
-[lat7, lon7, alt7] = ecef2geodetic(0, 0, E.SemiminorAxis-1);
-assert_allclose([lat7, lon7, alt7], [90, 0, -1], [],  [], [], ['ecef2geodetic: ',angleUnit])
-
-%% enu2aer
-[az2, el2, rng2] = enu2aer(e1,n1,u1, angleUnit); % round-trip
-assert_allclose([az2,el2,rng2],[az,el,srange], rtol)
-
-[az3, el3, rng3] = ecef2aer(x2,y2,z2, lat,lon,alt, E, angleUnit); % round-trip
-assert_allclose([az3,el3,rng3], [az,el,srange], rtol)
+  [x,y,z] = geodetic2ecef(lat,lon,alt, angleUnit); % simple input
+  assert_allclose([x,y,z],[x0,y0,z0])
+  
+  [x,y,z] = geodetic2ecef(0,0,-1);
+  assert_allclose([x,y,z], [ea-1,0,0])
+  
+  [x,y,z] = geodetic2ecef(0,90,-1);
+  assert_allclose([x,y,z], [0,ea-1,0])
+  
+  [x,y,z] = geodetic2ecef(0,-90,-1);
+  assert_allclose([x,y,z], [0,-ea+1,0])
+  
+  [x,y,z] = geodetic2ecef(90,0,-1);
+  assert_allclose([x,y,z], [0,0,eb-1])
+  
+  [x,y,z] = geodetic2ecef(90,15,-1);
+  assert_allclose([x,y,z], [0,0,eb-1])
+  
+  [x,y,z] = geodetic2ecef(-90,0,-1);
+  assert_allclose([x,y,z], [0,0,-eb+1])
+end
+test_geodetic2ecef()
 
 
-[lat3,lon3,alt3] = aer2geodetic(az,el,srange,lat,lon,alt, E, angleUnit);
-assert_allclose([lat3,lon3,alt3], [lat1, lon1, alt1], rtol)
+function test_ecef2geodetic()
+  [lt, ln, at] = ecef2geodetic(E, x0, y0, z0, angleUnit);
+  assert_allclose([lt, ln, at], [lat, lon, alt])
 
-[e2, n2, u2] = geodetic2enu(lat3, lon3, alt3, lat, lon, alt, E, angleUnit);
-assert_allclose([e2,n2,u2],[e1,n1,u1], rtol)
+  [lt, ln, at] = ecef2geodetic(x0, y0, z0, angleUnit); % simple input
+  assert_allclose([lt, ln, at], [lat, lon, alt])
 
-[az4, el4, rng4] = geodetic2aer(lat3,lon3,alt3,lat,lon,alt, E, angleUnit); % round-trip
-assert_allclose([az4,el4,rng4], [az,el,srange], rtol)
-%%
-[x3, y3, z3] = enu2ecef(e1,n1,u1,lat,lon,alt, E, angleUnit);
-assert_allclose([x3,y3,z3],[x2,y2,z2], rtol)
+  [lt, ln, at] = ecef2geodetic(ea-1, 0, 0);
+  assert_allclose([lt, ln, at], [0, 0, -1])
 
-[lat4, lon4, alt4] = enu2geodetic(e2,n2,u2,lat,lon,alt, E, angleUnit); % round-trip
-assert_allclose([lat4, lon4, alt4],[lat3, lon3, alt3], rtol)
+  [lt, ln, at] = ecef2geodetic(0, ea-1, 0);
+  assert_allclose([lt, ln, at], [0, 90, -1])
 
-[e3,n3,u3] = ecef2enu(x3,y3,z3,lat,lon,alt, E, angleUnit); % round-trip
-assert_allclose([e3,n3,u3],[e1,n1,u1], rtol)
+  [lt, ln, at] = ecef2geodetic(0, 0, eb-1);
+  assert_allclose([lt, ln, at], [90, 0, -1])
+  
+  [lt, ln, at] = ecef2geodetic(0, 0, -eb+1);
+  assert_allclose([lt, ln, at], [-90, 0, -1])
+  
+  [lt, ln, at] = ecef2geodetic(-ea+1, 0, 0);
+  assert_allclose([lt, ln, at], [0, 180, -1])
+  
+  [lt, ln, at] = ecef2geodetic((ea-1000)/sqrt(2), (ea-1000)/sqrt(2), 0);
+  assert_allclose([lt,ln,at], [0,45,-1000])
+end
+test_ecef2geodetic()
+
+function test_enu2aer()
+  [a, e, r] = enu2aer(er, nr, ur, angleUnit);
+  assert_allclose([a,e,r], [az,el,srange])
+  
+  [a, e, r] = enu2aer(1, 0, 0, angleUnit);
+  assert_allclose([a,e,r], [a90, 0, 1])
+  
+  [e,n,u] = aer2enu(az, el, srange, angleUnit);
+  assert_allclose([e,n,u], [er,nr,ur])
+  
+  [a,e,r] = enu2aer(e,n,u, angleUnit);
+  assert_allclose([a,e,r], [az,el,srange])
+end
+test_enu2aer()
+
+
+function test_ecef2aer
+  [a, e, r] = ecef2aer(xl,yl,zl, lat,lon,alt, E, angleUnit); % round-trip
+  assert_allclose([a,e,r], [az,el,srange])
+
+  % singularity check
+  [a, e, r] = ecef2aer(ea-1, 0, 0, 0,0,0, E, angleUnit);
+  assert_allclose([a,e,r], [0, -a90, 1])
+  
+  [a, e, r] = ecef2aer(-ea+1, 0, 0, 0, 2*a90,0, E, angleUnit);
+  assert_allclose([a,e,r], [0, -a90, 1])
+
+  [a, e, r] = ecef2aer(0, ea-1, 0,0, a90,0, E, angleUnit);
+  assert_allclose([a,e,r], [0, -a90, 1])
+  
+  [a, e, r] = ecef2aer(0, -ea+1, 0,0, -a90,0, E, angleUnit);
+  assert_allclose([a,e,r], [0, -a90, 1])
+  
+  [a, e, r] = ecef2aer(0, 0, eb-1, a90, 0, 0, E, angleUnit);
+  assert_allclose([a,e,r], [0, -a90, 1])
+  
+  [a, e, r] = ecef2aer(0,  0, -eb+1,-a90,0,0, E, angleUnit);
+  assert_allclose([a,e,r], [0, -a90, 1])
+
+  [a, e, r] = ecef2aer(0,0, eb-1,a90,0,0, E, angleUnit);
+  assert_allclose([a,e,r], [0, -a90, 1])
+  
+  [a, e, r] = ecef2aer((ea-1000)/sqrt(2), (ea-1000)/sqrt(2), 0, 0, 45, 0);
+  assert_allclose([a,e,r],[0,-90,1000])
+  
+  [x,y,z] = aer2ecef(az,el,srange,lat,lon,alt,E, angleUnit);
+  assert_allclose([x,y,z], [xl,yl,zl])
+  
+  [a,e,r] = ecef2aer(x,y,z, lat, lon, alt, E, angleUnit);
+  assert_allclose([a,e,r], [az,el,srange])
+end
+test_ecef2aer()
+
+function geodetic_aer()
+
+  [lt,ln,at] = aer2geodetic(az,el,srange,lat,lon,alt, E, angleUnit);
+  assert_allclose([lt,ln,at], [lat1, lon1, alt1],[], 2*atol_dist)
+
+  [a, e, r] = geodetic2aer(lt,ln,at,lat,lon,alt, E, angleUnit); % round-trip
+  assert_allclose([a,e,r], [az,el,srange])
+end
+geodetic_aer()
+  
+
+function geodetic_enu()
+  
+  [e, n, u] = geodetic2enu(lat, lon, alt-1, lat, lon, alt, E, angleUnit);
+  assert_allclose([e,n,u], [0,0,-1])
+  
+  [lt, ln, at] = enu2geodetic(e,n,u,lat,lon,alt, E, angleUnit); % round-trip
+  assert_allclose([lt, ln, at],[lat, lon, alt-1])
+
+end
+geodetic_enu()
+
+
+function enu_ecef()
+  [x, y, z] = enu2ecef(er,nr,ur, lat,lon,alt, E, angleUnit);
+  assert_allclose([x,y,z],[xl,yl,zl])
+  
+  [e,n,u] = ecef2enu(x,y,z,lat,lon,alt, E, angleUnit); % round-trip
+  assert_allclose([e,n,u],[er,nr,ur])
+end
+enu_ecef()
+
 %% 
 if strcmp(angleUnit, 'd')
   az5 = [0., 10., 125.];

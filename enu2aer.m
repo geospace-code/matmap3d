@@ -20,11 +20,15 @@ validateattributes(angleUnit,{'string','char'},{'scalar'})
 
 %% compute
 
+if abs(east) < 1e-3, east = 0.; end  % singularity, 1 mm precision
+if abs(north) < 1e-3, north = 0.; end  % singularity, 1 mm precision
+if abs(up) < 1e-3, up = 0.; end  % singularity, 1 mm precision
+
 r = hypot(east, north);
 slantRange = hypot(r,up);
 % radians
 elev = atan2(up,r);
-az = mod(atan2(east, north), 2 * atan2(0,-1));
+az = mod(atan2(east, north), 2*pi);
 
 if strcmpi(angleUnit(1),'d')
   elev = rad2deg(elev);

@@ -29,6 +29,11 @@ t  =  cos(lon0) .* u + sin(lon0) .* v;
 e  = -sin(lon0) .* u + cos(lon0) .* v;
 Up =  cos(lat0) .* t + sin(lat0) .* w;
 n  = -sin(lat0) .* t + cos(lat0) .* w;
+
+% 1mm precision
+if abs(e) < 1e-3, e=0; end
+if abs(n) < 1e-3, n=0; end
+if abs(Up) < 1e-3, Up=0; end
 end
 %%
 % Copyright (c) 2014-2018 Michael Hirsch, Ph.D.

@@ -1,4 +1,4 @@
-function ok = assert_allclose(actual, desired, rtol, atol, equal_nan, err_msg,notclose,verbose)
+function assert_allclose(actual, desired, rtol, atol, equal_nan, err_msg,notclose,verbose)
 % ok = assert_allclose(actual, desired, rtol, atol)
 %
 % Inputs
@@ -21,8 +21,8 @@ if nargin < 8, verbose=false; end
 if nargin < 7, notclose=false; end
 if nargin < 6, err_msg=''; end
 if nargin < 5 || isempty(equal_nan), equal_nan=false; end
-if nargin < 4 || isempty(atol), atol=0; end
-if nargin < 3 || isempty(rtol), rtol=1e-8; end
+if nargin < 4 || isempty(atol), atol=1e-9; end
+if nargin < 3 || isempty(rtol), rtol=1e-6; end
 
 validateattributes(actual, {'numeric'}, {'real'})
 validateattributes(desired, {'numeric'}, {'real'})
