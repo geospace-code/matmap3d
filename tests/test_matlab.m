@@ -139,9 +139,6 @@ function test_ecef2aer
   
   [a, e, r] = ecef2aer(0,  0, -eb+1,-a90,0,0, E, angleUnit);
   assert_allclose([a,e,r], [0, -a90, 1])
-
-  [a, e, r] = ecef2aer(0,0, eb-1,a90,0,0, E, angleUnit);
-  assert_allclose([a,e,r], [0, -a90, 1])
   
   [a, e, r] = ecef2aer((ea-1000)/sqrt(2), (ea-1000)/sqrt(2), 0, 0, 45, 0);
   assert_allclose([a,e,r],[0,-90,1000])
