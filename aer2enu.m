@@ -15,7 +15,7 @@ if nargin==3 || isempty(angleUnit), angleUnit='d'; end
 
 validateattributes(az, {'numeric'}, {'real'})
 validateattributes(el, {'numeric'}, {'real','>=',-90,'<=',90})
-validateattributes(slantRange, {'numeric'}, {'real'})
+validateattributes(slantRange, {'numeric'}, {'real', 'nonnegative'})
 validateattributes(angleUnit,{'string','char'},{'scalar'})
 %% compute
 if strcmpi(angleUnit(1),'d') 
