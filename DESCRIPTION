@@ -1,0 +1,10 @@
+Name: matmap3d
+Version: 1.0.3
+Date: 2019-01-10
+Author: Michael Hirsch, Ph.D.
+Maintainer: SciVison, Inc.
+Title: Mapping: geodesy and projections
+Description: Functions compatible with Matlab Mapping Toolbox syntax.
+Categories: geodesy, projections
+License: BSD
+Url: https://github.com/scivision/matmap3d
