@@ -1,5 +1,7 @@
 [![DOI](https://zenodo.org/badge/144219717.svg)](https://zenodo.org/badge/latestdoi/144219717)
-[![Build status](https://ci.appveyor.com/api/projects/status/g4p79576p0j7h2d9?svg=true)](https://ci.appveyor.com/project/scivision/matmap3d)
+
+[![Actions Status](https://github.com/scivision/matmap3d/workflows/ci/badge.svg)](https://github.com/scivision/matmap3d/workflows/ci/actions)
+
 
 # MatMap3d
 
@@ -9,13 +11,9 @@ Similar to Python [PyMap3D](https://github.com/scivision/pymap3d).
 
 ## Usage
 
-Simply use `addpath` to this directory to use from your program for free, instead of paying $1000 for Matlab Mapping Toolbox.
-
 ```matlab
 addpath('matmap3d/matlab')
-```
-then use like:
-```matlab
+
 [x,y,z] = geodetic2ecef([],lat,lon,alt)
 
 [az,el,range] = geodetic2aer(lat, lon, alt, observer_lat, observer_lon, observer_alt)

@@ -1,0 +1,15 @@
+name: ci
+
+on: [push, pull_request]
+
+jobs:
+
+  linux:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v1
+    - run: |
+        sudo apt-get update -y
+        sudo apt-get install -yq --no-install-suggests --no-install-recommends octave > /dev/null
+    - run: octave --eval "test_matlab(); exit"
+      working-directory: tests

@@ -8,7 +8,6 @@ build: off
 init:
 - sh: sudo apt-get install -yq --no-install-suggests --no-install-recommends octave > /dev/null
 
-test_script: 
+test_script:
 - cd tests
 - octave --eval "test_matlab(); exit"
-
