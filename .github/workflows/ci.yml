@@ -1,6 +1,12 @@
 name: ci
 
-on: [push, pull_request]
+on:
+  push:
+    paths:
+      - "**.m"
+  pull_request:
+    paths:
+      - "**.m"
 
 jobs:
 
