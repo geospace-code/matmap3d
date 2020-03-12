@@ -5,15 +5,14 @@ on:
     paths:
       - "**.m"
   pull_request:
-    paths:
-      - "**.m"
+  release:
 
 jobs:
 
   linux:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v1
+    - uses: actions/checkout@v2
     - run: |
         sudo apt-get update -y
         sudo apt-get install -yq --no-install-suggests --no-install-recommends octave > /dev/null
