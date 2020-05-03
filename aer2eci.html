@@ -6,7 +6,7 @@
    <!--
 This HTML was auto-generated from MATLAB code.
 To make changes, update the MATLAB code and republish this document.
-      --><title>juliantime</title><meta name="generator" content="MATLAB 9.8"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2020-05-03"><meta name="DC.source" content="juliantime.m"><style type="text/css">
+      --><title>aer2eci</title><meta name="generator" content="MATLAB 9.8"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2020-05-03"><meta name="DC.source" content="aer2eci.m"><style type="text/css">
 html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
 
 html { min-height:100%; margin-bottom:1px; }
@@ -67,73 +67,47 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
 
 
 
-  </style></head><body><div class="content"><h2>Contents</h2><div><ul><li><a href="#2">juliandate  datetime to Julian time</a></li></ul></div><pre class="codeinput"><span class="keyword">function</span> jd = juliantime(t)
-</pre><h2 id="2">juliandate  datetime to Julian time</h2><p>from D.Vallado Fundamentals of Astrodynamics and Applications p.187 and J. Meeus Astronomical Algorithms 1991 Eqn. 7.1 pg. 61</p><p>parameters: t: datetime or datenum or datevec (Nx1) or (Nx6)</p><p>results: jd: julian date (days since Jan 1, 4173 BCE</p><pre class="codeinput">jd = nan(size(t,1),1);
+  </style></head><body><div class="content"><pre class="codeinput"><span class="keyword">function</span> [x, y, z] = aer2eci(utc, az, el, rng, lat, lon, alt)
+<span class="comment">% convert AER (azimuth, elevation, slant range) to ECI</span>
+<span class="comment">% NOTE: because underlying ecef2eci() is rotation only, error can be order</span>
+<span class="comment">% 1..10%</span>
+<span class="comment">%</span>
+<span class="comment">% parameters:</span>
+<span class="comment">% utc: datetime UTC</span>
+<span class="comment">% az,el,rng: (degrees, meters)</span>
+<span class="comment">% lat, lon, alt: latitude, longitude, altiude of observer (degrees, meters)</span>
+<span class="comment">%</span>
+<span class="comment">% outputs:</span>
+<span class="comment">% x, y, z:  ECI x, y, z</span>
 
-<span class="keyword">if</span> size(t,2) == 6
-  dv = t;
-<span class="keyword">else</span>
-  dv = datevec(t);
-<span class="keyword">end</span>
+narginchk(7,7)
 
-<span class="keyword">for</span> i = 1:size(t,1)
-    <span class="keyword">if</span> dv(i, 2) &lt; 3
-        year = dv(i,1) - 1;
-        month = dv(i,2) + 12;
-    <span class="keyword">else</span>
-        year = dv(i,1);
-        month = dv(i,2);
-    <span class="keyword">end</span>
+[x1, y1, z1] = aer2ecef(az, el, rng, lat, lon, alt);
 
-    A = fix(year / 100.);
-    B = 2 - A + fix(A / 4.);
-    C = ((dv(i,6) / 60. + dv(i,5)) / 60. + dv(i,4)) / 24.;
-
-    jd(i) = fix(365.25 * (year + 4716)) + <span class="keyword">...</span>
-            fix(30.6001 * (month + 1)) + dv(i,3) + B - 1524.5 + C;
+[x, y, z] = ecef2eci(utc, x1, y1, z1);
 
 <span class="keyword">end</span>
-</pre><pre class="codeinput"><span class="keyword">end</span>
 </pre><p class="footer"><br><a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2020a</a><br></p></div><!--
 ##### SOURCE BEGIN #####
-function jd = juliantime(t)
-%% juliandate  datetime to Julian time
-%
-% from D.Vallado Fundamentals of Astrodynamics and Applications p.187
-% and J. Meeus Astronomical Algorithms 1991 Eqn. 7.1 pg. 61
+function [x, y, z] = aer2eci(utc, az, el, rng, lat, lon, alt)
+% convert AER (azimuth, elevation, slant range) to ECI
+% NOTE: because underlying ecef2eci() is rotation only, error can be order
+% 1..10%
 %
 % parameters:
-% t: datetime or datenum or datevec (Nx1) or (Nx6)
+% utc: datetime UTC
+% az,el,rng: (degrees, meters)
+% lat, lon, alt: latitude, longitude, altiude of observer (degrees, meters)
 %
-% results:
-% jd: julian date (days since Jan 1, 4173 BCE
+% outputs:
+% x, y, z:  ECI x, y, z
 
-jd = nan(size(t,1),1);
+narginchk(7,7)
 
-if size(t,2) == 6
-  dv = t;
-else
-  dv = datevec(t);
-end
+[x1, y1, z1] = aer2ecef(az, el, rng, lat, lon, alt);
 
-for i = 1:size(t,1)
-    if dv(i, 2) < 3
-        year = dv(i,1) - 1;
-        month = dv(i,2) + 12;
-    else
-        year = dv(i,1);
-        month = dv(i,2);
-    end
+[x, y, z] = ecef2eci(utc, x1, y1, z1);
 
-    A = fix(year / 100.);
-    B = 2 - A + fix(A / 4.);
-    C = ((dv(i,6) / 60. + dv(i,5)) / 60. + dv(i,4)) / 24.;
-
-    jd(i) = fix(365.25 * (year + 4716)) + ...
-            fix(30.6001 * (month + 1)) + dv(i,3) + B - 1524.5 + C;
-
-end
-             
 end
 
 ##### SOURCE END #####
