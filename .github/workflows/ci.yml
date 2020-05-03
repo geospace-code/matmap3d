@@ -4,8 +4,6 @@ on:
   push:
     paths:
       - "**.m"
-  pull_request:
-  release:
 
 jobs:
 
@@ -16,5 +14,5 @@ jobs:
     - run: |
         sudo apt-get update -y
         sudo apt-get install -yq --no-install-suggests --no-install-recommends octave > /dev/null
-    - run: octave --eval "test_matlab(); exit"
+    - run: octave --eval "test_matlab; exit"
       working-directory: tests
