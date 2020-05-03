@@ -1,8 +1,9 @@
 function gst = greenwichsrt(Jdate)
-%  compute greenwich sidereal time
-%  Jdate: Julian days from 4713 bc  as output by juliantime(datetime)
-%    gst: greenwich sidereal time    [0, 2pi)
-%    vallado 4th Edition
+%  compute greenwich sidereal time from D. Vallado 4th edition
+%
+%  Jdate: Julian days from Jan 1, 4713 BCE from juliantime(utc) or juliandate(utc)
+%  gst: greenwich sidereal time    [0, 2pi)
+
 validateattributes(Jdate, {'numeric'}, {'positive'})
 %% Vallado Eq. 3-42 p. 184, Seidelmann 3.311-1
 tUT1 = (Jdate - 2451545) / 36525;

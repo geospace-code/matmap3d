@@ -3,14 +3,22 @@ function jd = juliantime(t)
 %
 % from D.Vallado Fundamentals of Astrodynamics and Applications p.187
 % and J. Meeus Astronomical Algorithms 1991 Eqn. 7.1 pg. 61
+%
+% parameters:
+% t: datetime or datenum or datevec (Nx1) or (Nx6)
+%
+% results:
+% jd: julian date (days since Jan 1, 4173 BCE
 
-validateattributes(t, {'numeric'},{'vector'})
+jd = nan(size(t,1),1);
 
-jd = nan(length(t),1);
+if size(t,2) == 6
+  dv = t;
+else
+  dv = datevec(t);
+end
 
-dv = datevec(t);
-
-for i = 1:length(t)
+for i = 1:size(t,1)
     if dv(i, 2) < 3
         year = dv(i,1) - 1;
         month = dv(i,2) + 12;

@@ -13,7 +13,8 @@ validateattributes(x_eci, {'numeric'}, {'vector'})
 validateattributes(y_eci, {'numeric'}, {'vector', 'numel', length(x_eci)})
 validateattributes(z_eci, {'numeric'}, {'vector', 'numel', length(x_eci)})
 %% Greenwich hour angles (radians)
-gst = greenwichsrt(juliandate(datetime(utc)));
+% gst = greenwichsrt(juliandate(datetime(utc)));
+gst = greenwichsrt(juliantime(utc));
 validateattributes(gst, {'numeric'}, {'vector', 'numel', length(x_eci)})
 %% Convert into ECEF
 x = nan(length(x_eci));
