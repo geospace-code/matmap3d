@@ -3,6 +3,7 @@
 % Matlab / GNU Octave code that has similar API to $1000 Matlab Mapping
 % Toolbox.
 %
+% * <R3.html R3>
 % * <aer2ecef.html aer2ecef>
 % * <aer2eci.html aer2eci>
 % * <aer2enu.html aer2enu>
@@ -31,20 +32,21 @@
 % * <vreckon.html vreckon>
 % * <wgs84Ellipsoid.html wgs84Ellipsoid>
 
-
 function publish_all(path)
 
-if nargin < 1, path = '.'; end
+narginchk(0,1)
+if nargin < 1, path = fileparts(mfilename('fullpath')); end
 
-flist = dir([path, filesep, '*.m']);
+flist = dir([path, '/*.m']);
 
+docs = [path, '/docs'];
+%%
 for i = 1:length(flist)
-  fn = publish([path,filesep,flist(i).name], 'evalCode', false, 'outputDir', 'docs');
+  fn = publish([path,filesep,flist(i).name], 'evalCode', false, 'outputDir', docs);
   [~,fname,ext] = fileparts(fn);
   fn = [fname, ext];
-  
+
   disp(['% * <',fn,' ',fname,'>'])
 end
-
 
 end
