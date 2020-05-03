@@ -4,12 +4,16 @@
 % Toolbox.
 %
 % * <aer2ecef.html aer2ecef>
+% * <aer2eci.html aer2eci>
 % * <aer2enu.html aer2enu>
 % * <aer2geodetic.html aer2geodetic>
 % * <ecef2aer.html ecef2aer>
+% * <ecef2eci.html ecef2eci>
 % * <ecef2enu.html ecef2enu>
 % * <ecef2enuv.html ecef2enuv>
 % * <ecef2geodetic.html ecef2geodetic>
+% * <eci2aer.html eci2aer>
+% * <eci2ecef.html eci2ecef>
 % * <enu2aer.html enu2aer>
 % * <enu2ecef.html enu2ecef>
 % * <enu2ecefv.html enu2ecefv>
@@ -20,6 +24,7 @@
 % * <geodetic2enu.html geodetic2enu>
 % * <get_radius_normal.html get_radius_normal>
 % * <getreferenceEllipsoid.html getreferenceEllipsoid>
+% * <greenwichsrt.html greenwichsrt>
 % * <juliantime.html juliantime>
 % * <lookAtSpheroid.html lookAtSpheroid>
 % * <vdist.html vdist>
