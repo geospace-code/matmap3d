@@ -1,6 +1,10 @@
 function test_matlab(vendor)
 % Test run a scalar self-test of the Matlab/ Octave 3-D coordinate conversion functions
 
+% vendor: use factory Matlab Mapping Toolbox if true
+
+narginchk(0,1)
+
 fpath = fileparts(mfilename('fullpath'));
 if nargin == 0 || ~vendor
   addpath([fpath,filesep,'..'])
@@ -26,7 +30,7 @@ test_transforms('r',deg2rad(lat),deg2rad(lon), deg2rad(lat1),deg2rad(lon1), deg2
 
 test_time(t0)
 
-disp('OK: GNU Octave / Matlab code')
+disp('OK: matmap3d')
 
 end % function
 
@@ -46,6 +50,7 @@ eb = E.SemiminorAxis;
 
 angleUnit=char(angleUnit);
 
+%% geodetic2ecef
 function test_geodetic2ecef()
   [x,y,z] = geodetic2ecef(E,lat,lon,alt, angleUnit);
   assert_allclose([x,y,z],[x0,y0,z0])
@@ -73,7 +78,7 @@ function test_geodetic2ecef()
 end
 test_geodetic2ecef()
 
-
+%% ecef2geodetic
 function test_ecef2geodetic()
   [lt, ln, at] = ecef2geodetic(E, x0, y0, z0, angleUnit);
   assert_allclose([lt, ln, at], [lat, lon, alt])
@@ -101,6 +106,7 @@ function test_ecef2geodetic()
 end
 test_ecef2geodetic()
 
+%% enu2aer
 function test_enu2aer()
   [a, e, r] = enu2aer(er, nr, ur, angleUnit);
   assert_allclose([a,e,r], [az,el,srange])
@@ -116,7 +122,7 @@ function test_enu2aer()
 end
 test_enu2aer()
 
-
+%% ecef2aer
 function test_ecef2aer
   [a, e, r] = ecef2aer(xl,yl,zl, lat,lon,alt, E, angleUnit); % round-trip
   assert_allclose([a,e,r], [az,el,srange])
@@ -151,6 +157,48 @@ function test_ecef2aer
 end
 test_ecef2aer()
 
+%% eci2ecef
+function test_eci2ecef()
+% from Matlab eci2ecef docs
+time = datetime(2019, 1, 4, 12,0,0);
+eci = [-2981784, 5207055, 3161595];
+[x, y, z] = eci2ecef(time, eci(1), eci(2), eci(3));
+assert_allclose([x,y,z], [-5.7627e6, -1.6827e6, 3.1560e6], 0.02)
+end
+test_eci2ecef()
+
+%% ecef2eci
+function test_ecef2eci()
+ecef = [-5762640, -1682738, 3156028];
+time = datetime(2019, 1, 4, 12,0,0);
+[x,y,z] = ecef2eci(time, ecef(1), ecef(2), ecef(3));
+assert_allclose([x,y,z], [-2.9818e6, 5.2070e6, 3.1616e6], 0.01)
+end
+test_ecef2eci()
+
+%% eci2aer
+function test_eci2aer()
+% values from matlab docs
+eci = [-3.8454e8, -0.5099e8, -0.3255e8];
+utc = datetime(1969, 7, 20, 21, 17, 40);
+lla = [28.4, -80.5, 2.7];
+[a, e, r] = eci2aer(utc, eci(1), eci(2), eci(3), lla(1), lla(2), lla(3));
+assert_allclose([a, e, r], [162.55, 55.12, 384013940.9], 0.01)
+end
+test_eci2aer()
+
+%% aer2eci
+function test_aer2eci()
+% values from matlab docs
+aer = [162.55, 55.12, 384013940.9];
+lla = [28.4, -80.5, 2.7];
+utc = datetime(1969, 7, 20, 21, 17, 40);
+[x,y,z] = aer2eci(utc, aer(1), aer(2), aer(3), lla(1), lla(2), lla(3));
+assert_allclose([x, y, z], [-3.8454e8, -0.5099e8, -0.3255e8], 0.06)
+end
+test_aer2eci()
+
+%% geodetic2aer, aer2geodetic
 function geodetic_aer()
 
   [lt,ln,at] = aer2geodetic(az,el,srange,lat,lon,alt, E, angleUnit);
@@ -161,7 +209,7 @@ function geodetic_aer()
 end
 geodetic_aer()
   
-
+%% geodetic2enu, enu2geodetic
 function geodetic_enu()
   
   [e, n, u] = geodetic2enu(lat, lon, alt-1, lat, lon, alt, E, angleUnit);
@@ -183,7 +231,7 @@ function enu_ecef()
 end
 enu_ecef()
 
-%% 
+%% lookAtSpheroid
 if strcmp(angleUnit, 'd')
   az5 = [0., 10., 125.];
   tilt = [30, 45, 90];
