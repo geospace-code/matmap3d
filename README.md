@@ -2,6 +2,7 @@
 
 [![DOI](https://zenodo.org/badge/144219717.svg)](https://zenodo.org/badge/latestdoi/144219717)
 ![ci](https://github.com/geospace-code/matmap3d/workflows/ci/badge.svg)
+[![View matmap3d on File Exchange](https://www.mathworks.com/matlabcentral/images/matlab-file-exchange.svg)](https://www.mathworks.com/matlabcentral/fileexchange/68480-matmap3d)
 
 Matlab / GNU Octave coordinate conversions for geospace ecef enu eci.
 Similar to Python [PyMap3D](https://github.com/scivision/pymap3d).
