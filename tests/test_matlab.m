@@ -170,14 +170,19 @@ utc = [2019, 1, 4, 12,0,0];
 eci = [-2981784, 5207055, 3161595];
 [x, y, z] = eci2ecef(utc, eci(1), eci(2), eci(3));
 assert_allclose([x,y,z], [-5.7627e6, -1.6827e6, 3.1560e6], 0.02)
-
+%% eci2ecef multiple
+utc = [2019, 1, 4, 12,0,0]; utc = [utc;utc];
+eci = [-2981784, 5207055, 3161595]; eci = [eci; eci];
+[x, y, z] = eci2ecef(utc, eci(:,1), eci(:,2), eci(:,3));
+assert_allclose([x(1,1), y(1,1), z(1,1)], [-5.7627e6, -1.6827e6, 3.1560e6], 0.02)
+assert_allclose([x(2,1), y(2,1), z(2,1)], [-5.7627e6, -1.6827e6, 3.1560e6], 0.02)
 %% ecef2eci
 ecef = [-5762640, -1682738, 3156028];
 utc = [2019, 1, 4, 12,0,0];
 [x,y,z] = ecef2eci(utc, ecef(1), ecef(2), ecef(3));
 assert_allclose([x,y,z], [-2.9818e6, 5.2070e6, 3.1616e6], 0.01)
 
-%% ecef2eci multiple times
+%% ecef2eci multiple
 ecef = [-5762640, -1682738, 3156028]; ecef = [ecef; ecef];
 utc = [2019, 1, 4, 12, 0, 0]; utc = [utc; utc];
 [x,y,z] = ecef2eci(utc, ecef(:,1), ecef(:,2), ecef(:,3));
