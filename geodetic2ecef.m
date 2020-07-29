@@ -29,11 +29,11 @@ end
 % NOT nargin < 5 due to optional reordering
 if ~exist('angleUnit', 'var') || isempty(angleUnit), angleUnit = 'd'; end
 
-validateattributes(spheroid,{'struct'},{'scalar'})
-validateattributes(lat, {'numeric'}, {'real','>=',-90,'<=',90})
-validateattributes(lon, {'numeric'}, {'real'})
-validateattributes(alt, {'numeric'}, {'real'})
-validateattributes(angleUnit,{'string','char'},{'scalar'})
+validateattributes(spheroid,{'struct'},{'scalar'},1)
+validateattributes(lat, {'numeric'}, {'real','>=',-90,'<=',90},2)
+validateattributes(lon, {'numeric'}, {'real'},3)
+validateattributes(alt, {'numeric'}, {'real'},4)
+validateattributes(angleUnit,{'string','char'},{'scalar'},5)
 
 %% compute
 

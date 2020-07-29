@@ -48,10 +48,10 @@ function [lat2,lon2,a21] = vreckon(lat1,lon1,s,a12)
 % (7) Ver 1.0, Michael Kleder, November 2007
 
 narginchk(4,4)
-validateattributes(lat1, {'numeric'}, {'real','>=',-90,'<=',90})
-validateattributes(lon1, {'numeric'}, {'real'})
-validateattributes(s, {'numeric'}, {'real','nonnegative'})
-validateattributes(a12, {'numeric'}, {'real'})
+validateattributes(lat1, {'numeric'}, {'real','>=',-90,'<=',90},1)
+validateattributes(lon1, {'numeric'}, {'real'},2)
+validateattributes(s, {'numeric'}, {'real','nonnegative'},3)
+validateattributes(a12, {'numeric'}, {'real'},4)
 %% compute
 a = 6378137; % semimajor axis
 b = 6356752.31424518; % semiminor axis

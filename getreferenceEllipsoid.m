@@ -13,7 +13,7 @@ narginchk(0,1)
 if ~nargin
   name='wgs84';
 else
-  validateattributes(name,{'char','string'},{'vector'})
+  validateattributes(name,{'char','string'},{'vector'},1)
 end
 
 switch name

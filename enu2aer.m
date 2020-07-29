@@ -13,10 +13,10 @@ function [az, elev, slantRange] = enu2aer(east, north, up, angleUnit)
 narginchk(3,4)
 if nargin < 4 || isempty(angleUnit), angleUnit='d'; end
 
-validateattributes(east, {'numeric'}, {'real'})
-validateattributes(north, {'numeric'}, {'real'})
-validateattributes(up, {'numeric'}, {'real'})
-validateattributes(angleUnit,{'string','char'},{'scalar'})
+validateattributes(east, {'numeric'}, {'real'},1)
+validateattributes(north, {'numeric'}, {'real'},2)
+validateattributes(up, {'numeric'}, {'real'},3)
+validateattributes(angleUnit,{'string','char'},{'scalar'},4)
 
 %% compute
 

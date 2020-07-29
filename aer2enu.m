@@ -13,10 +13,10 @@ narginchk(3,4)
 
 if nargin==3 || isempty(angleUnit), angleUnit='d'; end
 
-validateattributes(az, {'numeric'}, {'real'})
-validateattributes(el, {'numeric'}, {'real','>=',-90,'<=',90})
-validateattributes(slantRange, {'numeric'}, {'real', 'nonnegative'})
-validateattributes(angleUnit,{'string','char'},{'scalar'})
+validateattributes(az, {'numeric'}, {'real'},1)
+validateattributes(el, {'numeric'}, {'real','>=',-90,'<=',90},2)
+validateattributes(slantRange, {'numeric'}, {'real', 'nonnegative'},3)
+validateattributes(angleUnit,{'string','char'},{'scalar'},4)
 %% compute
 if strcmpi(angleUnit(1),'d') 
   az = deg2rad(az);

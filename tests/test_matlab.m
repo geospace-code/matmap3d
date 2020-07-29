@@ -3,8 +3,6 @@
 cwd = fileparts(mfilename('fullpath'));
 addpath([cwd, '/..'])
 
-if isoctave, warning('off', 'Octave:divide-by-zero'), end
-
 % reference inputs
 az = 33; el=70;
 lat = 42; lon= -82;
@@ -128,7 +126,7 @@ assert_allclose([lt,ln,at], [lat1, lon1, alt1],[], 2*atol_dist)
 
 [a, e, r] = geodetic2aer(lt,ln,at,lat,lon,alt, E, angleUnit); % round-trip
 assert_allclose([a,e,r], [az,el,srange])
-  
+
 %% geodetic2enu, enu2geodetic
 [e, n, u] = geodetic2enu(lat, lon, alt-1, lat, lon, alt, E, angleUnit);
 assert_allclose([e,n,u], [0,0,-1])
@@ -179,6 +177,12 @@ utc = [2019, 1, 4, 12,0,0];
 [x,y,z] = ecef2eci(utc, ecef(1), ecef(2), ecef(3));
 assert_allclose([x,y,z], [-2.9818e6, 5.2070e6, 3.1616e6], 0.01)
 
+%% ecef2eci multiple times
+ecef = [-5762640, -1682738, 3156028]; ecef = [ecef; ecef];
+utc = [2019, 1, 4, 12, 0, 0]; utc = [utc; utc];
+[x,y,z] = ecef2eci(utc, ecef(:,1), ecef(:,2), ecef(:,3));
+assert_allclose([x(1,1), y(1,1) , z(1,1)], [-2.9818e6, 5.2070e6, 3.1616e6], 0.01)
+assert_allclose([x(2,1), y(2,1) , z(2,1)], [-2.9818e6, 5.2070e6, 3.1616e6], 0.01)
 %% eci2aer
 eci = [-3.8454e8, -0.5099e8, -0.3255e8];
 utc = [1969, 7, 20, 21, 17, 40];

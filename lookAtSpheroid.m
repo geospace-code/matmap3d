@@ -1,3 +1,4 @@
+
 function [lat, lon, d] = lookAtSpheroid(lat0, lon0, h0, az, tilt, spheroid, angleUnit)
 %% LOOKATSPHEROID Calculates line-of-sight intersection with Earth (or other ellipsoid) surface from above surface ./ orbit
 %
@@ -19,13 +20,13 @@ narginchk(5,7)
 if nargin < 6 || isempty(spheroid), spheroid = wgs84Ellipsoid(); end
 if nargin < 7 || isempty(angleUnit), angleUnit='d'; end
 
-validateattributes(lat0, {'numeric'}, {'real','>=',-90,'<=',90})
-validateattributes(lon0, {'numeric'}, {'real','finite'})
-validateattributes(h0, {'numeric'}, {'real','nonnegative','finite'})
-validateattributes(az, {'numeric'}, {'real','finite'})
-validateattributes(tilt, {'numeric'}, {'real','nonnegative','<=',180})
-validateattributes(spheroid,{'struct'},{'scalar'})
-validateattributes(angleUnit,{'string','char'},{'scalar'})
+validateattributes(lat0, {'numeric'}, {'real','>=',-90,'<=',90},1)
+validateattributes(lon0, {'numeric'}, {'real','finite'},2)
+validateattributes(h0, {'numeric'}, {'real','nonnegative','finite'},3)
+validateattributes(az, {'numeric'}, {'real','finite'},4)
+validateattributes(tilt, {'numeric'}, {'real','nonnegative','<=',180},5)
+validateattributes(spheroid,{'struct'},{'scalar'},6)
+validateattributes(angleUnit,{'string','char'},{'scalar'},7)
 %% computation
 
 if strcmpi(angleUnit(1),'d')

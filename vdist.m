@@ -61,10 +61,10 @@ function varargout = vdist(lat1,lon1,lat2,lon2)
 
 narginchk(4,4)
 
-validateattributes(lat1, {'numeric'}, {'real','>=',-90,'<=',90})
-validateattributes(lat2, {'numeric'}, {'real','>=',-90,'<=',90})
-validateattributes(lon1, {'numeric'}, {'real'})
-validateattributes(lon2, {'numeric'}, {'real'})
+validateattributes(lat1, {'numeric'}, {'real','>=',-90,'<=',90},1)
+validateattributes(lat2, {'numeric'}, {'real','>=',-90,'<=',90},2)
+validateattributes(lon1, {'numeric'}, {'real'},3)
+validateattributes(lon2, {'numeric'}, {'real'},4)
 %% reshape inputs
 keepsize = size(lat1);
 lat1=lat1(:);

@@ -1,4 +1,4 @@
-function jd = juliantime(t)
+function jd = juliantime(utc)
 %% juliandate  datetime to Julian time
 %
 % from D.Vallado Fundamentals of Astrodynamics and Applications p.187
@@ -10,15 +10,18 @@ function jd = juliantime(t)
 % results:
 % jd: julian date (days since Jan 1, 4173 BCE
 
-jd = nan(size(t,1),1);
+narginchk(1,1)
+validateattributes(utc, {'numeric', 'datetime'}, {'2d'},1)
 
-if size(t,2) == 6
-  dv = t;
+jd = nan(size(utc,1),1);
+
+if size(utc,2) == 6
+  dv = utc;
 else
-  dv = datevec(t);
+  dv = datevec(utc);
 end
 
-for i = 1:size(t,1)
+for i = 1:size(utc,1)
     if dv(i, 2) < 3
         year = dv(i,1) - 1;
         month = dv(i,2) + 12;
@@ -35,5 +38,5 @@ for i = 1:size(t,1)
             fix(30.6001 * (month + 1)) + dv(i,3) + B - 1524.5 + C;
 
 end
-             
+
 end
