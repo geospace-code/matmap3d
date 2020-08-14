@@ -198,5 +198,3 @@ lla = [28.4, -80.5, 2.7];
 utc = [1969, 7, 20, 21, 17, 40];
 [x,y,z] = matmap3d.aer2eci(utc, aer(1), aer(2), aer(3), lla(1), lla(2), lla(3));
 matmap3d.tests.assert_allclose([x, y, z], [-3.8454e8, -0.5099e8, -0.3255e8], 0.06)
-
-disp('OK: matmap3d')

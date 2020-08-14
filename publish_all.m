@@ -35,14 +35,12 @@
 function publish_all(path)
 narginchk(1,1)
 
-path = fileparts(mfilename('fullpath'));
-
 flist = dir([path, '/*.m']);
 
 docs = [path, '/docs'];
 %%
 for i = 1:length(flist)
-  fn = publish([path,filesep,flist(i).name], 'evalCode', false, 'outputDir', docs);
+  fn = publish(fullfile(path,flist(i).name), 'evalCode', false, 'outputDir', docs);
   [~,fname,ext] = fileparts(fn);
   fn = [fname, ext];
 

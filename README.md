@@ -9,8 +9,14 @@ Similar to Python [PyMap3D](https://github.com/scivision/pymap3d).
 
 ## Usage
 
+MatMap3D is setup as a
+[Matlab package](https://www.mathworks.com/help/matlab/matlab_oop/scoping-classes-with-packages.html),
+which means `import matmap3d` statements allow scoped use of this code.
+GNU Octave is also capable of using packages by putting the package name before each function name.
+
 ```matlab
-import matmap3d.*  % or add matmap3d. to start of function name
+import matmap3d.*
+% or add matmap3d. to start of function name
 
 [x,y,z] = geodetic2ecef([],lat,lon,alt)
 
