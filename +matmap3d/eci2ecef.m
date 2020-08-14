@@ -13,8 +13,8 @@ validateattributes(x_eci, {'numeric'}, {'vector'},2)
 validateattributes(y_eci, {'numeric'}, {'vector', 'numel', length(x_eci)},3)
 validateattributes(z_eci, {'numeric'}, {'vector', 'numel', length(x_eci)},4)
 %% Greenwich hour angles (radians)
-% gst = greenwichsrt(juliandate(datetime(utc)));
-gst = greenwichsrt(juliantime(utc));
+% gst = matmap3d.greenwichsrt(matmap3d.juliandate(datetime(utc)));
+gst = matmap3d.greenwichsrt(matmap3d.juliantime(utc));
 validateattributes(gst, {'numeric'}, {'vector', 'numel', length(x_eci)})
 %% Convert into ECEF
 x = nan(size(x_eci));
@@ -22,7 +22,7 @@ y = nan(size(x));
 z = nan(size(x));
 
 for j = 1:length(x)
-  ecef = R3(gst(j)) * [x_eci(j), y_eci(j), z_eci(j)].';
+  ecef = matmap3d.R3(gst(j)) * [x_eci(j), y_eci(j), z_eci(j)].';
   x(j) = ecef(1);
   y(j) = ecef(2);
   z(j) = ecef(3);

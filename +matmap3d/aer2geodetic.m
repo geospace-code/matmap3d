@@ -1,18 +1,25 @@
-function N = get_radius_normal(lat, E)
-%% get_radius_normal    normal along the prime vertical section ellipsoidal radius of curvature
-% 
+function [lat1, lon1, alt1] = aer2geodetic (az, el, slantRange, lat0, lon0, alt0, spheroid, angleUnit)
+%% aer2geodetic  convert azimuth, elevation, range of target from observer to geodetic coordiantes
 %
 %%% Inputs
-% * lat: geodetic latitude in Radians
-% * ell: referenceEllipsoid() struct 
-% 
+% * az, el, slantrange: look angles and distance to point under test (degrees, degrees, meters)
+% * az: azimuth clockwise from local north
+% * el: elevation angle above local horizon
+% * lat0, lon0, alt0: ellipsoid geodetic coordinates of observer/reference (degrees, degrees, meters)
+% * spheroid: referenceEllipsoid parameter struct
+% * angleUnit: string for angular units. Default 'd': degrees
+%
 %%% Outputs
-% * N: normal along the prime vertical section ellipsoidal radius of curvature, at a given geodetic latitude.
-narginchk(2,2)
-validateattributes(lat, {'numeric'}, {'real','>=',-90,'<=',90},1)
-validateattributes(E, {'struct'}, {'scalar'},2)
+% * lat1,lon1,alt1: geodetic coordinates of test points (degrees,degrees,meters)
+narginchk(6,8)
 
-N = E.SemimajorAxis^2 ./ sqrt( E.SemimajorAxis^2 .* cos(lat).^2 + E.SemiminorAxis^2 .* sin(lat).^2 );
+if nargin<7, spheroid = []; end
+if nargin<8, angleUnit= [];  end
+
+[x, y, z] = matmap3d.aer2ecef(az, el, slantRange, lat0, lon0, alt0, spheroid, angleUnit);
+
+[lat1, lon1, alt1] = matmap3d.ecef2geodetic(spheroid, x, y, z, angleUnit);
+
 end
 %%
 % Copyright (c) 2014-2018 Michael Hirsch, Ph.D.

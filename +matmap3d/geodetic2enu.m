@@ -1,23 +1,29 @@
-function [az, el, slantRange] = ecef2aer(x, y, z, lat0, lon0, alt0, spheroid, angleUnit)
-%% ecef2aer  convert ECEF of target to azimuth, elevation, slant range from observer
+function [e, n, u] = geodetic2enu(lat, lon, alt, lat0, lon0, alt0, spheroid, angleUnit)
+%% geodetic2enu    convert from geodetic to ENU coordinates
 %
 %%% Inputs
-% * x,y,z: Earth Centered Earth Fixed (ECEF) coordinates of test point (meters)
+% * lat,lon, alt:  ellipsoid geodetic coordinates of point under test (degrees, degrees, meters)
 % * lat0, lon0, alt0: ellipsoid geodetic coordinates of observer/reference (degrees, degrees, meters)
 % * spheroid: referenceEllipsoid parameter struct
 % * angleUnit: string for angular units. Default 'd': degrees
 %
-%%% Outputs
-% * az, el, slantrange: look angles and distance to point under test (degrees, degrees, meters)
-% * az: azimuth clockwise from local north
-% * el: elevation angle above local horizon
-narginchk(6,8)
-if nargin < 7, spheroid = [];  end
-if nargin < 8, angleUnit= []; end
+%%% outputs
+% * e,n,u:  East, North, Up coordinates of test points (meters)
 
-[e, n, u] = ecef2enu(x, y, z, lat0, lon0, alt0, spheroid, angleUnit);
-[az,el,slantRange] = enu2aer(e, n, u, angleUnit);
-  
+narginchk(6,8)
+
+if nargin < 7, spheroid = []; end
+if nargin < 8, angleUnit = []; end
+
+[x1,y1,z1] = matmap3d.geodetic2ecef(spheroid, lat,lon,alt,angleUnit);
+[x2,y2,z2] = matmap3d.geodetic2ecef(spheroid, lat0,lon0,alt0,angleUnit);
+
+dx = x1-x2;
+dy = y1-y2;
+dz = z1-z2;
+
+[e, n, u] = matmap3d.ecef2enuv(dx, dy, dz, lat0, lon0, angleUnit);
+
 end
 %%
 % Copyright (c) 2014-2018 Michael Hirsch, Ph.D.

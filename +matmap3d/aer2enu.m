@@ -1,24 +1,33 @@
-function [lat1, lon1, alt1] = aer2geodetic (az, el, slantRange, lat0, lon0, alt0, spheroid, angleUnit)
-%% aer2geodetic  convert azimuth, elevation, range of target from observer to geodetic coordiantes
+function [e, n, u] = aer2enu (az, el, slantRange, angleUnit)
+%% aer2enu  convert azimuth, elevation, range to ENU coordinates
 %
 %%% Inputs
 % * az, el, slantrange: look angles and distance to point under test (degrees, degrees, meters)
 % * az: azimuth clockwise from local north
 % * el: elevation angle above local horizon
-% * lat0, lon0, alt0: ellipsoid geodetic coordinates of observer/reference (degrees, degrees, meters)
-% * spheroid: referenceEllipsoid parameter struct
 % * angleUnit: string for angular units. Default 'd': degrees
 %
 %%% Outputs
-% * lat1,lon1,alt1: geodetic coordinates of test points (degrees,degrees,meters)
-narginchk(6,8)
+% * e,n,u:  East, North, Up coordinates of test points (meters)
+narginchk(3,4)
 
-if nargin<7, spheroid = []; end
-if nargin<8, angleUnit= [];  end
+if nargin==3 || isempty(angleUnit), angleUnit='d'; end
 
-[x, y, z] = aer2ecef(az, el, slantRange, lat0, lon0, alt0, spheroid, angleUnit);
+validateattributes(az, {'numeric'}, {'real'},1)
+validateattributes(el, {'numeric'}, {'real','>=',-90,'<=',90},2)
+validateattributes(slantRange, {'numeric'}, {'real', 'nonnegative'},3)
+validateattributes(angleUnit,{'string','char'},{'scalar'},4)
+%% compute
+if strcmpi(angleUnit(1),'d')
+  az = deg2rad(az);
+  el = deg2rad(el);
+end
 
-[lat1, lon1, alt1] = ecef2geodetic(spheroid, x, y, z, angleUnit);
+%% Calculation of AER2ENU
+u = slantRange .* sin(el);
+r = slantRange .* cos(el);
+e = r .* sin(az);
+n = r .* cos(az);
 
 end
 %%

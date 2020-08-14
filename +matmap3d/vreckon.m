@@ -22,7 +22,7 @@ function [lat2,lon2,a21] = vreckon(lat1,lon1,s,a12)
 % April 1975, pp 88-93.
 % Available at: http://www.ngs.noaa.gov/PUBS_LIB/inverse.pdf
 %
-% Notes: 
+% Notes:
 % (1) The Vincenty reckoning algorithm was transcribed verbatim into
 %     JavaScript by Chris Veness. It was modified and translated to Matlab
 %     by Michael Kleder. Mr. Veness's website is:
@@ -102,7 +102,7 @@ lat2 = rad2deg(lat2);
 lon2 = rad2deg(lon2);
 lon2 = mod(lon2,360); % follow [0,360] convention
 if nargout > 2
-    a21 = atan2(sinAlpha, -tmp); 
+    a21 = atan2(sinAlpha, -tmp);
     a21  = 180 + rad2deg(a21); % note direction reversal
     a21=mod(a21,360);
 end

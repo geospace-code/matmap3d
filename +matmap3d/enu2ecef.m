@@ -1,34 +1,24 @@
-function [e, n, u] = aer2enu (az, el, slantRange, angleUnit)
-%% aer2enu  convert azimuth, elevation, range to ENU coordinates
+function [x, y, z] = enu2ecef(e, n, u, lat0, lon0, alt0, spheroid, angleUnit)
+%% enu2ecef  convert from ENU to ECEF coordiantes
 %
 %%% Inputs
-% * az, el, slantrange: look angles and distance to point under test (degrees, degrees, meters)
-% * az: azimuth clockwise from local north
-% * el: elevation angle above local horizon
+% * e,n,u:  East, North, Up coordinates of test points (meters)
+% * lat0, lon0, alt0: ellipsoid geodetic coordinates of observer/reference (degrees, degrees, meters)
+% * spheroid: referenceEllipsoid parameter struct
 % * angleUnit: string for angular units. Default 'd': degrees
 %
-%%% Outputs
-% * e,n,u:  East, North, Up coordinates of test points (meters)
-narginchk(3,4)
+%%% outputs
+% * x,y,z: Earth Centered Earth Fixed (ECEF) coordinates of test point (meters)
+narginchk(6,8)
+if nargin<7, spheroid = []; end
+if nargin<8, angleUnit = []; end
 
-if nargin==3 || isempty(angleUnit), angleUnit='d'; end
+[x0, y0, z0] = matmap3d.geodetic2ecef(spheroid, lat0, lon0, alt0, angleUnit);
+[dx, dy, dz] = matmap3d.enu2uvw(e, n, u, lat0, lon0, angleUnit);
 
-validateattributes(az, {'numeric'}, {'real'},1)
-validateattributes(el, {'numeric'}, {'real','>=',-90,'<=',90},2)
-validateattributes(slantRange, {'numeric'}, {'real', 'nonnegative'},3)
-validateattributes(angleUnit,{'string','char'},{'scalar'},4)
-%% compute
-if strcmpi(angleUnit(1),'d') 
-  az = deg2rad(az);
-  el = deg2rad(el);
-end    
-
-%% Calculation of AER2ENU
-u = slantRange .* sin(el);
-r = slantRange .* cos(el);
-e = r .* sin(az);
-n = r .* cos(az);
-
+x = x0 + dx;
+y = y0 + dy;
+z = z0 + dz;
 end
 %%
 % Copyright (c) 2014-2018 Michael Hirsch, Ph.D.

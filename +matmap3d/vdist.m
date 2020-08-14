@@ -1,5 +1,5 @@
 function varargout = vdist(lat1,lon1,lat2,lon2)
-%% VDIST - Using the WGS-84 Earth ellipsoid, compute the distance between two points 
+%% VDIST - Using the WGS-84 Earth ellipsoid, compute the distance between two points
 %
 % within a few millimeters of accuracy, compute forward
 % azimuth, and compute backward azimuth, all using a vectorized
@@ -19,11 +19,11 @@ function varargout = vdist(lat1,lon1,lat2,lon2)
 %
 %%% Original algorithm source:
 %
-% T. Vincenty, "Direct and Inverse Solutions of Geodesics on the Ellipsoid with Application of Nested Equations", 
+% T. Vincenty, "Direct and Inverse Solutions of Geodesics on the Ellipsoid with Application of Nested Equations",
 % Survey Review, vol. 23, no. 176, April 1975, pp 88-93. <http://www.ngs.noaa.gov/PUBS_LIB/inverse.pdf>
 %
-% Notes: 
-% 
+% Notes:
+%
 % # lat1,lon1,lat2,lon2 can be any (identical) size/shape. Outputs will have the same size and shape.
 % # Error correcting code, convergence failure traps, antipodal corrections, polar error corrections, WGS84 ellipsoid parameters, testing, and comments: Michael Kleder, 2004.
 % # Azimuth implementation (including quadrant abiguity resolution) and code vectorization, Michael Kleder, Sep 2005.

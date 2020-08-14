@@ -1,35 +1,23 @@
-function [u, v, w] = enu2ecefv(east, north, up, lat0, lon0, angleUnit)
-%% enu2ecef  convert from ENU to ECEF coordinates
+function [az, el, slantRange] = geodetic2aer(lat, lon, alt, lat0, lon0, alt0, spheroid, angleUnit)
+%% geodetic2aer   from an observer's perspective, convert target coordinates to azimuth, elevation, slant range.
 %
 %%% Inputs
-% * e,n,u:  East, North, Up coordinates of point(s) (meters)
-% * lat0,lon0: geodetic coordinates of observer/reference point (degrees)
-% * angleUnit: string for angular units. Default 'd': degrees
+% * lat,lon, alt:  ellipsoid geodetic coordinates of point under test (degrees, degrees, meters)
+% * lat0, lon0, alt0: ellipsoid geodetic coordinates of observer/reference (degrees, degrees, meters)
+% * spheroid: referenceEllipsoid parameter struct
+% * angleUnit: string for angular units. Default 'd': degrees, otherwise Radians
 %
-%%% outputs
-% * u,v,w:   coordinates of test point(s) (meters)
-narginchk(5,6)
-if nargin < 6 || isempty(angleUnit), angleUnit='d'; end
+%%% Outputs
+% * az, el, slantrange: look angles and distance to point under test (degrees, degrees, meters)
+% * az: azimuth clockwise from local north
+% * el: elevation angle above local horizon
+narginchk(6,8)
+if nargin < 7, spheroid = []; end
+if nargin < 8, angleUnit = []; end
 
-validateattributes(east, {'numeric'}, {'real'},1)
-validateattributes(north, {'numeric'}, {'real'},2)
-validateattributes(up, {'numeric'}, {'real'},3)
-validateattributes(lat0, {'numeric'}, {'real','>=',-90,'<=',90},4)
-validateattributes(lon0, {'numeric'}, {'real'},5)
-validateattributes(angleUnit,{'string','char'},{'scalar'},6)
+[e, n, u] = matmap3d.geodetic2enu(lat, lon, alt, lat0, lon0, alt0, spheroid, angleUnit);
+[az, el, slantRange] = matmap3d.enu2aer(e, n, u, angleUnit);
 
-    
-if strcmpi(angleUnit(1),'d')
-  lat0 = deg2rad(lat0);
-  lon0 = deg2rad(lon0);
-end
-
-t = cos(lat0) .* up - sin(lat0) .* north;
-w = sin(lat0) .* up + cos(lat0) .* north;
-
-u = cos(lon0) .* t - sin(lon0) .* east;
-v = sin(lon0) .* t + cos(lon0) .* east;
-  
 end
 %%
 % Copyright (c) 2014-2018 Michael Hirsch, Ph.D.

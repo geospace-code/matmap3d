@@ -11,8 +11,8 @@ function [az, el, rng] = eci2aer(utc, x_eci, y_eci, z_eci, lat, lon, alt)
 
 narginchk(7,7)
 
-[x, y, z] = eci2ecef(utc, x_eci, y_eci, z_eci);
+[x, y, z] = matmap3d.eci2ecef(utc, x_eci, y_eci, z_eci);
 
-[az, el, rng] = ecef2aer(x, y, z, lat, lon, alt);
+[az, el, rng] = matmap3d.ecef2aer(x, y, z, lat, lon, alt);
 
 end

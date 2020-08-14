@@ -1,22 +1,35 @@
-function [e,n,u] = ecef2enu (x, y, z, lat0, lon0, alt0, spheroid, angleUnit)
-%% ecef2enu  convert ECEF to ENU
+function [u, v, w] = enu2ecefv(east, north, up, lat0, lon0, angleUnit)
+%% enu2ecef  convert from ENU to ECEF coordinates
 %
 %%% Inputs
-% * x,y,z: Earth Centered Earth Fixed (ECEF) coordinates of test point (meters)
-% * lat0, lon0, alt0: ellipsoid geodetic coordinates of observer/reference (degrees, degrees, meters)
-% * spheroid: referenceEllipsoid parameter struct
+% * e,n,u:  East, North, Up coordinates of point(s) (meters)
+% * lat0,lon0: geodetic coordinates of observer/reference point (degrees)
 % * angleUnit: string for angular units. Default 'd': degrees
 %
 %%% outputs
-% * e,n,u:  East, North, Up coordinates of test points (meters)
+% * u,v,w:   coordinates of test point(s) (meters)
+narginchk(5,6)
+if nargin < 6 || isempty(angleUnit), angleUnit='d'; end
 
-narginchk(6,8)
+validateattributes(east, {'numeric'}, {'real'},1)
+validateattributes(north, {'numeric'}, {'real'},2)
+validateattributes(up, {'numeric'}, {'real'},3)
+validateattributes(lat0, {'numeric'}, {'real','>=',-90,'<=',90},4)
+validateattributes(lon0, {'numeric'}, {'real'},5)
+validateattributes(angleUnit,{'string','char'},{'scalar'},6)
 
-if nargin < 7, spheroid = []; end
-if nargin < 8, angleUnit = []; end
 
-[x0, y0, z0] = geodetic2ecef(spheroid, lat0, lon0, alt0, angleUnit);
-[e, n, u]    = ecef2enuv(x - x0, y - y0, z - z0, lat0, lon0, angleUnit);
+if strcmpi(angleUnit(1),'d')
+  lat0 = deg2rad(lat0);
+  lon0 = deg2rad(lon0);
+end
+
+t = cos(lat0) .* up - sin(lat0) .* north;
+w = sin(lat0) .* up + cos(lat0) .* north;
+
+u = cos(lon0) .* t - sin(lon0) .* east;
+v = sin(lon0) .* t + cos(lon0) .* east;
+
 end
 %%
 % Copyright (c) 2014-2018 Michael Hirsch, Ph.D.

@@ -1,24 +1,18 @@
-function [x, y, z] = enu2ecef(e, n, u, lat0, lon0, alt0, spheroid, angleUnit)
-%% enu2ecef  convert from ENU to ECEF coordiantes
+function N = get_radius_normal(lat, E)
+%% get_radius_normal    normal along the prime vertical section ellipsoidal radius of curvature
+%
 %
 %%% Inputs
-% * e,n,u:  East, North, Up coordinates of test points (meters)
-% * lat0, lon0, alt0: ellipsoid geodetic coordinates of observer/reference (degrees, degrees, meters)
-% * spheroid: referenceEllipsoid parameter struct
-% * angleUnit: string for angular units. Default 'd': degrees
+% * lat: geodetic latitude in Radians
+% * ell: referenceEllipsoid() struct
 %
-%%% outputs
-% * x,y,z: Earth Centered Earth Fixed (ECEF) coordinates of test point (meters)
-narginchk(6,8)              
-if nargin<7, spheroid = []; end
-if nargin<8, angleUnit = []; end
+%%% Outputs
+% * N: normal along the prime vertical section ellipsoidal radius of curvature, at a given geodetic latitude.
+narginchk(2,2)
+validateattributes(lat, {'numeric'}, {'real','>=',-90,'<=',90},1)
+validateattributes(E, {'struct'}, {'scalar'},2)
 
-[x0, y0, z0] = geodetic2ecef(spheroid, lat0, lon0, alt0, angleUnit);
-[dx, dy, dz] = enu2uvw(e, n, u, lat0, lon0, angleUnit);
-
-x = x0 + dx;
-y = y0 + dy;
-z = z0 + dz;
+N = E.SemimajorAxis^2 ./ sqrt( E.SemimajorAxis^2 .* cos(lat).^2 + E.SemiminorAxis^2 .* sin(lat).^2 );
 end
 %%
 % Copyright (c) 2014-2018 Michael Hirsch, Ph.D.

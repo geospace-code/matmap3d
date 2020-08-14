@@ -34,7 +34,7 @@ validateattributes(verbose, {'numeric','logical'}, {'scalar'})
 %% compute
   actual = actual(:);
   desired = desired(:);
-  
+
   if equal_nan
     match = false(size(actual));
     match(isnan(actual)) = true;
@@ -42,7 +42,7 @@ validateattributes(verbose, {'numeric','logical'}, {'scalar'})
     match = false;
   end
 
-  
+
   measdiff = abs(actual-desired);
   tol = atol + rtol * abs(desired);
   result = measdiff <= tol;
@@ -52,7 +52,7 @@ validateattributes(verbose, {'numeric','logical'}, {'scalar'})
   else
     testok = all(match | result);
   end
-  
+
   if ~testok
     Nfail = sum(~result);
     j = find(~result);

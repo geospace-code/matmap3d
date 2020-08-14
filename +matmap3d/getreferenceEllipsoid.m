@@ -1,5 +1,5 @@
-function E = getreferenceEllipsoid(name) 
-%% getreferenceEllipsoid   Select available ellipsoid 
+function E = getreferenceEllipsoid(name)
+%% getreferenceEllipsoid   Select available ellipsoid
 %
 % (named so as not to collide with Matlab Mapping Toolbox)
 %
@@ -24,9 +24,9 @@ switch name
      E.Code = 7030;
      E.Name = 'World Geodetic System 1984';
      E.LengthUnit = 'meter';
-     E.SemimajorAxis = 6378137.0;                             
-     E.Flattening = 1/298.2572235630;              
-     E.SemiminorAxis = E.SemimajorAxis * (1 - E.Flattening);                     
+     E.SemimajorAxis = 6378137.0;
+     E.Flattening = 1/298.2572235630;
+     E.SemiminorAxis = E.SemimajorAxis * (1 - E.Flattening);
      E.Eccentricity = get_eccentricity(E);
      %E.MeanRadius = meanradius(E);
      %E.Volume = spheroidvolume(E);
@@ -36,10 +36,10 @@ switch name
      E.Code = 7019;
      E.Name = 'Geodetic Reference System 1980';
      E.LengthUnit = 'meter';
-     E.SemimajorAxis = 6378137.0;                               
-     E.Flattening = 1/298.257222100882711243;                 
-     E.SemiminorAxis = E.SemimajorAxis * (1 - E.Flattening);                      
-     E.Eccentricity  = get_eccentricity(E); 
+     E.SemimajorAxis = 6378137.0;
+     E.Flattening = 1/298.257222100882711243;
+     E.SemiminorAxis = E.SemimajorAxis * (1 - E.Flattening);
+     E.Eccentricity  = get_eccentricity(E);
      %E.MeanRadius = meanradius(E);
      %E.Volume = spheroidvolume(E);
   otherwise
@@ -69,7 +69,7 @@ end
 function ecc = get_eccentricity(E)
 validateattributes(E,{'struct'},{'scalar'})
 
-ecc = sqrt ( (E.SemimajorAxis^2 - E.SemiminorAxis^2) / (E.SemimajorAxis^2)); 
+ecc = sqrt ( (E.SemimajorAxis^2 - E.SemiminorAxis^2) / (E.SemimajorAxis^2));
 
 end % function
 

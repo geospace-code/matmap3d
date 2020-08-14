@@ -1,59 +1,88 @@
-function [x,y,z] = geodetic2ecef(spheroid, lat, lon, alt, angleUnit)
-%% geodetic2ecef   convert from geodetic to ECEF coordiantes
+function [lat,lon,alt] = ecef2geodetic(spheroid, x, y, z, angleUnit)
+%% ecef2geodetic   convert ECEF to geodetic coordinates
 %
 %%% Inputs
-% * lat,lon, alt:  ellipsoid geodetic coordinates of point(s) (degrees, degrees, meters)
+% * x,y,z:  ECEF coordinates of test point(s) (meters)
 % * spheroid: referenceEllipsoid parameter struct
 % * angleUnit: string for angular units. Default 'd': degrees
 %
-%%% outputs
-% * x,y,z:  ECEF coordinates of test point(s) (meters)
+%%% Outputs
+% * lat,lon, alt:  ellipsoid geodetic coordinates of point(s) (degrees, degrees, meters)
+%
+% based on:
+% You, Rey-Jer. (2000). Transformation of Cartesian to Geodetic Coordinates without Iterations.
+% Journal of Surveying Engineering. doi: 10.1061/(ASCE)0733-9453
 
 narginchk(3,5)
 
 if isempty(spheroid)
-  spheroid = wgs84Ellipsoid();
+  spheroid = matmap3d.wgs84Ellipsoid();
 elseif isnumeric(spheroid) && nargin == 3
-  alt = lon;
-  lon = lat;
-  lat = spheroid;
-  spheroid = wgs84Ellipsoid();
-elseif isnumeric(spheroid) && ischar(alt) && nargin == 4
-  angleUnit = alt;
-  alt = lon;
-  lon = lat;
-  lat = spheroid;
-  spheroid = wgs84Ellipsoid();
+  z = y;
+  y = x;
+  x = spheroid;
+  spheroid = matmap3d.wgs84Ellipsoid();
+elseif isnumeric(spheroid) && ischar(z) && nargin == 4
+  angleUnit = z;
+  z = y;
+  y = x;
+  x = spheroid;
+  spheroid = matmap3d.wgs84Ellipsoid();
 end
 
 % NOT nargin < 5 due to optional reordering
 if ~exist('angleUnit', 'var') || isempty(angleUnit), angleUnit = 'd'; end
 
 validateattributes(spheroid,{'struct'},{'scalar'},1)
-validateattributes(lat, {'numeric'}, {'real','>=',-90,'<=',90},2)
-validateattributes(lon, {'numeric'}, {'real'},3)
-validateattributes(alt, {'numeric'}, {'real'},4)
+validateattributes(x, {'numeric'}, {'real'},2)
+validateattributes(y, {'numeric'}, {'real'},3)
+validateattributes(z, {'numeric'}, {'real'},4)
 validateattributes(angleUnit,{'string','char'},{'scalar'},5)
 
 %% compute
 
-if strcmpi(angleUnit(1),'d')
-  lat = deg2rad(lat);
-  lon = deg2rad(lon);
+a = spheroid.SemimajorAxis;
+b = spheroid.SemiminorAxis;
+
+r = sqrt(x.^2 + y.^2 + z.^2);
+
+E = sqrt(a.^2 - b.^2);
+
+% eqn. 4a
+u = sqrt(0.5 * (r.^2 - E.^2) + 0.5 * sqrt((r.^2 - E.^2).^2 + 4 * E.^2 .* z.^2));
+
+Q = hypot(x, y);
+
+huE = hypot(u, E);
+
+% eqn. 4b
+Beta = atan(huE ./ u .* z ./ hypot(x, y));
+
+% eqn. 13
+eps = ((b * u - a * huE + E.^2) .* sin(Beta)) ./ (a * huE ./ cos(Beta) - E.^2 .* cos(Beta));
+
+Beta = Beta + eps;
+%% final output
+lat = atan(a / b * tan(Beta));
+
+lon = atan2(y, x);
+
+% eqn. 7
+alt = hypot(z - b * sin(Beta), Q - a * cos(Beta));
+
+% inside ellipsoid?
+inside = (x.^2 ./ a.^2) + (y.^2 ./ a.^2) + (z.^2 ./ b.^2) < 1;
+alt(inside) = -alt(inside);
+
+
+if strcmpi(angleUnit(1), 'd')
+  lat = rad2deg(lat);
+  lon = rad2deg(lon);
 end
 
-%% Radius of curvature of the prime vertical section
-N = get_radius_normal(lat, spheroid);
-%% Compute cartesian (geocentric) coordinates given  (curvilinear) geodetic coordinates.
-
-x = (N + alt) .* cos(lat) .* cos(lon);
-y = (N + alt) .* cos(lat) .* sin(lon);
-z = (N .* (spheroid.SemiminorAxis / spheroid.SemimajorAxis)^2 + alt) .* sin(lat);
-        
-end
+ end % function
 %%
 % Copyright (c) 2014-2018 Michael Hirsch, Ph.D.
-% Copyright (c) 2013, Felipe Geremia Nievinski
 %
 % Redistribution and use in source and binary forms, with or without modification, are permitted provided that the following conditions are met:
 % 1. Redistributions of source code must retain the above copyright notice, this list of conditions and the following disclaimer.

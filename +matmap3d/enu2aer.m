@@ -1,23 +1,40 @@
-function [az, el, slantRange] = geodetic2aer(lat, lon, alt, lat0, lon0, alt0, spheroid, angleUnit)
-%% geodetic2aer   from an observer's perspective, convert target coordinates to azimuth, elevation, slant range.
+function [az, elev, slantRange] = enu2aer(east, north, up, angleUnit)
+%% enu2aer   convert ENU to azimuth, elevation, slant range
 %
 %%% Inputs
-% * lat,lon, alt:  ellipsoid geodetic coordinates of point under test (degrees, degrees, meters)
-% * lat0, lon0, alt0: ellipsoid geodetic coordinates of observer/reference (degrees, degrees, meters)
-% * spheroid: referenceEllipsoid parameter struct
-% * angleUnit: string for angular units. Default 'd': degrees, otherwise Radians
+% * e,n,u:  East, North, Up coordinates of test points (meters)
+% * angleUnit: string for angular units. Default 'd': degrees
 %
-%%% Outputs
+%%% outputs
 % * az, el, slantrange: look angles and distance to point under test (degrees, degrees, meters)
 % * az: azimuth clockwise from local north
 % * el: elevation angle above local horizon
-narginchk(6,8)
-if nargin < 7, spheroid = []; end
-if nargin < 8, angleUnit = []; end
 
-[e, n, u] = geodetic2enu(lat, lon, alt, lat0, lon0, alt0, spheroid, angleUnit);
-[az, el, slantRange] = enu2aer(e, n, u, angleUnit);
-  
+narginchk(3,4)
+if nargin < 4 || isempty(angleUnit), angleUnit='d'; end
+
+validateattributes(east, {'numeric'}, {'real'},1)
+validateattributes(north, {'numeric'}, {'real'},2)
+validateattributes(up, {'numeric'}, {'real'},3)
+validateattributes(angleUnit,{'string','char'},{'scalar'},4)
+
+%% compute
+
+if abs(east) < 1e-3, east = 0.; end  % singularity, 1 mm precision
+if abs(north) < 1e-3, north = 0.; end  % singularity, 1 mm precision
+if abs(up) < 1e-3, up = 0.; end  % singularity, 1 mm precision
+
+r = hypot(east, north);
+slantRange = hypot(r,up);
+% radians
+elev = atan2(up,r);
+az = mod(atan2(east, north), 2*pi);
+
+if strcmpi(angleUnit(1),'d')
+  elev = rad2deg(elev);
+  az = rad2deg(az);
+end
+
 end
 %%
 % Copyright (c) 2014-2018 Michael Hirsch, Ph.D.

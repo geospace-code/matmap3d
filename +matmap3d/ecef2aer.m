@@ -1,40 +1,23 @@
-function [az, elev, slantRange] = enu2aer(east, north, up, angleUnit)
-%% enu2aer   convert ENU to azimuth, elevation, slant range
+function [az, el, slantRange] = ecef2aer(x, y, z, lat0, lon0, alt0, spheroid, angleUnit)
+%% ecef2aer  convert ECEF of target to azimuth, elevation, slant range from observer
 %
 %%% Inputs
-% * e,n,u:  East, North, Up coordinates of test points (meters)
+% * x,y,z: Earth Centered Earth Fixed (ECEF) coordinates of test point (meters)
+% * lat0, lon0, alt0: ellipsoid geodetic coordinates of observer/reference (degrees, degrees, meters)
+% * spheroid: referenceEllipsoid parameter struct
 % * angleUnit: string for angular units. Default 'd': degrees
 %
-%%% outputs
+%%% Outputs
 % * az, el, slantrange: look angles and distance to point under test (degrees, degrees, meters)
 % * az: azimuth clockwise from local north
 % * el: elevation angle above local horizon
+narginchk(6,8)
+if nargin < 7, spheroid = [];  end
+if nargin < 8, angleUnit= []; end
 
-narginchk(3,4)
-if nargin < 4 || isempty(angleUnit), angleUnit='d'; end
+[e, n, u] = matmap3d.ecef2enu(x, y, z, lat0, lon0, alt0, spheroid, angleUnit);
+[az,el,slantRange] = matmap3d.enu2aer(e, n, u, angleUnit);
 
-validateattributes(east, {'numeric'}, {'real'},1)
-validateattributes(north, {'numeric'}, {'real'},2)
-validateattributes(up, {'numeric'}, {'real'},3)
-validateattributes(angleUnit,{'string','char'},{'scalar'},4)
-
-%% compute
-
-if abs(east) < 1e-3, east = 0.; end  % singularity, 1 mm precision
-if abs(north) < 1e-3, north = 0.; end  % singularity, 1 mm precision
-if abs(up) < 1e-3, up = 0.; end  % singularity, 1 mm precision
-
-r = hypot(east, north);
-slantRange = hypot(r,up);
-% radians
-elev = atan2(up,r);
-az = mod(atan2(east, north), 2*pi);
-
-if strcmpi(angleUnit(1),'d')
-  elev = rad2deg(elev);
-  az = rad2deg(az);
-end
-  
 end
 %%
 % Copyright (c) 2014-2018 Michael Hirsch, Ph.D.

@@ -14,5 +14,4 @@ jobs:
     - run: |
         sudo apt-get update -yq
         sudo apt-get install -yq --no-install-suggests --no-install-recommends octave > /dev/null
-    - run: octave --eval "test_matlab; exit"
-      working-directory: tests
+    - run: octave --eval "matmap3d.tests.test_unit; exit"

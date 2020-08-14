@@ -10,7 +10,7 @@ Similar to Python [PyMap3D](https://github.com/scivision/pymap3d).
 ## Usage
 
 ```matlab
-addpath('matmap3d/matlab')
+import matmap3d.*  % or add matmap3d. to start of function name
 
 [x,y,z] = geodetic2ecef([],lat,lon,alt)
 
@@ -20,8 +20,7 @@ addpath('matmap3d/matlab')
 Optionally, verify functionality:
 
 ```sh
-cd tests
-test_matlab
+matmap3d.tests.test_unit
 ```
 
 ### Functions

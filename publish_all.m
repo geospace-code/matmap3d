@@ -33,9 +33,9 @@
 % * <wgs84Ellipsoid.html wgs84Ellipsoid>
 
 function publish_all(path)
+narginchk(1,1)
 
-narginchk(0,1)
-if nargin < 1, path = fileparts(mfilename('fullpath')); end
+path = fileparts(mfilename('fullpath'));
 
 flist = dir([path, '/*.m']);
 
