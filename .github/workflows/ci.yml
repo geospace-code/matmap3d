@@ -14,4 +14,7 @@ jobs:
     - run: |
         sudo apt-get update -yq
         sudo apt-get install -yq --no-install-suggests --no-install-recommends octave > /dev/null
+
+    - run: octave --eval "pkg install https://github.com/apjanke/octave-tablicious/releases/download/v0.3.5/tablicious-0.3.5.tar.gz"
+
     - run: octave --eval "matmap3d.tests.test_unit; exit"

@@ -29,6 +29,14 @@ Optionally, verify functionality:
 matmap3d.tests.test_unit
 ```
 
+### GNU Octave
+
+MatMap3D uses "datetime" for reliability--Octave can use datetime via tablicious:
+
+```octave
+pkg install https://github.com/apjanke/octave-tablicious/releases/download/v0.3.5/tablicious-0.3.5.tar.gz
+```
+
 ### Functions
 
 Popular mapping & aerospace toolbox functions ported to Matlab include the
@@ -63,6 +71,8 @@ Abbreviations:
 Mathworks currently charges $1000 for the
 [Matlab Mapping Toolbox](https://www.mathworks.com/products/mapping.html)
 that provides these functions.
+
+## Notes
 
 The full set of Python conversions are accessed from Matlab &ge; R2014b by commands like:
 
