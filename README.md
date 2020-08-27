@@ -34,7 +34,7 @@ matmap3d.tests.test_unit
 MatMap3D uses "datetime" for reliability--Octave can use datetime via tablicious:
 
 ```octave
-pkg install https://github.com/apjanke/octave-tablicious/releases/download/v0.3.5/tablicious-0.3.5.tar.gz
+pkg install https://github.com/scivision/octave-tablicious/archive/master.zip
 ```
 
 ### Functions

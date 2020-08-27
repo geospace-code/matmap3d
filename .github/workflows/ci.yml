@@ -4,17 +4,18 @@ on:
   push:
     paths:
       - "**.m"
+      - ".github/workflows/ci.yml"
 
 jobs:
 
   linux:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-20.04
     steps:
     - uses: actions/checkout@v2
     - run: |
         sudo apt-get update -yq
-        sudo apt-get install -yq --no-install-suggests --no-install-recommends octave > /dev/null
+        sudo apt-get install -yq --no-install-suggests --no-install-recommends octave liboctave-dev > /dev/null
 
-    - run: octave --eval "pkg install https://github.com/apjanke/octave-tablicious/releases/download/v0.3.5/tablicious-0.3.5.tar.gz"
+    - run: octave --eval "pkg install https://github.com/scivision/octave-tablicious/archive/master.zip"
 
     - run: octave --eval "matmap3d.tests.test_unit; exit"
