@@ -1,5 +1,5 @@
 function E = wgs84Ellipsoid(lengthUnit)
-%% wgs84Ellipsoid  generate a WGS84 ellipsoid parameter struct
+%% wgs84Ellipsoid  generate a WGS84 referenceEllipsoid
 %
 %%%  Inputs
 %

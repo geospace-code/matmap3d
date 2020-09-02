@@ -3,7 +3,7 @@ function [x,y,z] = geodetic2ecef(spheroid, lat, lon, alt, angleUnit)
 %
 %%% Inputs
 % * lat,lon, alt:  ellipsoid geodetic coordinates of point(s) (degrees, degrees, meters)
-% * spheroid: referenceEllipsoid parameter struct
+% * spheroid: referenceEllipsoid
 % * angleUnit: string for angular units. Default 'd': degrees
 %
 %%% outputs

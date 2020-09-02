@@ -3,7 +3,7 @@ function [lat,lon,alt] = ecef2geodetic(spheroid, x, y, z, angleUnit)
 %
 %%% Inputs
 % * x,y,z:  ECEF coordinates of test point(s) (meters)
-% * spheroid: referenceEllipsoid parameter struct
+% * spheroid: referenceEllipsoid
 % * angleUnit: string for angular units. Default 'd': degrees
 %
 %%% Outputs

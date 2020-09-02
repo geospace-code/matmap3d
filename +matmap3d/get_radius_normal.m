@@ -5,7 +5,7 @@ function N = get_radius_normal(lat, E)
 %
 %%% Inputs
 % * lat: geodetic latitude in Radians
-% * ell: referenceEllipsoid() struct
+% * ell: referenceEllipsoid
 %
 %%% Outputs
 % * N: normal along the prime vertical section ellipsoidal radius of curvature, at a given geodetic latitude.

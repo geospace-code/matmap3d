@@ -4,7 +4,7 @@ function [x, y, z] = enu2ecef(east, north, up, lat0, lon0, alt0, spheroid, angle
 %%% Inputs
 % * east, north, up: coordinates of test points (meters)
 % * lat0, lon0, alt0: ellipsoid geodetic coordinates of observer/reference (degrees, degrees, meters)
-% * spheroid: referenceEllipsoid parameter struct
+% * spheroid: referenceEllipsoid
 % * angleUnit: string for angular units. Default 'd': degrees
 %
 %%% outputs

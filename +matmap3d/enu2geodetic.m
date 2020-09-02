@@ -4,7 +4,7 @@ function [lat, lon, alt] = enu2geodetic(east, north, up, lat0, lon0, alt0, spher
 %%% Inputs
 % * east,north,up:  ENU coordinates of point(s) (meters)
 % * lat0, lon0, alt0: ellipsoid geodetic coordinates of observer/reference (degrees, degrees, meters)
-% * spheroid: referenceEllipsoid parameter struct
+% * spheroid: referenceEllipsoid
 % * angleUnit: string for angular units. Default 'd': degrees, otherwise Radians
 %
 %%% outputs

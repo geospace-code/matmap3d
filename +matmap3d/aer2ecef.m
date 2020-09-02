@@ -7,7 +7,7 @@ function [x,y,z] = aer2ecef(az, el, slantRange, lat0, lon0, alt0, spheroid, angl
 % * az: azimuth clockwise from local north
 % * el: elevation angle above local horizon
 % * lat0, lon0, alt0: ellipsoid geodetic coordinates of observer/reference (degrees, degrees, meters)
-% * spheroid: referenceEllipsoid parameter struct
+% * spheroid: referenceEllipsoid
 % * angleUnit: string for angular units. Default 'd': degrees
 %
 %%% outputs

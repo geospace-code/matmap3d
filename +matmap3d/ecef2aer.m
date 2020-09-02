@@ -4,7 +4,7 @@ function [az, el, slantRange] = ecef2aer(x, y, z, lat0, lon0, alt0, spheroid, an
 %%% Inputs
 % * x,y,z: Earth Centered Earth Fixed (ECEF) coordinates of test point (meters)
 % * lat0, lon0, alt0: ellipsoid geodetic coordinates of observer/reference (degrees, degrees, meters)
-% * spheroid: referenceEllipsoid parameter struct
+% * spheroid: referenceEllipsoid
 % * angleUnit: string for angular units. Default 'd': degrees
 %
 %%% Outputs
