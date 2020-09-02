@@ -68,3 +68,6 @@ The full set of Python conversions are accessed from Matlab &ge; R2014b by comma
 ```matlab
 lla = py.pymap3d.geodetic2ecef(x,y,z)
 ```
+If using `conda` environment to install `pymap3d`, you will need to follow these instructions to make it load:
+https://www.mathworks.com/matlabcentral/answers/443558-matlab-crashes-when-using-conda-environment-other-than-base#answer_486374
+
