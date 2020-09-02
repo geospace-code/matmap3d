@@ -57,9 +57,10 @@ Abbreviations:
   Would need to update code to add these input parameters (just start a GitHub Issue to request).
 * Planetary perturbations and nutation etc. not fully considered.
 
-Mathworks currently charges $1000 for the
-[Matlab Mapping Toolbox](https://www.mathworks.com/products/mapping.html)
-that provides these functions.
+These functions present a similar API of a subset of functions in the Mathworks Matlab:
+
+* [Mapping Toolbox](https://www.mathworks.com/products/mapping.html)
+* [Aerospace Blockset](https://www.mathworks.com/products/aerospace-blockset.html)
 
 ## Notes
 
