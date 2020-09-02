@@ -59,12 +59,12 @@ function varargout = vdist(lat1,lon1,lat2,lon2)
 %            above in (9).
 % # No warranties; use at your own risk.
 
-narginchk(4,4)
-
-validateattributes(lat1, {'numeric'}, {'real','>=',-90,'<=',90},1)
-validateattributes(lat2, {'numeric'}, {'real','>=',-90,'<=',90},2)
-validateattributes(lon1, {'numeric'}, {'real'},3)
-validateattributes(lon2, {'numeric'}, {'real'},4)
+arguments
+  lat1 {mustBeNumeric,mustBeReal}
+  lon1 {mustBeNumeric,mustBeReal}
+  lat2 {mustBeNumeric,mustBeReal}
+  lon2 {mustBeNumeric,mustBeReal}
+end
 %% reshape inputs
 keepsize = size(lat1);
 lat1=lat1(:);
@@ -86,11 +86,11 @@ lon2 = lon2 * 0.0174532925199433;
 % correct for errors at exact poles by adjusting 0.6 millimeters:
 kidx = abs(pi/2-abs(lat1)) < 1e-10;
 if any(kidx)
-    lat1(kidx) = sign(lat1(kidx))*(pi/2-(1e-10));
+  lat1(kidx) = sign(lat1(kidx))*(pi/2-(1e-10));
 end
 kidx = abs(pi/2-abs(lat2)) < 1e-10;
 if any(kidx)
-    lat2(kidx) = sign(lat2(kidx))*(pi/2-(1e-10));
+  lat2(kidx) = sign(lat2(kidx))*(pi/2-(1e-10));
 end
 f = (a-b)/a;
 U1 = atan((1-f)*tan(lat1));
@@ -100,7 +100,7 @@ lon2 = mod(lon2,2*pi);
 L = abs(lon2-lon1);
 kidx = L > pi;
 if any(kidx)
-    L(kidx) = 2*pi - L(kidx);
+  L(kidx) = 2*pi - L(kidx);
 end
 lambda = L;
 lambdaold = 0*lat1;
@@ -112,47 +112,46 @@ cos2sigmam = 0*lat1;
 C = 0*lat1;
 warninggiven = false;
 while any(notdone)  % force at least one execution
-    %disp(['lambda(21752) = ' num2str(lambda(21752),20)]);
-    itercount = itercount+1;
-    if itercount > 50
-        if ~warninggiven
-            warning(['Essentially antipodal points encountered. ' ...
-                'Precision may be reduced slightly.']);
-        end
-        lambda(notdone) = pi;
-        break
-    end
-    lambdaold(notdone) = lambda(notdone);
-    sinsigma(notdone) = sqrt((cos(U2(notdone)).*sin(lambda(notdone)))...
-        .^2+(cos(U1(notdone)).*sin(U2(notdone))-sin(U1(notdone)).*...
-        cos(U2(notdone)).*cos(lambda(notdone))).^2);
-    cossigma(notdone) = sin(U1(notdone)).*sin(U2(notdone))+...
-        cos(U1(notdone)).*cos(U2(notdone)).*cos(lambda(notdone));
-    % eliminate rare imaginary portions at limit of numerical precision:
-    sinsigma(notdone)=real(sinsigma(notdone));
-    cossigma(notdone)=real(cossigma(notdone));
-    sigma(notdone) = atan2(sinsigma(notdone),cossigma(notdone));
-    alpha(notdone) = asin(cos(U1(notdone)).*cos(U2(notdone)).*...
-        sin(lambda(notdone))./sin(sigma(notdone)));
-    cos2sigmam(notdone) = cos(sigma(notdone))-2*sin(U1(notdone)).*...
-        sin(U2(notdone))./cos(alpha(notdone)).^2;
-    C(notdone) = f/16*cos(alpha(notdone)).^2.*(4+f*(4-3*...
-        cos(alpha(notdone)).^2));
-    lambda(notdone) = L(notdone)+(1-C(notdone)).*f.*sin(alpha(notdone))...
-        .*(sigma(notdone)+C(notdone).*sin(sigma(notdone)).*...
-        (cos2sigmam(notdone)+C(notdone).*cos(sigma(notdone)).*...
-        (-1+2.*cos2sigmam(notdone).^2)));
-    %disp(['then, lambda(21752) = ' num2str(lambda(21752),20)]);
-    % correct for convergence failure in the case of essentially antipodal
-    % points
-    if any(lambda(notdone) > pi)
-        warning(['Essentially antipodal points encountered. ' ...
-            'Precision may be reduced slightly.']);
-        warninggiven = true;
-        lambdaold(lambda>pi) = pi;
-        lambda(lambda>pi) = pi;
-    end
-    notdone = abs(lambda-lambdaold) > 1e-12;
+  %disp(['lambda(21752) = ' num2str(lambda(21752),20)]);
+  itercount = itercount+1;
+  if itercount > 50
+      if ~warninggiven
+          warning(['Essentially antipodal points encountered. ' ...
+              'Precision may be reduced slightly.']);
+      end
+      lambda(notdone) = pi;
+      break
+  end
+  lambdaold(notdone) = lambda(notdone);
+  sinsigma(notdone) = sqrt((cos(U2(notdone)).*sin(lambda(notdone)))...
+      .^2+(cos(U1(notdone)).*sin(U2(notdone))-sin(U1(notdone)).*...
+      cos(U2(notdone)).*cos(lambda(notdone))).^2);
+  cossigma(notdone) = sin(U1(notdone)).*sin(U2(notdone))+...
+      cos(U1(notdone)).*cos(U2(notdone)).*cos(lambda(notdone));
+  % eliminate rare imaginary portions at limit of numerical precision:
+  sinsigma(notdone)=real(sinsigma(notdone));
+  cossigma(notdone)=real(cossigma(notdone));
+  sigma(notdone) = atan2(sinsigma(notdone),cossigma(notdone));
+  alpha(notdone) = asin(cos(U1(notdone)).*cos(U2(notdone)).*...
+      sin(lambda(notdone))./sin(sigma(notdone)));
+  cos2sigmam(notdone) = cos(sigma(notdone))-2*sin(U1(notdone)).*...
+      sin(U2(notdone))./cos(alpha(notdone)).^2;
+  C(notdone) = f/16*cos(alpha(notdone)).^2.*(4+f*(4-3*...
+      cos(alpha(notdone)).^2));
+  lambda(notdone) = L(notdone)+(1-C(notdone)).*f.*sin(alpha(notdone))...
+      .*(sigma(notdone)+C(notdone).*sin(sigma(notdone)).*...
+      (cos2sigmam(notdone)+C(notdone).*cos(sigma(notdone)).*...
+      (-1+2.*cos2sigmam(notdone).^2)));
+  %disp(['then, lambda(21752) = ' num2str(lambda(21752),20)]);
+  % correct for convergence failure in the case of essentially antipodal
+  % points
+  if any(lambda(notdone) > pi)
+    warning('Essentially antipodal points encountered. Precision may be reduced slightly.')
+    warninggiven = true;
+    lambdaold(lambda>pi) = pi;
+    lambda(lambda>pi) = pi;
+  end
+  notdone = abs(lambda-lambdaold) > 1e-12;
 end
 u2 = cos(alpha).^2.*(a^2-b^2)/b^2;
 A = 1+u2./16384.*(4096+u2.*(-768+u2.*(320-175.*u2)));

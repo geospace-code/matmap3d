@@ -12,32 +12,17 @@ function [lat,lon,alt] = ecef2geodetic(spheroid, x, y, z, angleUnit)
 % based on:
 % You, Rey-Jer. (2000). Transformation of Cartesian to Geodetic Coordinates without Iterations.
 % Journal of Surveying Engineering. doi: 10.1061/(ASCE)0733-9453
-
-narginchk(3,5)
+arguments
+  spheroid
+  x {mustBeNumeric,mustBeReal}
+  y {mustBeNumeric,mustBeReal}
+  z {mustBeNumeric,mustBeReal}
+  angleUnit (1,1) string = "d"
+end
 
 if isempty(spheroid)
   spheroid = matmap3d.wgs84Ellipsoid();
-elseif isnumeric(spheroid) && nargin == 3
-  z = y;
-  y = x;
-  x = spheroid;
-  spheroid = matmap3d.wgs84Ellipsoid();
-elseif isnumeric(spheroid) && ischar(z) && nargin == 4
-  angleUnit = z;
-  z = y;
-  y = x;
-  x = spheroid;
-  spheroid = matmap3d.wgs84Ellipsoid();
 end
-
-% NOT nargin < 5 due to optional reordering
-if ~exist('angleUnit', 'var') || isempty(angleUnit), angleUnit = 'd'; end
-
-validateattributes(spheroid,{'struct'},{'scalar'},1)
-validateattributes(x, {'numeric'}, {'real'},2)
-validateattributes(y, {'numeric'}, {'real'},3)
-validateattributes(z, {'numeric'}, {'real'},4)
-validateattributes(angleUnit,{'string','char'},{'scalar'},5)
 
 %% compute
 
@@ -75,12 +60,12 @@ inside = (x.^2 ./ a.^2) + (y.^2 ./ a.^2) + (z.^2 ./ b.^2) < 1;
 alt(inside) = -alt(inside);
 
 
-if strcmpi(angleUnit(1), 'd')
+if startsWith(angleUnit, 'd')
   lat = rad2deg(lat);
   lon = rad2deg(lon);
 end
 
- end % function
+end % function
 %%
 % Copyright (c) 2014-2018 Michael Hirsch, Ph.D.
 %

@@ -10,8 +10,15 @@ function [x, y, z] = aer2eci(utc, az, el, rng, lat, lon, alt)
 %
 % outputs:
 % x, y, z:  ECI x, y, z
-
-narginchk(7,7)
+arguments
+  utc datetime
+  az {mustBeNumeric,mustBeReal}
+  el {mustBeNumeric,mustBeReal}
+  rng {mustBeNumeric,mustBeReal, mustBeNonnegative}
+  lat {mustBeNumeric,mustBeReal}
+  lon {mustBeNumeric,mustBeReal}
+  alt {mustBeNumeric,mustBeReal}
+end
 
 [x1, y1, z1] = matmap3d.aer2ecef(az, el, rng, lat, lon, alt);
 

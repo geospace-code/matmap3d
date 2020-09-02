@@ -26,25 +26,25 @@
 % * <get_radius_normal.html get_radius_normal>
 % * <getreferenceEllipsoid.html getreferenceEllipsoid>
 % * <greenwichsrt.html greenwichsrt>
-% * <juliantime.html juliantime>
 % * <lookAtSpheroid.html lookAtSpheroid>
 % * <vdist.html vdist>
 % * <vreckon.html vreckon>
 % * <wgs84Ellipsoid.html wgs84Ellipsoid>
 
 function publish_all(path)
-narginchk(1,1)
+arguments
+  path (1,1) string
+end
+flist = dir(path + "/*.m");
 
-flist = dir([path, '/*.m']);
-
-docs = [path, '/docs'];
+docs = path + "/docs";
 %%
 for i = 1:length(flist)
   fn = publish(fullfile(path,flist(i).name), 'evalCode', false, 'outputDir', docs);
   [~,fname,ext] = fileparts(fn);
   fn = [fname, ext];
 
-  disp(['% * <',fn,' ',fname,'>'])
+  disp("% * <" + fn + " " + fname + ">")
 end
 
 end

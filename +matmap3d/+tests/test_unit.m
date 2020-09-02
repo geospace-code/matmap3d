@@ -1,8 +1,5 @@
 % Test run a scalar self-test of the Matlab/ Octave 3-D coordinate conversion functions
 
-if matmap3d.isoctave()
-  pkg('load', 'tablicious')
-end
 % reference inputs
 az = 33; el=70;
 lat = 42; lon= -82;
@@ -19,6 +16,7 @@ x0 = 660.6752518e3; y0 = -4700.9486832e3; z0 = 4245.7376622e3; % geodetic2ecef, 
 atol_dist = 1e-3;  % 1 mm
 
 E = matmap3d.wgs84Ellipsoid();
+assert(isa(E, 'matmap3d.referenceEllipsoid'))
 ea = E.SemimajorAxis;
 eb = E.SemiminorAxis;
 
@@ -29,50 +27,44 @@ a90 = 90;
 [x,y,z] = matmap3d.geodetic2ecef(E,lat,lon,alt, angleUnit);
 matmap3d.tests.assert_allclose([x,y,z],[x0,y0,z0])
 
-[x,y,z] = matmap3d.geodetic2ecef(lat,lon,alt, angleUnit); % simple input
-matmap3d.tests.assert_allclose([x,y,z],[x0,y0,z0])
-
-[x,y,z] = matmap3d.geodetic2ecef(0,0,-1);
+[x,y,z] = matmap3d.geodetic2ecef([], 0,0,-1);
 matmap3d.tests.assert_allclose([x,y,z], [ea-1,0,0])
 
-[x,y,z] = matmap3d.geodetic2ecef(0,90,-1);
+[x,y,z] = matmap3d.geodetic2ecef(E, 0,90,-1);
 matmap3d.tests.assert_allclose([x,y,z], [0,ea-1,0])
 
-[x,y,z] = matmap3d.geodetic2ecef(0,-90,-1);
+[x,y,z] = matmap3d.geodetic2ecef(E, 0,-90,-1);
 matmap3d.tests.assert_allclose([x,y,z], [0,-ea+1,0])
 
-[x,y,z] = matmap3d.geodetic2ecef(90,0,-1);
+[x,y,z] = matmap3d.geodetic2ecef(E, 90,0,-1);
 matmap3d.tests.assert_allclose([x,y,z], [0,0,eb-1])
 
-[x,y,z] = matmap3d.geodetic2ecef(90,15,-1);
+[x,y,z] = matmap3d.geodetic2ecef(E, 90,15,-1);
 matmap3d.tests.assert_allclose([x,y,z], [0,0,eb-1])
 
-[x,y,z] = matmap3d.geodetic2ecef(-90,0,-1);
+[x,y,z] = matmap3d.geodetic2ecef(E, -90,0,-1);
 matmap3d.tests.assert_allclose([x,y,z], [0,0,-eb+1])
 
 %% ecef2geodetic
 [lt, ln, at] = matmap3d.ecef2geodetic(E, x0, y0, z0, angleUnit);
 matmap3d.tests.assert_allclose([lt, ln, at], [lat, lon, alt])
 
-[lt, ln, at] = matmap3d.ecef2geodetic(x0, y0, z0, angleUnit); % simple input
-matmap3d.tests.assert_allclose([lt, ln, at], [lat, lon, alt])
-
-[lt, ln, at] = matmap3d.ecef2geodetic(ea-1, 0, 0);
+[lt, ln, at] = matmap3d.ecef2geodetic([], ea-1, 0, 0);
 matmap3d.tests.assert_allclose([lt, ln, at], [0, 0, -1])
 
-[lt, ln, at] = matmap3d.ecef2geodetic(0, ea-1, 0);
+[lt, ln, at] = matmap3d.ecef2geodetic(E, 0, ea-1, 0);
 matmap3d.tests.assert_allclose([lt, ln, at], [0, 90, -1])
 
-[lt, ln, at] = matmap3d.ecef2geodetic(0, 0, eb-1);
+[lt, ln, at] = matmap3d.ecef2geodetic(E, 0, 0, eb-1);
 matmap3d.tests.assert_allclose([lt, ln, at], [90, 0, -1])
 
-[lt, ln, at] = matmap3d.ecef2geodetic(0, 0, -eb+1);
+[lt, ln, at] = matmap3d.ecef2geodetic(E, 0, 0, -eb+1);
 matmap3d.tests.assert_allclose([lt, ln, at], [-90, 0, -1])
 
-[lt, ln, at] = matmap3d.ecef2geodetic(-ea+1, 0, 0);
+[lt, ln, at] = matmap3d.ecef2geodetic(E, -ea+1, 0, 0);
 matmap3d.tests.assert_allclose([lt, ln, at], [0, 180, -1])
 
-[lt, ln, at] = matmap3d.ecef2geodetic((ea-1000)/sqrt(2), (ea-1000)/sqrt(2), 0);
+[lt, ln, at] = matmap3d.ecef2geodetic(E, (ea-1000)/sqrt(2), (ea-1000)/sqrt(2), 0);
 matmap3d.tests.assert_allclose([lt,ln,at], [0,45,-1000])
 
 %% enu2aer, aer2ecef
@@ -161,10 +153,6 @@ truth = [42.00103959, lon, 230.9413173;
 
 matmap3d.tests.assert_allclose([lat5, lon5, rng5], truth, [], [],true)
 
-%% test_time
-matmap3d.tests.assert_allclose(matmap3d.juliantime(t0), 2.45675383333e6)
-
-% test values from Matlab docs
 %% eci2ecef
 utc = datetime(2019, 1, 4, 12,0,0);
 eci = [-2981784, 5207055, 3161595];
@@ -182,6 +170,10 @@ ecef = [-5762640, -1682738, 3156028];
 utc = datetime(2019, 1, 4, 12,0,0);
 [x,y,z] = matmap3d.ecef2eci(utc, ecef(1), ecef(2), ecef(3));
 matmap3d.tests.assert_allclose([x,y,z], [-2.9818e6, 5.2070e6, 3.1616e6], 0.01)
+
+[x,y,z] = matmap3d.geodetic2ecef([], 0, 0, 0);
+t = datetime(2000, 1, 1, 12, 0, 0, 'TimeZone', 'UTCLeapSeconds');
+[eci_x, eci_y, eci_z] = matmap3d.ecef2eci(t, x, y, z);
 
 %% ecef2eci multiple
 ecef = [-5762640, -1682738, 3156028]; ecef = [ecef; ecef];

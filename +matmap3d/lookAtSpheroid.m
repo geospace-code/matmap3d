@@ -14,22 +14,22 @@ function [lat, lon, d] = lookAtSpheroid(lat0, lon0, h0, az, tilt, spheroid, angl
 %
 % Values will be NaN if the line of sight does not intersect.
 %
-% Algorithm based on https://medium.com/@stephenhartzell/satellite-line-of-sight-intersection-with-earth-d786b4a6a9b6 Stephen Hartzell
+% Algorithm based on:
+% https://medium.com/@stephenhartzell/satellite-line-of-sight-intersection-with-earth-d786b4a6a9b6
+% Stephen Hartzell
+arguments
+  lat0 {mustBeNumeric,mustBeReal}
+  lon0 {mustBeNumeric,mustBeReal}
+  h0 {mustBeNumeric,mustBeReal,mustBeNonnegative}
+  az {mustBeNumeric,mustBeReal}
+  tilt {mustBeNumeric,mustBeReal}
+  spheroid (1,1) matmap3d.referenceEllipsoid = matmap3d.wgs84Ellipsoid()
+  angleUnit (1,1) string = "d"
+end
 
-narginchk(5,7)
-if nargin < 6 || isempty(spheroid), spheroid = matmap3d.wgs84Ellipsoid(); end
-if nargin < 7 || isempty(angleUnit), angleUnit='d'; end
-
-validateattributes(lat0, {'numeric'}, {'real','>=',-90,'<=',90},1)
-validateattributes(lon0, {'numeric'}, {'real','finite'},2)
-validateattributes(h0, {'numeric'}, {'real','nonnegative','finite'},3)
-validateattributes(az, {'numeric'}, {'real','finite'},4)
-validateattributes(tilt, {'numeric'}, {'real','nonnegative','<=',180},5)
-validateattributes(spheroid,{'struct'},{'scalar'},6)
-validateattributes(angleUnit,{'string','char'},{'scalar'},7)
 %% computation
 
-if strcmpi(angleUnit(1),'d')
+if startsWith(angleUnit, 'd')
   el = tilt - 90;
 else
   el = tilt - pi/2;

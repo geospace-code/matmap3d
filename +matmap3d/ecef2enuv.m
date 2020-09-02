@@ -8,19 +8,17 @@ function [e, n, Up] = ecef2enuv(u, v, w, lat0, lon0, angleUnit)
 %
 %%% Outputs
 % * e,n,Up:  East, North, Up vector
-narginchk(5,6)
-if nargin<6 || isempty(angleUnit), angleUnit='d'; end
-
-validateattributes(u, {'numeric'}, {'real'},1)
-validateattributes(v, {'numeric'}, {'real'},2)
-validateattributes(w, {'numeric'}, {'real'},3)
-validateattributes(lat0, {'numeric'}, {'real','>=',-90,'<=',90},4)
-validateattributes(lon0, {'numeric'}, {'real'},5)
-validateattributes(angleUnit,{'string','char'},{'scalar'},6)
+arguments
+  u {mustBeNumeric,mustBeReal}
+  v {mustBeNumeric,mustBeReal}
+  w {mustBeNumeric,mustBeReal}
+  lat0 {mustBeNumeric,mustBeReal}
+  lon0 {mustBeNumeric,mustBeReal}
+  angleUnit (1,1) string = "d"
+end
 
 %% compute
-
-if strcmpi(angleUnit(1), 'd')
+if startsWith(angleUnit, 'd')
   lat0 = deg2rad(lat0);
   lon0 = deg2rad(lon0);
 end

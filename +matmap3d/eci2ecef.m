@@ -6,16 +6,14 @@ function [x,y,z] = eci2ecef(utc, x_eci, y_eci, z_eci)
 % utc: Matlab datetime UTC
 
 % x,y,z:  ECEF position
-
-narginchk(4,4)
-validateattributes(utc, {'numeric', 'datetime'}, {'2d'},1)
-validateattributes(x_eci, {'numeric'}, {'vector'},2)
-validateattributes(y_eci, {'numeric'}, {'vector', 'numel', length(x_eci)},3)
-validateattributes(z_eci, {'numeric'}, {'vector', 'numel', length(x_eci)},4)
+arguments
+  utc (:,1) datetime
+  x_eci (:,1) {mustBeNumeric,mustBeReal,mustBeEqualSize(utc,x_eci)}
+  y_eci (:,1) {mustBeNumeric,mustBeReal,mustBeEqualSize(utc,y_eci)}
+  z_eci (:,1) {mustBeNumeric,mustBeReal,mustBeEqualSize(utc,z_eci)}
+end
 %% Greenwich hour angles (radians)
-% gst = matmap3d.greenwichsrt(matmap3d.juliandate(datetime(utc)));
-gst = matmap3d.greenwichsrt(matmap3d.juliantime(utc));
-validateattributes(gst, {'numeric'}, {'vector', 'numel', length(x_eci)})
+gst = matmap3d.greenwichsrt(juliandate(utc));
 %% Convert into ECEF
 x = nan(size(x_eci));
 y = nan(size(x));
@@ -27,4 +25,8 @@ for j = 1:length(x)
   y(j) = ecef(2);
   z(j) = ecef(3);
 end
+end % function
+
+function mustBeEqualSize(a,b)
+assert(isequal(size(a),size(b)), 'Size of inputs must equal each other')
 end

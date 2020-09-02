@@ -9,14 +9,12 @@ function [az, elev, slantRange] = enu2aer(east, north, up, angleUnit)
 % * az, el, slantrange: look angles and distance to point under test (degrees, degrees, meters)
 % * az: azimuth clockwise from local north
 % * el: elevation angle above local horizon
-
-narginchk(3,4)
-if nargin < 4 || isempty(angleUnit), angleUnit='d'; end
-
-validateattributes(east, {'numeric'}, {'real'},1)
-validateattributes(north, {'numeric'}, {'real'},2)
-validateattributes(up, {'numeric'}, {'real'},3)
-validateattributes(angleUnit,{'string','char'},{'scalar'},4)
+arguments
+  east {mustBeNumeric,mustBeReal}
+  north {mustBeNumeric,mustBeReal}
+  up {mustBeNumeric,mustBeReal}
+  angleUnit (1,1) string = "d"
+end
 
 %% compute
 
@@ -30,12 +28,12 @@ slantRange = hypot(r,up);
 elev = atan2(up,r);
 az = mod(atan2(east, north), 2*pi);
 
-if strcmpi(angleUnit(1),'d')
+if startsWith(angleUnit,'d')
   elev = rad2deg(elev);
   az = rad2deg(az);
 end
 
-end
+end % function
 %%
 % Copyright (c) 2014-2018 Michael Hirsch, Ph.D.
 % Copyright (c) 2013, Felipe Geremia Nievinski

@@ -9,16 +9,14 @@ function [e, n, u] = aer2enu (az, el, slantRange, angleUnit)
 %
 %%% Outputs
 % * e,n,u:  East, North, Up coordinates of test points (meters)
-narginchk(3,4)
-
-if nargin==3 || isempty(angleUnit), angleUnit='d'; end
-
-validateattributes(az, {'numeric'}, {'real'},1)
-validateattributes(el, {'numeric'}, {'real','>=',-90,'<=',90},2)
-validateattributes(slantRange, {'numeric'}, {'real', 'nonnegative'},3)
-validateattributes(angleUnit,{'string','char'},{'scalar'},4)
+arguments
+  az {mustBeNumeric,mustBeReal}
+  el {mustBeNumeric,mustBeReal}
+  slantRange {mustBeNumeric,mustBeReal}
+  angleUnit (1,1) string = "d"
+end
 %% compute
-if strcmpi(angleUnit(1),'d')
+if startsWith(angleUnit,'d')
   az = deg2rad(az);
   el = deg2rad(el);
 end

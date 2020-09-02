@@ -1,10 +1,9 @@
 # MatMap3d
 
 [![DOI](https://zenodo.org/badge/144219717.svg)](https://zenodo.org/badge/latestdoi/144219717)
-![ci](https://github.com/geospace-code/matmap3d/workflows/ci/badge.svg)
 [![View matmap3d on File Exchange](https://www.mathworks.com/matlabcentral/images/matlab-file-exchange.svg)](https://www.mathworks.com/matlabcentral/fileexchange/68480-matmap3d)
 
-Matlab / GNU Octave coordinate conversions for geospace ecef enu eci.
+Matlab coordinate conversions for geospace ecef enu eci.
 Similar to Python [PyMap3D](https://github.com/scivision/pymap3d).
 
 ## Usage
@@ -12,7 +11,6 @@ Similar to Python [PyMap3D](https://github.com/scivision/pymap3d).
 MatMap3D is setup as a
 [Matlab package](https://www.mathworks.com/help/matlab/matlab_oop/scoping-classes-with-packages.html),
 which means `import matmap3d` statements allow scoped use of this code.
-GNU Octave is also capable of using packages by putting the package name before each function name.
 
 ```matlab
 import matmap3d.*
@@ -29,14 +27,6 @@ Optionally, verify functionality:
 matmap3d.tests.test_unit
 ```
 
-### GNU Octave
-
-MatMap3D uses "datetime" for reliability--Octave can use datetime via tablicious:
-
-```octave
-pkg install https://github.com/scivision/octave-tablicious/archive/master.zip
-```
-
 ### Functions
 
 Popular mapping & aerospace toolbox functions ported to Matlab include the
@@ -47,7 +37,6 @@ converted to the desired coordinate system:
 aer2ecef  aer2enu  aer2geodetic  aer2ned
 ecef2aer  ecef2enu  ecef2enuv  ecef2geodetic  ecef2ned  ecef2nedv
 enu2aer  enu2ecef   enu2geodetic
-juliantime
 geodetic2aer  geodetic2ecef  geodetic2enu  geodetic2ned
 ned2aer  ned2ecef   ned2geodetic
 lookAtSpheroid

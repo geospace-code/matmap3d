@@ -8,36 +8,20 @@ function [x,y,z] = geodetic2ecef(spheroid, lat, lon, alt, angleUnit)
 %
 %%% outputs
 % * x,y,z:  ECEF coordinates of test point(s) (meters)
+arguments
+  spheroid
+  lat {mustBeNumeric,mustBeReal}
+  lon {mustBeNumeric,mustBeReal}
+  alt {mustBeNumeric,mustBeReal}
+  angleUnit (1,1) string = "d"
+end
 
-narginchk(3,5)
-
+%% defaults
 if isempty(spheroid)
-  spheroid = matmap3d.wgs84Ellipsoid();
-elseif isnumeric(spheroid) && nargin == 3
-  alt = lon;
-  lon = lat;
-  lat = spheroid;
-  spheroid = matmap3d.wgs84Ellipsoid();
-elseif isnumeric(spheroid) && ischar(alt) && nargin == 4
-  angleUnit = alt;
-  alt = lon;
-  lon = lat;
-  lat = spheroid;
   spheroid = matmap3d.wgs84Ellipsoid();
 end
 
-% NOT nargin < 5 due to optional reordering
-if ~exist('angleUnit', 'var') || isempty(angleUnit), angleUnit = 'd'; end
-
-validateattributes(spheroid,{'struct'},{'scalar'},1)
-validateattributes(lat, {'numeric'}, {'real','>=',-90,'<=',90},2)
-validateattributes(lon, {'numeric'}, {'real'},3)
-validateattributes(alt, {'numeric'}, {'real'},4)
-validateattributes(angleUnit,{'string','char'},{'scalar'},5)
-
-%% compute
-
-if strcmpi(angleUnit(1),'d')
+if startsWith(angleUnit, 'd')
   lat = deg2rad(lat);
   lon = deg2rad(lon);
 end

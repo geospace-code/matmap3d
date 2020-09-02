@@ -11,9 +11,16 @@ function [az, el, slantRange] = geodetic2aer(lat, lon, alt, lat0, lon0, alt0, sp
 % * az, el, slantrange: look angles and distance to point under test (degrees, degrees, meters)
 % * az: azimuth clockwise from local north
 % * el: elevation angle above local horizon
-narginchk(6,8)
-if nargin < 7, spheroid = []; end
-if nargin < 8, angleUnit = []; end
+arguments
+  lat {mustBeNumeric,mustBeReal}
+  lon {mustBeNumeric,mustBeReal}
+  alt {mustBeNumeric,mustBeReal}
+  lat0 {mustBeNumeric,mustBeReal}
+  lon0 {mustBeNumeric,mustBeReal}
+  alt0 {mustBeNumeric,mustBeReal}
+  spheroid (1,1) matmap3d.referenceEllipsoid = matmap3d.wgs84Ellipsoid()
+  angleUnit (1,1) string = "d"
+end
 
 [e, n, u] = matmap3d.geodetic2enu(lat, lon, alt, lat0, lon0, alt0, spheroid, angleUnit);
 [az, el, slantRange] = matmap3d.enu2aer(e, n, u, angleUnit);

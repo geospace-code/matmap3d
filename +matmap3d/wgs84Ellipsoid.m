@@ -7,15 +7,12 @@ function E = wgs84Ellipsoid(lengthUnit)
 %
 %%% Outputs
 %
-% * E: struct with referenceEllipsoid() properties
-%% sanity check
-narginchk(0,1)
-
-if nargin>0 && ~strcmpi(lengthUnit(1),'m')
-  error('wgs84Ellipsoid only accepts units of meters for now.')
+% * E: referenceEllipsoid
+arguments
+  lengthUnit (1,1) string = "m"
 end
 %% get ellipsoid
-E = matmap3d.getreferenceEllipsoid('wgs84');
+E = matmap3d.referenceEllipsoid('wgs84', lengthUnit);
 
 end
 %%

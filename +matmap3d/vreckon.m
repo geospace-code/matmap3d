@@ -46,12 +46,12 @@ function [lat2,lon2,a21] = vreckon(lat1,lon1,s,a12)
 %     for nearly antipodal points. (A warning is given by VDIST.)
 % (6) Tested but no warranty. Use at your own risk.
 % (7) Ver 1.0, Michael Kleder, November 2007
-
-narginchk(4,4)
-validateattributes(lat1, {'numeric'}, {'real','>=',-90,'<=',90},1)
-validateattributes(lon1, {'numeric'}, {'real'},2)
-validateattributes(s, {'numeric'}, {'real','nonnegative'},3)
-validateattributes(a12, {'numeric'}, {'real'},4)
+arguments
+  lat1 {mustBeNumeric,mustBeReal}
+  lon1 {mustBeNumeric,mustBeReal}
+  s {mustBeNumeric,mustBeReal,mustBeNonnegative}
+  a12 {mustBeNumeric,mustBeReal}
+end
 %% compute
 a = 6378137; % semimajor axis
 b = 6356752.31424518; % semiminor axis
@@ -78,15 +78,15 @@ B = uSq/1024 * (256+uSq*(-128+uSq*(74-47*uSq)));
 sigma = s / (b*A);
 sigmaP = 2*pi;
 while (abs(sigma-sigmaP) > 1e-12)
-    cos2SigmaM = cos(2*sigma1 + sigma);
-    sinSigma = sin(sigma);
-    cosSigma = cos(sigma);
-    deltaSigma = B*sinSigma*(cos2SigmaM+B/4*(cosSigma*(-1+...
-        2*cos2SigmaM*cos2SigmaM)-...
-        B/6*cos2SigmaM*(-3+4*sinSigma*sinSigma)*(-3+...
-        4*cos2SigmaM*cos2SigmaM)));
-    sigmaP = sigma;
-    sigma = s / (b*A) + deltaSigma;
+  cos2SigmaM = cos(2*sigma1 + sigma);
+  sinSigma = sin(sigma);
+  cosSigma = cos(sigma);
+  deltaSigma = B*sinSigma*(cos2SigmaM+B/4*(cosSigma*(-1+...
+    2*cos2SigmaM*cos2SigmaM)-...
+    B/6*cos2SigmaM*(-3+4*sinSigma*sinSigma)*(-3+...
+    4*cos2SigmaM*cos2SigmaM)));
+  sigmaP = sigma;
+  sigma = s / (b*A) + deltaSigma;
 end
 tmp = sinU1*sinSigma - cosU1*cosSigma*cosAlpha1;
 lat2 = atan2(sinU1*cosSigma + cosU1*sinSigma*cosAlpha1,...
@@ -102,9 +102,9 @@ lat2 = rad2deg(lat2);
 lon2 = rad2deg(lon2);
 lon2 = mod(lon2,360); % follow [0,360] convention
 if nargout > 2
-    a21 = atan2(sinAlpha, -tmp);
-    a21  = 180 + rad2deg(a21); % note direction reversal
-    a21=mod(a21,360);
+  a21 = atan2(sinAlpha, -tmp);
+  a21  = 180 + rad2deg(a21); % note direction reversal
+  a21=mod(a21,360);
 end
 
 end % function

@@ -1,19 +1,26 @@
-function [lat, lon, alt] = enu2geodetic(e, n, u, lat0, lon0, alt0, spheroid, angleUnit)
+function [lat, lon, alt] = enu2geodetic(east, north, up, lat0, lon0, alt0, spheroid, angleUnit)
 %% enu2geodetic   convert from ENU to geodetic coordinates
 %
 %%% Inputs
-% * e,n,u:  East, North, Up coordinates of point(s) (meters)
+% * east,north,up:  ENU coordinates of point(s) (meters)
 % * lat0, lon0, alt0: ellipsoid geodetic coordinates of observer/reference (degrees, degrees, meters)
 % * spheroid: referenceEllipsoid parameter struct
 % * angleUnit: string for angular units. Default 'd': degrees, otherwise Radians
 %
 %%% outputs
 % * lat,lon,alt: geodetic coordinates of test points (degrees,degrees,meters)
-narginchk(6,8)
-if nargin<7, spheroid = []; end
-if nargin<8, angleUnit= []; end
+arguments
+  east {mustBeNumeric,mustBeReal}
+  north {mustBeNumeric,mustBeReal}
+  up {mustBeNumeric,mustBeReal}
+  lat0 {mustBeNumeric,mustBeReal}
+  lon0 {mustBeNumeric,mustBeReal}
+  alt0 {mustBeNumeric,mustBeReal}
+  spheroid (1,1) matmap3d.referenceEllipsoid = matmap3d.wgs84Ellipsoid()
+  angleUnit (1,1) string = "d"
+end
 
-[x, y, z] = matmap3d.enu2ecef(e, n, u, lat0, lon0, alt0, spheroid, angleUnit);
+[x, y, z] = matmap3d.enu2ecef(east, north, up, lat0, lon0, alt0, spheroid, angleUnit);
 [lat, lon, alt] = matmap3d.ecef2geodetic(spheroid, x, y, z,  angleUnit);
 
 end
