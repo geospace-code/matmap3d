@@ -71,3 +71,5 @@ lla = py.pymap3d.geodetic2ecef(x,y,z)
 If using `conda` environment to install `pymap3d`, you will need to follow these instructions to make it load:
 https://www.mathworks.com/matlabcentral/answers/443558-matlab-crashes-when-using-conda-environment-other-than-base#answer_486374
 
+In particular, since PyMap3D uses Astropy for ECI transformations the accuracy will generally be better for eci2* or *2eci functions.
+All other functions should have equivalent accuracy with Matlab vs. Python.
