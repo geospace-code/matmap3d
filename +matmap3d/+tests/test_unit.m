@@ -114,7 +114,7 @@ matmap3d.tests.assert_allclose([a,e,r], [az,el,srange])
 
 %% geodetic2aer, aer2geodetic
 [lt,ln,at] = matmap3d.aer2geodetic(az,el,srange,lat,lon,alt, E, angleUnit);
-matmap3d.tests.assert_allclose([lt,ln,at], [lat1, lon1, alt1],[], 2*atol_dist)
+matmap3d.tests.assert_allclose([lt,ln,at], [lat1, lon1, alt1], 'atol', 2*atol_dist)
 
 [a, e, r] = matmap3d.geodetic2aer(lt,ln,at,lat,lon,alt, E, angleUnit); % round-trip
 matmap3d.tests.assert_allclose([a,e,r], [az,el,srange])
@@ -151,25 +151,25 @@ truth = [42.00103959, lon, 230.9413173;
          42.00177328, -81.9995808, 282.84715651;
          nan, nan, nan];
 
-matmap3d.tests.assert_allclose([lat5, lon5, rng5], truth, [], [],true)
+matmap3d.tests.assert_allclose([lat5, lon5, rng5], truth, true)
 
 %% eci2ecef
 utc = datetime(2019, 1, 4, 12,0,0);
 eci = [-2981784, 5207055, 3161595];
 [x, y, z] = matmap3d.eci2ecef(utc, eci(1), eci(2), eci(3));
-matmap3d.tests.assert_allclose([x,y,z], [-5.7627e6, -1.6827e6, 3.1560e6], 0.02)
+matmap3d.tests.assert_allclose([x,y,z], [-5.7627e6, -1.6827e6, 3.1560e6], 'rtol', 0.02)
 %% eci2ecef multiple
 utc = datetime(2019, 1, 4, 12,0,0);
 utc = [utc;utc];
 eci = [-2981784, 5207055, 3161595]; eci = [eci; eci];
 [x, y, z] = matmap3d.eci2ecef(utc, eci(:,1), eci(:,2), eci(:,3));
-matmap3d.tests.assert_allclose([x(1,1), y(1,1), z(1,1)], [-5.7627e6, -1.6827e6, 3.1560e6], 0.02)
-matmap3d.tests.assert_allclose([x(2,1), y(2,1), z(2,1)], [-5.7627e6, -1.6827e6, 3.1560e6], 0.02)
+matmap3d.tests.assert_allclose([x(1,1), y(1,1), z(1,1)], [-5.7627e6, -1.6827e6, 3.1560e6], 'rtol', 0.02)
+matmap3d.tests.assert_allclose([x(2,1), y(2,1), z(2,1)], [-5.7627e6, -1.6827e6, 3.1560e6], 'rtol', 0.02)
 %% ecef2eci
 ecef = [-5762640, -1682738, 3156028];
 utc = datetime(2019, 1, 4, 12,0,0);
 [x,y,z] = matmap3d.ecef2eci(utc, ecef(1), ecef(2), ecef(3));
-matmap3d.tests.assert_allclose([x,y,z], [-2.9818e6, 5.2070e6, 3.1616e6], 0.01)
+matmap3d.tests.assert_allclose([x,y,z], [-2.9818e6, 5.2070e6, 3.1616e6], 'rtol', 0.01)
 
 [x,y,z] = matmap3d.geodetic2ecef([], 0, 0, 0);
 t = datetime(2000, 1, 1, 12, 0, 0, 'TimeZone', 'UTCLeapSeconds');
@@ -180,18 +180,18 @@ ecef = [-5762640, -1682738, 3156028]; ecef = [ecef; ecef];
 utc = datetime(2019, 1, 4, 12, 0, 0);
 utc = [utc; utc];
 [x,y,z] = matmap3d.ecef2eci(utc, ecef(:,1), ecef(:,2), ecef(:,3));
-matmap3d.tests.assert_allclose([x(1,1), y(1,1) , z(1,1)], [-2.9818e6, 5.2070e6, 3.1616e6], 0.01)
-matmap3d.tests.assert_allclose([x(2,1), y(2,1) , z(2,1)], [-2.9818e6, 5.2070e6, 3.1616e6], 0.01)
+matmap3d.tests.assert_allclose([x(1,1), y(1,1) , z(1,1)], [-2.9818e6, 5.2070e6, 3.1616e6], 'rtol', 0.01)
+matmap3d.tests.assert_allclose([x(2,1), y(2,1) , z(2,1)], [-2.9818e6, 5.2070e6, 3.1616e6], 'rtol', 0.01)
 %% eci2aer
 eci = [-3.8454e8, -0.5099e8, -0.3255e8];
 utc = datetime(1969, 7, 20, 21, 17, 40);
 lla = [28.4, -80.5, 2.7];
 [a, e, r] = matmap3d.eci2aer(utc, eci(1), eci(2), eci(3), lla(1), lla(2), lla(3));
-matmap3d.tests.assert_allclose([a, e, r], [162.55, 55.12, 384013940.9], 0.01)
+matmap3d.tests.assert_allclose([a, e, r], [162.55, 55.12, 384013940.9], 'rtol', 0.01)
 
 %% aer2eci
 aer = [162.55, 55.12, 384013940.9];
 lla = [28.4, -80.5, 2.7];
 utc = datetime(1969, 7, 20, 21, 17, 40);
 [x,y,z] = matmap3d.aer2eci(utc, aer(1), aer(2), aer(3), lla(1), lla(2), lla(3));
-matmap3d.tests.assert_allclose([x, y, z], [-3.8454e8, -0.5099e8, -0.3255e8], 0.06)
+matmap3d.tests.assert_allclose([x, y, z], [-3.8454e8, -0.5099e8, -0.3255e8], 'rtol', 0.06)

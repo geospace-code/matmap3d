@@ -1,4 +1,4 @@
-function assert_allclose(actual, desired, rtol, atol, equal_nan, err_msg,notclose,verbose)
+function assert_allclose(actual, desired, equal_nan, err_msg,notclose,verbose, namedargs)
 % ok = assert_allclose(actual, desired, rtol, atol)
 %
 % Inputs
@@ -15,22 +15,17 @@ function assert_allclose(actual, desired, rtol, atol, equal_nan, err_msg,notclos
 % for Matlab and GNU Octave
 %
 % if "actual" is within atol OR rtol of "desired", no error is emitted.
-narginchk(2,7)
+arguments
+  actual {mustBeNumeric,mustBeReal}
+  desired {mustBeNumeric,mustBeReal}
+  equal_nan (1,1) logical = false
+  err_msg (1,1) string = ""
+  notclose (1,1) logical = false
+  verbose (1,1) logical = false
+  namedargs.rtol (1,1) {mustBeNumeric,mustBeReal,mustBeNonnegative} = 1e-6
+  namedargs.atol (1,1) {mustBeNumeric,mustBeReal,mustBeNonnegative} = 1e-9
+end
 
-if nargin < 8, verbose=false; end
-if nargin < 7, notclose=false; end
-if nargin < 6, err_msg=''; end
-if nargin < 5 || isempty(equal_nan), equal_nan=false; end
-if nargin < 4 || isempty(atol), atol=1e-9; end
-if nargin < 3 || isempty(rtol), rtol=1e-6; end
-
-validateattributes(actual, {'numeric'}, {'real'})
-validateattributes(desired, {'numeric'}, {'real'})
-validateattributes(rtol, {'numeric'}, {'real','scalar','finite'})
-validateattributes(atol, {'numeric'}, {'real','scalar','finite'})
-validateattributes(equal_nan, {'numeric','logical'}, {'scalar'})
-validateattributes(notclose, {'numeric','logical'}, {'scalar'})
-validateattributes(verbose, {'numeric','logical'}, {'scalar'})
 %% compute
   actual = actual(:);
   desired = desired(:);
@@ -44,7 +39,7 @@ validateattributes(verbose, {'numeric','logical'}, {'scalar'})
 
 
   measdiff = abs(actual-desired);
-  tol = atol + rtol * abs(desired);
+  tol = namedargs.atol + namedargs.rtol * abs(desired);
   result = measdiff <= tol;
 %% assert_allclose vs assert_not_allclose
   if notclose % more than N % of values should be changed more than tolerance (arbitrary)
@@ -65,7 +60,7 @@ validateattributes(verbose, {'numeric','logical'}, {'scalar'})
       disp(['desired:    ',num2str(desired(i))])
     end
 
-    error(['AssertionError: ',err_msg,' ',num2str(Nfail/numel(desired)*100,'%.2f'),'% failed accuracy. maximum error magnitude ',num2str(bigbad),' Actual: ',num2str(actual(i)),' Desired: ',num2str(desired(i)),' atol: ',num2str(atol),' rtol: ',num2str(rtol)])
+    error(['AssertionError: ',err_msg,' ',num2str(Nfail/numel(desired)*100,'%.2f'),'% failed accuracy. maximum error magnitude ',num2str(bigbad),' Actual: ',num2str(actual(i)),' Desired: ',num2str(desired(i)),' atol: ',num2str(namedargs.atol),' rtol: ',num2str(namedargs.rtol)])
   end
 
 end
