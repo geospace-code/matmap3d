@@ -2,9 +2,11 @@
 
 [![DOI](https://zenodo.org/badge/144219717.svg)](https://zenodo.org/badge/latestdoi/144219717)
 [![View matmap3d on File Exchange](https://www.mathworks.com/matlabcentral/images/matlab-file-exchange.svg)](https://www.mathworks.com/matlabcentral/fileexchange/68480-matmap3d)
+[![Build Status](https://travis-ci.com/geospace-code/matmap3d.svg?branch=master)](https://travis-ci.com/geospace-code/matmap3d)
 
 Matlab coordinate conversions for geospace ecef enu eci.
-Similar to Python [PyMap3D](https://github.com/scivision/pymap3d).
+Similar to Python
+[PyMap3D](https://github.com/scivision/pymap3d).
 
 ## Usage
 
@@ -23,7 +25,7 @@ import matmap3d.*
 
 Optionally, verify functionality:
 
-```sh
+```matlab
 matmap3d.tests.test_unit
 ```
 
@@ -69,6 +71,7 @@ The full set of Python conversions are accessed from Matlab &ge; R2014b by comma
 ```matlab
 lla = py.pymap3d.geodetic2ecef(x,y,z)
 ```
+
 If using `conda` environment to install `pymap3d`, you will need to follow these instructions to make it load:
 https://www.mathworks.com/matlabcentral/answers/443558-matlab-crashes-when-using-conda-environment-other-than-base#answer_486374
 
