@@ -26,7 +26,7 @@ import matmap3d.*
 Optionally, verify functionality:
 
 ```matlab
-matmap3d.tests.test_unit
+runtests
 ```
 
 ### Functions
