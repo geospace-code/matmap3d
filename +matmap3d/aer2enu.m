@@ -29,7 +29,7 @@ n = r .* cos(az);
 
 end
 %%
-% Copyright (c) 2014-2018 Michael Hirsch, Ph.D.
+% Copyright (c) 2020 Michael Hirsch
 % Copyright (c) 2013, Felipe Geremia Nievinski
 %
 % Redistribution and use in source and binary forms, with or without modification, are permitted provided that the following conditions are met:

@@ -1,4 +1,4 @@
-function [e, n, u] = geodetic2enu(lat, lon, alt, lat0, lon0, alt0, spheroid, angleUnit)
+function [east, north, up] = geodetic2enu(lat, lon, alt, lat0, lon0, alt0, spheroid, angleUnit)
 %% geodetic2enu    convert from geodetic to ENU coordinates
 %
 %%% Inputs
@@ -8,7 +8,7 @@ function [e, n, u] = geodetic2enu(lat, lon, alt, lat0, lon0, alt0, spheroid, ang
 % * angleUnit: string for angular units. Default 'd': degrees
 %
 %%% outputs
-% * e,n,u:  East, North, Up coordinates of test points (meters)
+% * east,north,up: coordinates of points (meters)
 arguments
   lat {mustBeNumeric,mustBeReal}
   lon {mustBeNumeric,mustBeReal}
@@ -27,7 +27,7 @@ dx = x1-x2;
 dy = y1-y2;
 dz = z1-z2;
 
-[e, n, u] = matmap3d.ecef2enuv(dx, dy, dz, lat0, lon0, angleUnit);
+[east, north, up] = matmap3d.ecef2enuv(dx, dy, dz, lat0, lon0, angleUnit);
 
 end
 %%

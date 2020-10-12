@@ -1,20 +1,19 @@
-function [lat1, lon1, alt1] = aer2geodetic(az, el, slantRange, lat0, lon0, alt0, spheroid, angleUnit)
-%% aer2geodetic  convert azimuth, elevation, range of target from observer to geodetic coordiantes
+function [north, east, down] = ecef2ned (x, y, z, lat0, lon0, alt0, spheroid, angleUnit)
+%% ecef2enu  convert ECEF to ENU
 %
 %%% Inputs
-% * az, el, slantrange: look angles and distance to point under test (degrees, degrees, meters)
-% * az: azimuth clockwise from local north
-% * el: elevation angle above local horizon
+% * x,y,z: Earth Centered Earth Fixed (ECEF) coordinates of test point (meters)
 % * lat0, lon0, alt0: ellipsoid geodetic coordinates of observer/reference (degrees, degrees, meters)
 % * spheroid: referenceEllipsoid
 % * angleUnit: string for angular units. Default 'd': degrees
 %
-%%% Outputs
-% * lat1,lon1,alt1: geodetic coordinates of test points (degrees,degrees,meters)
+%%% outputs
+% * North,East,Down: coordinates of points (meters)
+
 arguments
-  az {mustBeNumeric,mustBeReal}
-  el {mustBeNumeric,mustBeReal}
-  slantRange {mustBeNumeric,mustBeReal,mustBeNonnegative}
+  x {mustBeNumeric,mustBeReal}
+  y {mustBeNumeric,mustBeReal}
+  z {mustBeNumeric,mustBeReal}
   lat0 {mustBeNumeric,mustBeReal}
   lon0 {mustBeNumeric,mustBeReal}
   alt0 {mustBeNumeric,mustBeReal}
@@ -22,9 +21,9 @@ arguments
   angleUnit (1,1) string = "d"
 end
 
-[x, y, z] = matmap3d.aer2ecef(az, el, slantRange, lat0, lon0, alt0, spheroid, angleUnit);
+[east, north, up] = ecef2enu(x,y,z,lat0,lon0,alt0,spheroid,angleUnit);
 
-[lat1, lon1, alt1] = matmap3d.ecef2geodetic(spheroid, x, y, z, angleUnit);
+down = -up;
 
 end
 %%

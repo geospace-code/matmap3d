@@ -1,5 +1,5 @@
-function [e,n,u] = ecef2enu (x, y, z, lat0, lon0, alt0, spheroid, angleUnit)
-%% ecef2enu  convert ECEF to ENU
+function [east, north, up] = ecef2enu (x, y, z, lat0, lon0, alt0, spheroid, angleUnit)
+%% ecef2ned  convert ECEF to NED
 %
 %%% Inputs
 % * x,y,z: Earth Centered Earth Fixed (ECEF) coordinates of test point (meters)
@@ -8,7 +8,7 @@ function [e,n,u] = ecef2enu (x, y, z, lat0, lon0, alt0, spheroid, angleUnit)
 % * angleUnit: string for angular units. Default 'd': degrees
 %
 %%% outputs
-% * e,n,u:  East, North, Up coordinates of test points (meters)
+% * East, North, Up coordinates of test points (meters)
 arguments
   x {mustBeNumeric,mustBeReal}
   y {mustBeNumeric,mustBeReal}
@@ -21,10 +21,11 @@ arguments
 end
 
 [x0, y0, z0] = matmap3d.geodetic2ecef(spheroid, lat0, lon0, alt0, angleUnit);
-[e, n, u]    = matmap3d.ecef2enuv(x - x0, y - y0, z - z0, lat0, lon0, angleUnit);
+[east, north, up] = matmap3d.ecef2enuv(x - x0, y - y0, z - z0, lat0, lon0, angleUnit);
+
 end
 %%
-% Copyright (c) 2014-2018 Michael Hirsch, Ph.D.
+% Copyright (c) 2020 Michael Hirsch
 % Copyright (c) 2013, Felipe Geremia Nievinski
 %
 % Redistribution and use in source and binary forms, with or without modification, are permitted provided that the following conditions are met:

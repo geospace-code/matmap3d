@@ -1,20 +1,18 @@
-function [lat1, lon1, alt1] = aer2geodetic(az, el, slantRange, lat0, lon0, alt0, spheroid, angleUnit)
-%% aer2geodetic  convert azimuth, elevation, range of target from observer to geodetic coordiantes
+function [north, east, down] = geodetic2ned(lat, lon, alt, lat0, lon0, alt0, spheroid, angleUnit)
+%% geodetic2ned    convert from geodetic to NED coordinates
 %
 %%% Inputs
-% * az, el, slantrange: look angles and distance to point under test (degrees, degrees, meters)
-% * az: azimuth clockwise from local north
-% * el: elevation angle above local horizon
+% * lat,lon, alt:  ellipsoid geodetic coordinates of point under test (degrees, degrees, meters)
 % * lat0, lon0, alt0: ellipsoid geodetic coordinates of observer/reference (degrees, degrees, meters)
 % * spheroid: referenceEllipsoid
 % * angleUnit: string for angular units. Default 'd': degrees
 %
-%%% Outputs
-% * lat1,lon1,alt1: geodetic coordinates of test points (degrees,degrees,meters)
+%%% outputs
+% * e,n,u:  East, North, Up coordinates of test points (meters)
 arguments
-  az {mustBeNumeric,mustBeReal}
-  el {mustBeNumeric,mustBeReal}
-  slantRange {mustBeNumeric,mustBeReal,mustBeNonnegative}
+  lat {mustBeNumeric,mustBeReal}
+  lon {mustBeNumeric,mustBeReal}
+  alt {mustBeNumeric,mustBeReal}
   lat0 {mustBeNumeric,mustBeReal}
   lon0 {mustBeNumeric,mustBeReal}
   alt0 {mustBeNumeric,mustBeReal}
@@ -22,13 +20,20 @@ arguments
   angleUnit (1,1) string = "d"
 end
 
-[x, y, z] = matmap3d.aer2ecef(az, el, slantRange, lat0, lon0, alt0, spheroid, angleUnit);
+[x1,y1,z1] = matmap3d.geodetic2ecef(spheroid, lat,lon,alt,angleUnit);
+[x2,y2,z2] = matmap3d.geodetic2ecef(spheroid, lat0,lon0,alt0,angleUnit);
 
-[lat1, lon1, alt1] = matmap3d.ecef2geodetic(spheroid, x, y, z, angleUnit);
+dx = x1-x2;
+dy = y1-y2;
+dz = z1-z2;
+
+[east, north, up] = matmap3d.ecef2enuv(dx, dy, dz, lat0, lon0, angleUnit);
+
+down = -up;
 
 end
 %%
-% Copyright (c) 2020 Michael Hirsch
+% Copyright (c) 2014-2018 Michael Hirsch, Ph.D.
 % Copyright (c) 2013, Felipe Geremia Nievinski
 %
 % Redistribution and use in source and binary forms, with or without modification, are permitted provided that the following conditions are met:
