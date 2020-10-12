@@ -26,7 +26,7 @@ import matmap3d.*
 Optionally, verify functionality:
 
 ```matlab
-runtests
+runtests('matmap3d.tests')
 ```
 
 ### Functions
@@ -77,3 +77,10 @@ https://www.mathworks.com/matlabcentral/answers/443558-matlab-crashes-when-using
 
 In particular, since PyMap3D uses Astropy for ECI transformations the accuracy will generally be better for eci2* or *2eci functions.
 All other functions should have equivalent accuracy with Matlab vs. Python.
+
+### GNU Octave
+
+GNU Octave users should consider the
+[Octave Mapping Toolbox](https://octave.sourceforge.io/mapping/index.html),
+which added similar functions in
+[version 1.4](http://hg.code.sf.net/p/octave/mapping/file/tip/NEWS).

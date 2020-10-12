@@ -1,6 +1,10 @@
-dist: focal
-
 language: matlab
 
+os:
+- linux
+
 matlab:
-  - latest
+- latest
+
+script:
+- matlab -batch "r = runtests('matmap3d.tests'); assert(~isempty(r)); assertSuccess(r)"
