@@ -1,6 +1,4 @@
-archive/* linguist-documentation
-docs/* linguist-documentation
-paper/* linguist-documentation
+.archive/* linguist-documentation
 
 .gitattributes text eol=lf
 .gitignore text eol=lf
