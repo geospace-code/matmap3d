@@ -272,10 +272,6 @@ ecef = [-5762640, -1682738, 3156028];
 utc = datetime(2019, 1, 4, 12,0,0);
 [x,y,z] = matmap3d.ecef2eci(utc, ecef(1), ecef(2), ecef(3));
 tc.verifyEqual([x,y,z], [-2.9818e6, 5.2070e6, 3.1616e6], 'RelTol', 0.01)
-
-[x,y,z] = matmap3d.geodetic2ecef([], 0, 0, 0);
-t = datetime(2000, 1, 1, 12, 0, 0, 'TimeZone', 'UTCLeapSeconds');
-[eci_x, eci_y, eci_z] = matmap3d.ecef2eci(t, x, y, z);
 end
 
 function test_ecef2eci_multiple(tc)

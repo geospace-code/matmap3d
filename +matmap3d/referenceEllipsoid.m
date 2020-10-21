@@ -22,8 +22,10 @@ methods
 function e = referenceEllipsoid(name, lengthUnit)
 arguments
   name (1,1) string = "wgs84"
-  lengthUnit (1,1) string {mustBeMember(lengthUnit, ["m", "meters"])} = "m"
+  lengthUnit (1,1) string = "m"
 end
+
+mustBeMember(lengthUnit, ["m", "meters"])
 
 switch name
 case 'wgs84'

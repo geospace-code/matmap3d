@@ -125,7 +125,7 @@ while any(notdone)  % force at least one execution
   lambdaold(notdone) = lambda(notdone);
   sinsigma(notdone) = sqrt((cos(U2(notdone)).*sin(lambda(notdone)))...
       .^2+(cos(U1(notdone)).*sin(U2(notdone))-sin(U1(notdone)).*...
-      cos(U2(notdone)).*cos(lambda(notdone))).^2);
+      cos(U2(notdone)).*cos(lambda(notdone))).^2); %#ok<*AGROW>
   cossigma(notdone) = sin(U1(notdone)).*sin(U2(notdone))+...
       cos(U1(notdone)).*cos(U2(notdone)).*cos(lambda(notdone));
   % eliminate rare imaginary portions at limit of numerical precision:
@@ -177,7 +177,6 @@ if nargout > 1
     varargout{2} = reshape(rad2deg(a12),keepsize); % to degrees
 end
 if nargout > 2
-    a21=NaN*lat1;
     % From point #2 to point #1
     % correct sign of lambda for azimuth calcs:
     lambda = abs(lambda);
