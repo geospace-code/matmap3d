@@ -1,5 +1,5 @@
 resources/
 *.asv
 *.m~
-html/
-docs/publish_all.html
+code-coverage/
+test-results/

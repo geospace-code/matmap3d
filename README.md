@@ -2,7 +2,7 @@
 
 [![DOI](https://zenodo.org/badge/144219717.svg)](https://zenodo.org/badge/latestdoi/144219717)
 [![View matmap3d on File Exchange](https://www.mathworks.com/matlabcentral/images/matlab-file-exchange.svg)](https://www.mathworks.com/matlabcentral/fileexchange/68480-matmap3d)
-[![Build Status](https://travis-ci.com/geospace-code/matmap3d.svg?branch=master)](https://travis-ci.com/geospace-code/matmap3d)
+[![Build Status](https://dev.azure.com/mhirsch0512/matlab-hdf5/_apis/build/status/geospace-code.matmap3d?branchName=master)](https://dev.azure.com/mhirsch0512/matmap3d/_build/latest?definitionId=18&branchName=master)
 
 Matlab coordinate conversions for geospace ecef enu eci.
 Similar to Python
