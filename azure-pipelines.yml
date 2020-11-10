@@ -1,13 +1,15 @@
+variables:
+  CI: true
+
 pool:
   vmImage: ubuntu-latest
 steps:
   - task: InstallMATLAB@0
     inputs:
       release: R2020a
-  - task: RunMATLABTests@0
+  - task: RunMATLABCommand@0
     inputs:
-      testResultsJUnit: test-results/results.xml
-      codeCoverageCobertura: code-coverage/coverage.xml
+      command: TestAll
   - task: PublishTestResults@2
     condition: succeededOrFailed()
     inputs:

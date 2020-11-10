@@ -20,5 +20,4 @@ runner.addPlugin(CodeCoveragePlugin.forPackage(name, 'Producing', CoberturaForma
 results = runner.run(suite);
 assert(~isempty(results), "no tests found")
 
-nfailed = nnz([results.Failed]);
-assert(nfailed == 0, '%d test(s) failed.', nfailed)
+assertSuccess(results)
