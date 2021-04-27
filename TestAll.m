@@ -13,7 +13,7 @@ suite = testsuite(name);
 mkdir('code-coverage');
 mkdir('test-results');
 
-runner = TestRunner.withTextOutput('OutputDetail', Verbosity.Detailed);
+runner = TestRunner.withTextOutput();
 runner.addPlugin(XMLPlugin.producingJUnitFormat('test-results/results.xml'));
 runner.addPlugin(CodeCoveragePlugin.forPackage(name, 'Producing', CoberturaFormat('code-coverage/coverage.xml')));
 
