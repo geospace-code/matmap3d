@@ -1,8 +1,12 @@
-function tests = unitTest
-tests = functiontests(localfunctions);
+classdef unitTest < matlab.unittest.TestCase
+
+properties
+TestData
 end
 
-function setupOnce(tc)
+methods(TestClassSetup)
+
+function setup(tc)
 tc.TestData.atol = 1e-9;
 tc.TestData.rtol = 1e-6;
 
@@ -37,6 +41,9 @@ tc.TestData.atol_dist = 1e-3;  % 1 mm
 
 tc.TestData.a90 = 90;
 end
+end
+
+methods(Test)
 
 function test_ellipsoid(tc)
 E = matmap3d.wgs84Ellipsoid();
@@ -297,4 +304,7 @@ lla = [28.4, -80.5, 2.7];
 utc = datetime(1969, 7, 20, 21, 17, 40);
 [x,y,z] = matmap3d.aer2eci(utc, aer(1), aer(2), aer(3), lla(1), lla(2), lla(3));
 tc.verifyEqual([x, y, z], [-3.8454e8, -0.5099e8, -0.3255e8], 'RelTol', 0.06)
+end
+
+end
 end

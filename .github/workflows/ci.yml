@@ -1,0 +1,25 @@
+name: ci
+
+on:
+  push:
+    paths:
+      - "**.m"
+      - ".github/workflows/ci.yml"
+
+jobs:
+
+  linux:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Install MATLAB
+      uses: matlab-actions/setup-matlab@v0
+
+    - name: Run tests and generate artifacts
+      uses: matlab-actions/run-tests@v0
+      with:
+        test-results-junit: test-results/results.xml
+        code-coverage-cobertura: code-coverage/coverage.xml

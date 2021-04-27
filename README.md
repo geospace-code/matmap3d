@@ -6,7 +6,7 @@
 
 Matlab coordinate conversions for geospace ecef enu eci.
 Similar to Python
-[PyMap3D](https://github.com/scivision/pymap3d).
+[PyMap3D](https://github.com/geospace-code/pymap3d).
 
 ## Usage
 
