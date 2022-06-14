@@ -1,5 +1,12 @@
-% this script is run on Azure (or local)
+function plan = buildfile
+plan = buildplan(localfunctions);
+end
 
+function testTask(~)
+assertSuccess(runtests('matmap3d'))
+end
+
+function coverageTask(~)
 import matlab.unittest.TestRunner;
 import matlab.unittest.Verbosity;
 import matlab.unittest.plugins.CodeCoveragePlugin;
@@ -21,3 +28,4 @@ results = runner.run(suite);
 assert(~isempty(results), "no tests found")
 
 assertSuccess(results)
+end

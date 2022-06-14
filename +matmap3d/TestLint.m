@@ -1,4 +1,4 @@
-classdef TestALint < matlab.unittest.TestCase
+classdef TestLint < matlab.unittest.TestCase
 
 properties
 TestData
@@ -42,8 +42,7 @@ end
 
 
 function filenames = get_files()
-cwd = fileparts(mfilename('fullpath'));
-flist = dir(fullfile(cwd, '/**/*.m'));
+flist = dir(fullfile(fileparts(mfilename('fullpath')), '/**/*.m'));
 for i = 1:length(flist)
  filenames{i} = fullfile(flist(i).folder, flist(i).name); %#ok<AGROW>
 end
