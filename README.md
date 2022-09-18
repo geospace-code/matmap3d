@@ -26,7 +26,7 @@ import matmap3d.*
 Optionally, verify functionality:
 
 ```matlab
-runtests('matmap3d')
+buildtool
 ```
 
 ### Functions
