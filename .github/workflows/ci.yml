@@ -22,6 +22,4 @@ jobs:
         release: R2022b
 
     - name: Run tests
-      uses: matlab-actions/run-command@v1
-      with:
-        command: buildtool
+      uses: matlab-actions/run-build@v1
