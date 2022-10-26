@@ -6,8 +6,8 @@
    <!--
 This HTML was auto-generated from MATLAB code.
 To make changes, update the MATLAB code and republish this document.
-      --><title>eci2ecef</title><meta name="generator" content="MATLAB 9.8"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2020-05-03"><meta name="DC.source" content="eci2ecef.m"><style type="text/css">
-html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
+      --><title>eci2ecef</title><meta name="generator" content="MATLAB 9.13"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2022-10-26"><meta name="DC.source" content="eci2ecef.m"><style type="text/css">
+html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
 
 html { min-height:100%; margin-bottom:1px; }
 html body { height:100%; margin:0px; font-family:Arial, Helvetica, sans-serif; font-size:10px; color:#000; line-height:140%; background:#fff none; overflow-y:scroll; }
@@ -67,34 +67,7 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
 
 
 
-  </style></head><body><div class="content"><h2>Contents</h2><div><ul><li><a href="#3">Greenwich hour angles (radians)</a></li><li><a href="#4">Convert into ECEF</a></li></ul></div><pre class="codeinput"><span class="keyword">function</span> [x,y,z] = eci2ecef(utc, x_eci, y_eci, z_eci)
-</pre><pre class="codeinput"><span class="comment">% rotate ECI coordinates to ECEF</span>
-<span class="comment">% because this doesn't account for nutation, etc. error is often &gt; 1%</span>
-<span class="comment">%</span>
-<span class="comment">% x_eci, y_eci, z_eci:  eci position vectors</span>
-<span class="comment">% utc: Matlab datetime UTC</span>
-
-<span class="comment">% x,y,z:  ECEF position</span>
-
-narginchk(4,4)
-validateattributes(utc, {<span class="string">'numeric'</span>, <span class="string">'datetime'</span>}, {<span class="string">'vector'</span>})
-validateattributes(x_eci, {<span class="string">'numeric'</span>}, {<span class="string">'vector'</span>})
-validateattributes(y_eci, {<span class="string">'numeric'</span>}, {<span class="string">'vector'</span>, <span class="string">'numel'</span>, length(x_eci)})
-validateattributes(z_eci, {<span class="string">'numeric'</span>}, {<span class="string">'vector'</span>, <span class="string">'numel'</span>, length(x_eci)})
-</pre><h2 id="3">Greenwich hour angles (radians)</h2><p>gst = greenwichsrt(juliandate(datetime(utc)));</p><pre class="codeinput">gst = greenwichsrt(juliantime(utc));
-validateattributes(gst, {<span class="string">'numeric'</span>}, {<span class="string">'vector'</span>, <span class="string">'numel'</span>, length(x_eci)})
-</pre><h2 id="4">Convert into ECEF</h2><pre class="codeinput">x = nan(length(x_eci));
-y = nan(length(x));
-z = nan(length(x));
-
-<span class="keyword">for</span> j = 1:length(x)
-  ecef = R3(gst(j)) * [x_eci(j), y_eci(j), z_eci(j)].';
-  x(j) = ecef(1);
-  y(j) = ecef(2);
-  z(j) = ecef(3);
-<span class="keyword">end</span>
-</pre><pre class="codeinput"><span class="keyword">end</span>
-</pre><p class="footer"><br><a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2020a</a><br></p></div><!--
+  </style></head><body><div class="content"><h2>Contents</h2><div><ul><li><a href="#3">Greenwich hour angles (radians)</a></li><li><a href="#4">Convert into ECEF</a></li></ul></div><h2 id="3">Greenwich hour angles (radians)</h2><h2 id="4">Convert into ECEF</h2><p class="footer"><br><a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2022b</a><br></p></div><!--
 ##### SOURCE BEGIN #####
 function [x,y,z] = eci2ecef(utc, x_eci, y_eci, z_eci)
 % rotate ECI coordinates to ECEF
@@ -104,28 +77,26 @@ function [x,y,z] = eci2ecef(utc, x_eci, y_eci, z_eci)
 % utc: Matlab datetime UTC
 
 % x,y,z:  ECEF position
-
-narginchk(4,4)
-validateattributes(utc, {'numeric', 'datetime'}, {'vector'})
-validateattributes(x_eci, {'numeric'}, {'vector'})
-validateattributes(y_eci, {'numeric'}, {'vector', 'numel', length(x_eci)})
-validateattributes(z_eci, {'numeric'}, {'vector', 'numel', length(x_eci)})
+arguments
+  utc (:,1) datetime
+  x_eci (:,1) {mustBeReal,mustBeEqualSize(utc,x_eci)}
+  y_eci (:,1) {mustBeReal,mustBeEqualSize(utc,y_eci)}
+  z_eci (:,1) {mustBeReal,mustBeEqualSize(utc,z_eci)}
+end
 %% Greenwich hour angles (radians)
-% gst = greenwichsrt(juliandate(datetime(utc)));
-gst = greenwichsrt(juliantime(utc));
-validateattributes(gst, {'numeric'}, {'vector', 'numel', length(x_eci)})
+gst = matmap3d.greenwichsrt(juliandate(utc));
 %% Convert into ECEF
-x = nan(length(x_eci));
-y = nan(length(x));
-z = nan(length(x));
+x = nan(size(x_eci));
+y = nan(size(x));
+z = nan(size(x));
 
 for j = 1:length(x)
-  ecef = R3(gst(j)) * [x_eci(j), y_eci(j), z_eci(j)].';
+  ecef = matmap3d.R3(gst(j)) * [x_eci(j), y_eci(j), z_eci(j)].';
   x(j) = ecef(1);
   y(j) = ecef(2);
   z(j) = ecef(3);
 end
-end
+end % function
 
 ##### SOURCE END #####
 --></body></html>

@@ -6,8 +6,8 @@
    <!--
 This HTML was auto-generated from MATLAB code.
 To make changes, update the MATLAB code and republish this document.
-      --><title>lookAtSpheroid</title><meta name="generator" content="MATLAB 9.8"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2020-05-03"><meta name="DC.source" content="lookAtSpheroid.m"><style type="text/css">
-html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
+      --><title>lookAtSpheroid</title><meta name="generator" content="MATLAB 9.13"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2022-10-26"><meta name="DC.source" content="lookAtSpheroid.m"><style type="text/css">
+html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
 
 html { min-height:100%; margin-bottom:1px; }
 html body { height:100%; margin:0px; font-family:Arial, Helvetica, sans-serif; font-size:10px; color:#000; line-height:140%; background:#fff none; overflow-y:scroll; }
@@ -67,46 +67,9 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
 
 
 
-  </style></head><body><div class="content"><h2>Contents</h2><div><ul><li><a href="#2">LOOKATSPHEROID Calculates line-of-sight intersection with Earth (or other ellipsoid) surface from above surface ./ orbit</a></li><li><a href="#3">Inputs</a></li><li><a href="#4">Outputs</a></li><li><a href="#5">computation</a></li><li><a href="#6">Return nan if radical &lt; 0 or d &lt; 0 because LOS vector does not point towards Earth</a></li></ul></div><pre class="codeinput"><span class="keyword">function</span> [lat, lon, d] = lookAtSpheroid(lat0, lon0, h0, az, tilt, spheroid, angleUnit)
-</pre><h2 id="2">LOOKATSPHEROID Calculates line-of-sight intersection with Earth (or other ellipsoid) surface from above surface ./ orbit</h2><h2 id="3">Inputs</h2><div><ul><li>lat0, lon0: latitude and longitude of starting point</li><li>h0: altitude of starting point in meters</li><li>az: azimuth angle of line-of-sight, clockwise from North</li><li>tilt: tilt angle of line-of-sight with respect to local vertical (nadir = 0)</li></ul></div><h2 id="4">Outputs</h2><div><ul><li>lat, lon: latitude and longitude where the line-of-sight intersects with the Earth ellipsoid</li><li>d: slant range in meters from the starting point to the intersect point</li></ul></div><p>Values will be NaN if the line of sight does not intersect.</p><p>Algorithm based on <a href="https://medium.com/@stephenhartzell/satellite-line-of-sight-intersection-with-earth-d786b4a6a9b6">https://medium.com/@stephenhartzell/satellite-line-of-sight-intersection-with-earth-d786b4a6a9b6</a> Stephen Hartzell</p><pre class="codeinput">narginchk(5,7)
-<span class="keyword">if</span> nargin &lt; 6 || isempty(spheroid), spheroid = wgs84Ellipsoid(); <span class="keyword">end</span>
-<span class="keyword">if</span> nargin &lt; 7 || isempty(angleUnit), angleUnit=<span class="string">'d'</span>; <span class="keyword">end</span>
-
-validateattributes(lat0, {<span class="string">'numeric'</span>}, {<span class="string">'real'</span>,<span class="string">'&gt;='</span>,-90,<span class="string">'&lt;='</span>,90})
-validateattributes(lon0, {<span class="string">'numeric'</span>}, {<span class="string">'real'</span>,<span class="string">'finite'</span>})
-validateattributes(h0, {<span class="string">'numeric'</span>}, {<span class="string">'real'</span>,<span class="string">'nonnegative'</span>,<span class="string">'finite'</span>})
-validateattributes(az, {<span class="string">'numeric'</span>}, {<span class="string">'real'</span>,<span class="string">'finite'</span>})
-validateattributes(tilt, {<span class="string">'numeric'</span>}, {<span class="string">'real'</span>,<span class="string">'nonnegative'</span>,<span class="string">'&lt;='</span>,180})
-validateattributes(spheroid,{<span class="string">'struct'</span>},{<span class="string">'scalar'</span>})
-validateattributes(angleUnit,{<span class="string">'string'</span>,<span class="string">'char'</span>},{<span class="string">'scalar'</span>})
-</pre><h2 id="5">computation</h2><pre class="codeinput"><span class="keyword">if</span> strcmpi(angleUnit(1),<span class="string">'d'</span>)
-  el = tilt - 90;
-<span class="keyword">else</span>
-  el = tilt - pi/2;
-<span class="keyword">end</span>
-
-a = spheroid.SemimajorAxis;
-b = a;
-c = spheroid.SemiminorAxis;
-
-[e, n, u] = aer2enu(az, el, 1., angleUnit);  <span class="comment">% fixed 1 km slant range</span>
-[u, v, w] = enu2uvw(e, n, u, lat0, lon0, angleUnit);
-[x, y, z] = geodetic2ecef([], lat0, lon0, h0, angleUnit);
-
-value = -a.^2 .* b.^2 .* w .* z - a.^2 .* c.^2 .* v .* y - b.^2 .* c.^2 .* u .* x;
-radical = a.^2 .* b.^2 .* w.^2 + a.^2 .* c.^2 .* v.^2 - a.^2 .* v.^2 .* z.^2 + 2 .* a.^2 .* v .* w .* y .* z - <span class="keyword">...</span>
-           a.^2 .* w.^2 .* y.^2 + b.^2 .* c.^2 .* u.^2 - b.^2 .* u.^2 .* z.^2 + 2 .* b.^2 .* u .* w .* x .* z - <span class="keyword">...</span>
-           b.^2 .* w.^2 .* x.^2 - c.^2 .* u.^2 .* y.^2 + 2 .* c.^2 .* u .* v .* x .* y - c.^2 .* v.^2 .* x.^2;
-
-magnitude = a.^2 .* b.^2 .* w.^2 + a.^2 .* c.^2 .* v.^2 + b.^2 .* c.^2 .* u.^2;
-</pre><h2 id="6">Return nan if radical &lt; 0 or d &lt; 0 because LOS vector does not point towards Earth</h2><pre class="codeinput">d = (value - a .* b .* c .* sqrt(radical)) ./ magnitude;
-d(radical &lt; 0 | d &lt; 0) = nan; <span class="comment">% separate line</span>
-
-<span class="comment">% altitude should be zero</span>
-[lat, lon] = ecef2geodetic([], x + d .* u, y + d .* v, z + d .* w, angleUnit);
-</pre><pre class="codeinput"><span class="keyword">end</span>
-</pre><p>Copyright (c) 2018 Michael Hirsch, Ph.D.</p><p>Redistribution and use in source and binary forms, with or without modification, are permitted provided that the following conditions are met: 1. Redistributions of source code must retain the above copyright notice, this list of conditions and the following disclaimer. 2. Redistributions in binary form must reproduce the above copyright notice, this list of conditions and the following disclaimer in the documentation and/or other materials provided with the distribution. THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE</p><p class="footer"><br><a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2020a</a><br></p></div><!--
+  </style></head><body><div class="content"><h2>Contents</h2><div><ul><li><a href="#2">LOOKATSPHEROID Calculates line-of-sight intersection with Earth (or other ellipsoid) surface from above surface ./ orbit</a></li><li><a href="#3">Inputs</a></li><li><a href="#4">Outputs</a></li><li><a href="#5">computation</a></li><li><a href="#6">Return nan if radical &lt; 0 or d &lt; 0 because LOS vector does not point towards Earth</a></li></ul></div><h2 id="2">LOOKATSPHEROID Calculates line-of-sight intersection with Earth (or other ellipsoid) surface from above surface ./ orbit</h2><h2 id="3">Inputs</h2><div><ul><li>lat0, lon0: latitude and longitude of starting point</li><li>h0: altitude of starting point in meters</li><li>az: azimuth angle of line-of-sight, clockwise from North</li><li>tilt: tilt angle of line-of-sight with respect to local vertical (nadir = 0)</li></ul></div><h2 id="4">Outputs</h2><div><ul><li>lat, lon: latitude and longitude where the line-of-sight intersects with the Earth ellipsoid</li><li>d: slant range in meters from the starting point to the intersect point</li></ul></div><p>Values will be NaN if the line of sight does not intersect.</p><p>Algorithm based on: <a href="https://medium.com/@stephenhartzell/satellite-line-of-sight-intersection-with-earth-d786b4a6a9b6">https://medium.com/@stephenhartzell/satellite-line-of-sight-intersection-with-earth-d786b4a6a9b6</a> Stephen Hartzell</p><h2 id="5">computation</h2><h2 id="6">Return nan if radical &lt; 0 or d &lt; 0 because LOS vector does not point towards Earth</h2><p>Copyright (c) 2018 SciVision, Inc.</p><p>Redistribution and use in source and binary forms, with or without modification, are permitted provided that the following conditions are met: 1. Redistributions of source code must retain the above copyright notice, this list of conditions and the following disclaimer. 2. Redistributions in binary form must reproduce the above copyright notice, this list of conditions and the following disclaimer in the documentation and/or other materials provided with the distribution. THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE</p><p class="footer"><br><a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2022b</a><br></p></div><!--
 ##### SOURCE BEGIN #####
+
 function [lat, lon, d] = lookAtSpheroid(lat0, lon0, h0, az, tilt, spheroid, angleUnit)
 %% LOOKATSPHEROID Calculates line-of-sight intersection with Earth (or other ellipsoid) surface from above surface ./ orbit
 %
@@ -122,22 +85,22 @@ function [lat, lon, d] = lookAtSpheroid(lat0, lon0, h0, az, tilt, spheroid, angl
 %
 % Values will be NaN if the line of sight does not intersect.
 %
-% Algorithm based on https://medium.com/@stephenhartzell/satellite-line-of-sight-intersection-with-earth-d786b4a6a9b6 Stephen Hartzell
+% Algorithm based on:
+% https://medium.com/@stephenhartzell/satellite-line-of-sight-intersection-with-earth-d786b4a6a9b6
+% Stephen Hartzell
+arguments
+  lat0 {mustBeReal}
+  lon0 {mustBeReal}
+  h0 {mustBeReal,mustBeNonnegative}
+  az {mustBeReal}
+  tilt {mustBeReal}
+  spheroid (1,1) matmap3d.referenceEllipsoid = matmap3d.wgs84Ellipsoid()
+  angleUnit (1,1) string = "d"
+end
 
-narginchk(5,7)
-if nargin < 6 || isempty(spheroid), spheroid = wgs84Ellipsoid(); end
-if nargin < 7 || isempty(angleUnit), angleUnit='d'; end
-
-validateattributes(lat0, {'numeric'}, {'real','>=',-90,'<=',90})
-validateattributes(lon0, {'numeric'}, {'real','finite'})
-validateattributes(h0, {'numeric'}, {'real','nonnegative','finite'})
-validateattributes(az, {'numeric'}, {'real','finite'})
-validateattributes(tilt, {'numeric'}, {'real','nonnegative','<=',180})
-validateattributes(spheroid,{'struct'},{'scalar'})
-validateattributes(angleUnit,{'string','char'},{'scalar'})
 %% computation
 
-if strcmpi(angleUnit(1),'d')
+if startsWith(angleUnit, 'd')
   el = tilt - 90;
 else
   el = tilt - pi/2;
@@ -147,9 +110,9 @@ a = spheroid.SemimajorAxis;
 b = a;
 c = spheroid.SemiminorAxis;
 
-[e, n, u] = aer2enu(az, el, 1., angleUnit);  % fixed 1 km slant range
-[u, v, w] = enu2uvw(e, n, u, lat0, lon0, angleUnit);
-[x, y, z] = geodetic2ecef([], lat0, lon0, h0, angleUnit);
+[e, n, u] = matmap3d.aer2enu(az, el, 1., angleUnit);  % fixed 1 km slant range
+[u, v, w] = matmap3d.enu2uvw(e, n, u, lat0, lon0, angleUnit);
+[x, y, z] = matmap3d.geodetic2ecef([], lat0, lon0, h0, angleUnit);
 
 value = -a.^2 .* b.^2 .* w .* z - a.^2 .* c.^2 .* v .* y - b.^2 .* c.^2 .* u .* x;
 radical = a.^2 .* b.^2 .* w.^2 + a.^2 .* c.^2 .* v.^2 - a.^2 .* v.^2 .* z.^2 + 2 .* a.^2 .* v .* w .* y .* z - ...
@@ -158,17 +121,17 @@ radical = a.^2 .* b.^2 .* w.^2 + a.^2 .* c.^2 .* v.^2 - a.^2 .* v.^2 .* z.^2 + 2
 
 magnitude = a.^2 .* b.^2 .* w.^2 + a.^2 .* c.^2 .* v.^2 + b.^2 .* c.^2 .* u.^2;
 
-%% Return nan if radical < 0 or d < 0 because LOS vector does not point towards Earth 
+%% Return nan if radical < 0 or d < 0 because LOS vector does not point towards Earth
 d = (value - a .* b .* c .* sqrt(radical)) ./ magnitude;
 d(radical < 0 | d < 0) = nan; % separate line
 
 % altitude should be zero
-[lat, lon] = ecef2geodetic([], x + d .* u, y + d .* v, z + d .* w, angleUnit);
+[lat, lon] = matmap3d.ecef2geodetic([], x + d .* u, y + d .* v, z + d .* w, angleUnit);
 
 end
 
 %%
-% Copyright (c) 2018 Michael Hirsch, Ph.D.
+% Copyright (c) 2018 SciVision, Inc.
 %
 % Redistribution and use in source and binary forms, with or without modification, are permitted provided that the following conditions are met:
 % 1. Redistributions of source code must retain the above copyright notice, this list of conditions and the following disclaimer.

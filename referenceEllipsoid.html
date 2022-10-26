@@ -6,7 +6,7 @@
    <!--
 This HTML was auto-generated from MATLAB code.
 To make changes, update the MATLAB code and republish this document.
-      --><title>enu2uvw</title><meta name="generator" content="MATLAB 9.13"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2022-10-26"><meta name="DC.source" content="enu2uvw.m"><style type="text/css">
+      --><title>referenceEllipsoid   Select available ellipsoid</title><meta name="generator" content="MATLAB 9.13"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2022-10-26"><meta name="DC.source" content="referenceEllipsoid.m"><style type="text/css">
 html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
 
 html { min-height:100%; margin-bottom:1px; }
@@ -67,40 +67,88 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
 
 
 
-  </style></head><body><div class="content"><h2>Contents</h2><div><ul><li><a href="#2">enu2uvw   convert from ENU to UVW coordinates</a></li><li><a href="#3">Inputs</a></li><li><a href="#4">outputs</a></li><li><a href="#5">compute</a></li></ul></div><h2 id="2">enu2uvw   convert from ENU to UVW coordinates</h2><h2 id="3">Inputs</h2><div><ul><li>e,n,up:  East, North, Up coordinates of point(s) (meters)</li><li>lat0,lon0: geodetic coordinates of observer/reference point (degrees)</li><li>angleUnit: string for angular units. Default 'd': degrees</li></ul></div><h2 id="4">outputs</h2><div><ul><li>u,v,w:   coordinates of test point(s) (meters)</li></ul></div><h2 id="5">compute</h2><p>Copyright (c) 2014-2018 SciVision, Inc. Copyright (c) 2013, Felipe Geremia Nievinski</p><p>Redistribution and use in source and binary forms, with or without modification, are permitted provided that the following conditions are met: 1. Redistributions of source code must retain the above copyright notice, this list of conditions and the following disclaimer. 2. Redistributions in binary form must reproduce the above copyright notice, this list of conditions and the following disclaimer in the documentation and/or other materials provided with the distribution. THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.</p><p class="footer"><br><a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2022b</a><br></p></div><!--
+  </style></head><body><div class="content"><h1>referenceEllipsoid   Select available ellipsoid</h1><!--introduction--><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">inputs</a></li><li><a href="#2">outputs</a></li><li><a href="#3">WGS-84 ellipsoid parameters.</a></li><li><a href="#5">GRS-80 ellipsoid parameters</a></li></ul></div><h2 id="1">inputs</h2><div><ul><li>name: string of model name. Default: 'wgs84'</li></ul></div><h2 id="2">outputs</h2><div><ul><li>E: referenceEllipsoid</li></ul></div><h2 id="3">WGS-84 ellipsoid parameters.</h2><p><a href="http://earth-info.nga.mil/GandG/tr8350_2.html">http://earth-info.nga.mil/GandG/tr8350_2.html</a> <a href="ftp://164.214.2.65/pub/gig/tr8350.2/wgs84fin.pdf">ftp://164.214.2.65/pub/gig/tr8350.2/wgs84fin.pdf</a></p><h2 id="5">GRS-80 ellipsoid parameters</h2><p><a href="http://itrf.ensg.ign.fr/faq.php?type=answer">http://itrf.ensg.ign.fr/faq.php?type=answer</a> (accessed 2018-01-22)</p><p>Copyright (c) 2014-2018 SciVision, Inc. Copyright (c) 2013, Felipe Geremia Nievinski</p><p>Redistribution and use in source and binary forms, with or without modification, are permitted provided that the following conditions are met: 1. Redistributions of source code must retain the above copyright notice, this list of conditions and the following disclaimer. 2. Redistributions in binary form must reproduce the above copyright notice, this list of conditions and the following disclaimer in the documentation and/or other materials provided with the distribution. THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.</p><p class="footer"><br><a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2022b</a><br></p></div><!--
 ##### SOURCE BEGIN #####
-
-function [u,v,w] = enu2uvw(east,north,up,lat0,lon0,angleUnit)
-%% enu2uvw   convert from ENU to UVW coordinates
+%% referenceEllipsoid   Select available ellipsoid
 %
-%%% Inputs
-% * e,n,up:  East, North, Up coordinates of point(s) (meters)
-% * lat0,lon0: geodetic coordinates of observer/reference point (degrees)
-% * angleUnit: string for angular units. Default 'd': degrees
-%
+%%% inputs
+% * name: string of model name. Default: 'wgs84'
 %%% outputs
-% * u,v,w:   coordinates of test point(s) (meters)
+% * E: referenceEllipsoid
+
+classdef referenceEllipsoid
+properties
+  Code
+  Name
+  LengthUnit
+  SemimajorAxis
+  Flattening
+  SemiminorAxis
+  Eccentricity
+  MeanRadius
+  Volume
+end
+
+methods
+function e = referenceEllipsoid(name, lengthUnit)
 arguments
-  east {mustBeReal}
-  north {mustBeReal}
-  up {mustBeReal}
-  lat0 {mustBeReal}
-  lon0 {mustBeReal}
-  angleUnit (1,1) string = "d"
-end
-%% compute
-if startsWith(angleUnit, 'd')
-  lat0 = deg2rad(lat0);
-  lon0 = deg2rad(lon0);
+  name (1,1) string = "wgs84"
+  lengthUnit (1,1) string = "m"
 end
 
-t = cos(lat0) * up - sin(lat0) * north;
-w = sin(lat0) * up + cos(lat0) * north;
+mustBeMember(lengthUnit, ["m", "meters"])
 
-u = cos(lon0) * t - sin(lon0) * east;
-v = sin(lon0) * t + cos(lon0) * east;
+switch name
+case 'wgs84'
+%% WGS-84 ellipsoid parameters.
+% <http://earth-info.nga.mil/GandG/tr8350_2.html>
+% <ftp://164.214.2.65/pub/gig/tr8350.2/wgs84fin.pdf>
+  e.Code = 7030;
+  e.Name = 'World Geodetic System 1984';
+  e.LengthUnit = 'meter';
+  e.SemimajorAxis = 6378137.0;
+  e.Flattening = 1/298.2572235630;
+  e.SemiminorAxis = e.SemimajorAxis * (1 - e.Flattening);
+  e.Eccentricity = get_eccentricity(e);
+  e.MeanRadius = meanradius(e);
+  e.Volume = spheroidvolume(e);
+case 'grs80'
+%% GRS-80 ellipsoid parameters
+% <http://itrf.ensg.ign.fr/faq.php?type=answer> (accessed 2018-01-22)
+  e.Code = 7019;
+  e.Name = 'Geodetic Reference System 1980';
+  e.LengthUnit = 'meter';
+  e.SemimajorAxis = 6378137.0;
+  e.Flattening = 1/298.257222100882711243;
+  e.SemiminorAxis = e.SemimajorAxis * (1 - e.Flattening);
+  e.Eccentricity  = get_eccentricity(e);
+  e.MeanRadius = meanradius(e);
+  e.Volume = spheroidvolume(e);
+otherwise, error(name + " not yet implemented")
+end
+end
 
-end % function
+function v = spheroidvolume(E)
+v = 4*pi/3 * E.SemimajorAxis^2 * E.SemiminorAxis;
+
+assert(v>=0)
+end
+
+function r = meanradius(E)
+r = (2*E.SemimajorAxis + E.SemiminorAxis) / 3;
+
+assert(r>=0)
+end
+
+function ecc = get_eccentricity(E)
+ecc = sqrt ( (E.SemimajorAxis^2 - E.SemiminorAxis^2) / (E.SemimajorAxis^2));
+end
+
+end
+end
+
+
+
 %%
 % Copyright (c) 2014-2018 SciVision, Inc.
 % Copyright (c) 2013, Felipe Geremia Nievinski

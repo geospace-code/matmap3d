@@ -6,8 +6,8 @@
    <!--
 This HTML was auto-generated from MATLAB code.
 To make changes, update the MATLAB code and republish this document.
-      --><title>wgs84Ellipsoid</title><meta name="generator" content="MATLAB 9.8"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2020-05-03"><meta name="DC.source" content="wgs84Ellipsoid.m"><style type="text/css">
-html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
+      --><title>wgs84Ellipsoid</title><meta name="generator" content="MATLAB 9.13"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2022-10-26"><meta name="DC.source" content="wgs84Ellipsoid.m"><style type="text/css">
+html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
 
 html { min-height:100%; margin-bottom:1px; }
 html body { height:100%; margin:0px; font-family:Arial, Helvetica, sans-serif; font-size:10px; color:#000; line-height:140%; background:#fff none; overflow-y:scroll; }
@@ -67,41 +67,30 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
 
 
 
-  </style></head><body><div class="content"><h2>Contents</h2><div><ul><li><a href="#2">wgs84Ellipsoid  generate a WGS84 ellipsoid parameter struct</a></li><li><a href="#3">Inputs</a></li><li><a href="#4">Outputs</a></li><li><a href="#5">sanity check</a></li><li><a href="#6">get ellipsoid</a></li></ul></div><pre class="codeinput"><span class="keyword">function</span> E = wgs84Ellipsoid(lengthUnit)
-</pre><h2 id="2">wgs84Ellipsoid  generate a WGS84 ellipsoid parameter struct</h2><h2 id="3">Inputs</h2><div><ul><li>lengthUnit: currently not implemented, for compatibility either nargin=0 or 'm' or 'meter' is accepted without conversion</li></ul></div><h2 id="4">Outputs</h2><div><ul><li>E: struct with referenceEllipsoid() properties</li></ul></div><h2 id="5">sanity check</h2><pre class="codeinput">narginchk(0,1)
-
-<span class="keyword">if</span> nargin&gt;0 &amp;&amp; ~strcmpi(lengthUnit(1),<span class="string">'m'</span>)
-  error(<span class="string">'wgs84Ellipsoid only accepts units of meters for now.'</span>)
-<span class="keyword">end</span>
-</pre><h2 id="6">get ellipsoid</h2><pre class="codeinput">E = getreferenceEllipsoid(<span class="string">'wgs84'</span>);
-</pre><pre class="codeinput"><span class="keyword">end</span>
-</pre><pre>Copyright (c) 2014-2018 Michael Hirsch, Ph.D.</pre><pre>Redistribution and use in source and binary forms, with or without modification, are permitted provided that the following conditions are met:
+  </style></head><body><div class="content"><h2>Contents</h2><div><ul><li><a href="#2">wgs84Ellipsoid  generate a WGS84 referenceEllipsoid</a></li><li><a href="#3">Inputs</a></li><li><a href="#4">Outputs</a></li><li><a href="#5">get ellipsoid</a></li></ul></div><h2 id="2">wgs84Ellipsoid  generate a WGS84 referenceEllipsoid</h2><h2 id="3">Inputs</h2><div><ul><li>lengthUnit: currently not implemented, for compatibility either nargin=0 or 'm' or 'meter' is accepted without conversion</li></ul></div><h2 id="4">Outputs</h2><div><ul><li>E: referenceEllipsoid</li></ul></div><h2 id="5">get ellipsoid</h2><pre>Copyright (c) 2014-2018 SciVision, Inc.</pre><pre>Redistribution and use in source and binary forms, with or without modification, are permitted provided that the following conditions are met:
 1. Redistributions of source code must retain the above copyright notice, this list of conditions and the following disclaimer.
 2. Redistributions in binary form must reproduce the above copyright notice, this list of conditions and the following disclaimer in the documentation and/or other materials provided with the distribution.
-THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.</pre><p class="footer"><br><a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2020a</a><br></p></div><!--
+THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.</pre><p class="footer"><br><a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2022b</a><br></p></div><!--
 ##### SOURCE BEGIN #####
 function E = wgs84Ellipsoid(lengthUnit)
-%% wgs84Ellipsoid  generate a WGS84 ellipsoid parameter struct
+%% wgs84Ellipsoid  generate a WGS84 referenceEllipsoid
 %
 %%%  Inputs
 %
 % * lengthUnit: currently not implemented, for compatibility either nargin=0 or 'm' or 'meter' is accepted without conversion
 %
 %%% Outputs
-% 
-% * E: struct with referenceEllipsoid() properties
-%% sanity check
-narginchk(0,1)
-
-if nargin>0 && ~strcmpi(lengthUnit(1),'m')
-  error('wgs84Ellipsoid only accepts units of meters for now.')
+%
+% * E: referenceEllipsoid
+arguments
+  lengthUnit (1,1) string = "m"
 end
 %% get ellipsoid
-E = getreferenceEllipsoid('wgs84');
+E = matmap3d.referenceEllipsoid('wgs84', lengthUnit);
 
 end
 %%
-%  Copyright (c) 2014-2018 Michael Hirsch, Ph.D.
+%  Copyright (c) 2014-2018 SciVision, Inc.
 %
 %  Redistribution and use in source and binary forms, with or without modification, are permitted provided that the following conditions are met:
 %  1. Redistributions of source code must retain the above copyright notice, this list of conditions and the following disclaimer.

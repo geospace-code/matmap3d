@@ -6,8 +6,8 @@
    <!--
 This HTML was auto-generated from MATLAB code.
 To make changes, update the MATLAB code and republish this document.
-      --><title>ecef2eci</title><meta name="generator" content="MATLAB 9.8"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2020-05-03"><meta name="DC.source" content="ecef2eci.m"><style type="text/css">
-html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
+      --><title>ecef2eci</title><meta name="generator" content="MATLAB 9.13"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2022-10-26"><meta name="DC.source" content="ecef2eci.m"><style type="text/css">
+html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
 
 html { min-height:100%; margin-bottom:1px; }
 html body { height:100%; margin:0px; font-family:Arial, Helvetica, sans-serif; font-size:10px; color:#000; line-height:140%; background:#fff none; overflow-y:scroll; }
@@ -67,65 +67,36 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
 
 
 
-  </style></head><body><div class="content"><h2>Contents</h2><div><ul><li><a href="#3">Greenwich hour angles (radians)</a></li><li><a href="#4">Convert into ECEF</a></li></ul></div><pre class="codeinput"><span class="keyword">function</span> [x,y,z] = ecef2eci(utc, x_ecef, y_ecef, z_ecef)
-</pre><pre class="codeinput"><span class="comment">% rotate ECEF coordinates to ECI</span>
-<span class="comment">% because this doesn't account for nutation, etc. error is often &gt; 1%</span>
-<span class="comment">%</span>
-<span class="comment">% x_ecef, y_ecef, z_ecef:  ECEF position (meters)</span>
-<span class="comment">% utc: time UTC</span>
-
-<span class="comment">% x,y,z:  ECI position</span>
-
-narginchk(4,4)
-validateattributes(utc, {<span class="string">'numeric'</span>, <span class="string">'datetime'</span>}, {<span class="string">'vector'</span>})
-validateattributes(x_ecef, {<span class="string">'numeric'</span>}, {<span class="string">'vector'</span>})
-validateattributes(y_ecef, {<span class="string">'numeric'</span>}, {<span class="string">'vector'</span>, <span class="string">'numel'</span>, length(x_ecef)})
-validateattributes(z_ecef, {<span class="string">'numeric'</span>}, {<span class="string">'vector'</span>, <span class="string">'numel'</span>, length(y_ecef)})
-</pre><h2 id="3">Greenwich hour angles (radians)</h2><p>gst = greenwichsrt(juliandate(datetime(utc)));</p><pre class="codeinput">gst = greenwichsrt(juliantime(utc));
-validateattributes(gst, {<span class="string">'numeric'</span>}, {<span class="string">'vector'</span>, <span class="string">'numel'</span>, length(x_ecef)})
-</pre><h2 id="4">Convert into ECEF</h2><pre class="codeinput">x = nan(length(gst));
-y = nan(length(x));
-z = nan(length(x));
-
-<span class="keyword">for</span> j = 1:length(x)
-  eci = R3(gst(j)).' * [x_ecef(j), y_ecef(j), z_ecef(j)].';
-  x(j) = eci(1);
-  y(j) = eci(2);
-  z(j) = eci(3);
-<span class="keyword">end</span>
-</pre><pre class="codeinput"><span class="keyword">end</span>
-</pre><p class="footer"><br><a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2020a</a><br></p></div><!--
+  </style></head><body><div class="content"><h2>Contents</h2><div><ul><li><a href="#3">Greenwich hour angles (radians)</a></li><li><a href="#4">Convert into ECEF</a></li></ul></div><h2 id="3">Greenwich hour angles (radians)</h2><h2 id="4">Convert into ECEF</h2><p class="footer"><br><a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2022b</a><br></p></div><!--
 ##### SOURCE BEGIN #####
-function [x,y,z] = ecef2eci(utc, x_ecef, y_ecef, z_ecef)
+function [x,y,z] = ecef2eci(utc, x0, y0, z0)
 % rotate ECEF coordinates to ECI
 % because this doesn't account for nutation, etc. error is often > 1%
 %
-% x_ecef, y_ecef, z_ecef:  ECEF position (meters)
+% x0, y0, z0:  ECEF position (meters)
 % utc: time UTC
 
 % x,y,z:  ECI position
-
-narginchk(4,4)
-validateattributes(utc, {'numeric', 'datetime'}, {'vector'})
-validateattributes(x_ecef, {'numeric'}, {'vector'})
-validateattributes(y_ecef, {'numeric'}, {'vector', 'numel', length(x_ecef)})
-validateattributes(z_ecef, {'numeric'}, {'vector', 'numel', length(y_ecef)})
+arguments
+  utc (:,1) datetime
+  x0 (:,1) {mustBeReal,mustBeEqualSize(utc,x0)}
+  y0 (:,1) {mustBeReal,mustBeEqualSize(utc,y0)}
+  z0 (:,1) {mustBeReal,mustBeEqualSize(utc,z0)}
+end
 %% Greenwich hour angles (radians)
-% gst = greenwichsrt(juliandate(datetime(utc)));
-gst = greenwichsrt(juliantime(utc));
-validateattributes(gst, {'numeric'}, {'vector', 'numel', length(x_ecef)})
+gst = matmap3d.greenwichsrt(juliandate(utc));
 %% Convert into ECEF
-x = nan(length(gst));
-y = nan(length(x));
-z = nan(length(x));
+x = nan(size(gst));
+y = nan(size(x));
+z = nan(size(x));
 
 for j = 1:length(x)
-  eci = R3(gst(j)).' * [x_ecef(j), y_ecef(j), z_ecef(j)].';
+  eci = matmap3d.R3(gst(j)).' * [x0(j), y0(j), z0(j)].';
   x(j) = eci(1);
   y(j) = eci(2);
   z(j) = eci(3);
 end
-end
+end % function
 
 ##### SOURCE END #####
 --></body></html>

@@ -6,7 +6,7 @@
    <!--
 This HTML was auto-generated from MATLAB code.
 To make changes, update the MATLAB code and republish this document.
-      --><title>enu2uvw</title><meta name="generator" content="MATLAB 9.13"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2022-10-26"><meta name="DC.source" content="enu2uvw.m"><style type="text/css">
+      --><title>ecef2ned</title><meta name="generator" content="MATLAB 9.13"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2022-10-26"><meta name="DC.source" content="ecef2ned.m"><style type="text/css">
 html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
 
 html { min-height:100%; margin-bottom:1px; }
@@ -67,42 +67,38 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
 
 
 
-  </style></head><body><div class="content"><h2>Contents</h2><div><ul><li><a href="#2">enu2uvw   convert from ENU to UVW coordinates</a></li><li><a href="#3">Inputs</a></li><li><a href="#4">outputs</a></li><li><a href="#5">compute</a></li></ul></div><h2 id="2">enu2uvw   convert from ENU to UVW coordinates</h2><h2 id="3">Inputs</h2><div><ul><li>e,n,up:  East, North, Up coordinates of point(s) (meters)</li><li>lat0,lon0: geodetic coordinates of observer/reference point (degrees)</li><li>angleUnit: string for angular units. Default 'd': degrees</li></ul></div><h2 id="4">outputs</h2><div><ul><li>u,v,w:   coordinates of test point(s) (meters)</li></ul></div><h2 id="5">compute</h2><p>Copyright (c) 2014-2018 SciVision, Inc. Copyright (c) 2013, Felipe Geremia Nievinski</p><p>Redistribution and use in source and binary forms, with or without modification, are permitted provided that the following conditions are met: 1. Redistributions of source code must retain the above copyright notice, this list of conditions and the following disclaimer. 2. Redistributions in binary form must reproduce the above copyright notice, this list of conditions and the following disclaimer in the documentation and/or other materials provided with the distribution. THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.</p><p class="footer"><br><a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2022b</a><br></p></div><!--
+  </style></head><body><div class="content"><h2>Contents</h2><div><ul><li><a href="#2">ecef2enu  convert ECEF to ENU</a></li><li><a href="#3">Inputs</a></li><li><a href="#4">outputs</a></li></ul></div><h2 id="2">ecef2enu  convert ECEF to ENU</h2><h2 id="3">Inputs</h2><div><ul><li>x,y,z: Earth Centered Earth Fixed (ECEF) coordinates of test point (meters)</li><li>lat0, lon0, alt0: ellipsoid geodetic coordinates of observer/reference (degrees, degrees, meters)</li><li>spheroid: referenceEllipsoid</li><li>angleUnit: string for angular units. Default 'd': degrees</li></ul></div><h2 id="4">outputs</h2><div><ul><li>North,East,Down: coordinates of points (meters)</li></ul></div><p>Copyright (c) 2020 SciVision, Inc. Copyright (c) 2013, Felipe Geremia Nievinski</p><p>Redistribution and use in source and binary forms, with or without modification, are permitted provided that the following conditions are met: 1. Redistributions of source code must retain the above copyright notice, this list of conditions and the following disclaimer. 2. Redistributions in binary form must reproduce the above copyright notice, this list of conditions and the following disclaimer in the documentation and/or other materials provided with the distribution. THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.</p><p class="footer"><br><a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2022b</a><br></p></div><!--
 ##### SOURCE BEGIN #####
-
-function [u,v,w] = enu2uvw(east,north,up,lat0,lon0,angleUnit)
-%% enu2uvw   convert from ENU to UVW coordinates
+function [north, east, down] = ecef2ned (x, y, z, lat0, lon0, alt0, spheroid, angleUnit)
+%% ecef2enu  convert ECEF to ENU
 %
 %%% Inputs
-% * e,n,up:  East, North, Up coordinates of point(s) (meters)
-% * lat0,lon0: geodetic coordinates of observer/reference point (degrees)
+% * x,y,z: Earth Centered Earth Fixed (ECEF) coordinates of test point (meters)
+% * lat0, lon0, alt0: ellipsoid geodetic coordinates of observer/reference (degrees, degrees, meters)
+% * spheroid: referenceEllipsoid
 % * angleUnit: string for angular units. Default 'd': degrees
 %
 %%% outputs
-% * u,v,w:   coordinates of test point(s) (meters)
+% * North,East,Down: coordinates of points (meters)
+
 arguments
-  east {mustBeReal}
-  north {mustBeReal}
-  up {mustBeReal}
+  x {mustBeReal}
+  y {mustBeReal}
+  z {mustBeReal}
   lat0 {mustBeReal}
   lon0 {mustBeReal}
+  alt0 {mustBeReal}
+  spheroid (1,1) matmap3d.referenceEllipsoid = matmap3d.wgs84Ellipsoid()
   angleUnit (1,1) string = "d"
 end
-%% compute
-if startsWith(angleUnit, 'd')
-  lat0 = deg2rad(lat0);
-  lon0 = deg2rad(lon0);
+
+[east, north, up] = ecef2enu(x,y,z,lat0,lon0,alt0,spheroid,angleUnit);
+
+down = -up;
+
 end
-
-t = cos(lat0) * up - sin(lat0) * north;
-w = sin(lat0) * up + cos(lat0) * north;
-
-u = cos(lon0) * t - sin(lon0) * east;
-v = sin(lon0) * t + cos(lon0) * east;
-
-end % function
 %%
-% Copyright (c) 2014-2018 SciVision, Inc.
+% Copyright (c) 2020 SciVision, Inc.
 % Copyright (c) 2013, Felipe Geremia Nievinski
 %
 % Redistribution and use in source and binary forms, with or without modification, are permitted provided that the following conditions are met:
