@@ -15,15 +15,13 @@ MatMap3D is setup as a
 which means `import matmap3d` statements allow scoped use of this code.
 
 ```matlab
-import matmap3d.*
-% or add matmap3d. to start of function name
 
-[x,y,z] = geodetic2ecef([],lat,lon,alt)
+[x,y,z] = matmap3d.geodetic2ecef([],lat,lon,alt)
 
-[az,el,range] = geodetic2aer(lat, lon, alt, observer_lat, observer_lon, observer_alt)
+[az,el,range] = matmap3d.geodetic2aer(lat, lon, alt, observer_lat, observer_lon, observer_alt)
 ```
 
-Optionally, verify functionality:
+Optionally, run self-tests:
 
 ```matlab
 buildtool
@@ -55,16 +53,14 @@ These functions present a similar API of a subset of functions in the Mathworks 
 
 ## Notes
 
-The full set of Python conversions are accessed from Matlab &ge; R2014b by commands like:
+Python PyMap3d has more conversions.
+PyMap3d can be accessed from Matlab by commands like:
 
 ```matlab
 lla = py.pymap3d.geodetic2ecef(x,y,z)
 ```
 
-If using `conda` environment to install `pymap3d`, you will need to follow these instructions to make it load:
-https://www.mathworks.com/matlabcentral/answers/443558-matlab-crashes-when-using-conda-environment-other-than-base#answer_486374
-
-In particular, since PyMap3D uses Astropy for ECI transformations the accuracy will generally be better for eci2* or *2eci functions.
+In particular, since PyMap3D uses Astropy for ECI transformations the accuracy will generally be better for `eci2*` or `*2eci` functions.
 All other functions should have equivalent accuracy with Matlab vs. Python.
 
 ### GNU Octave

@@ -8,7 +8,6 @@
     "downloadUrl": "https://github.com/geospace-code/matmap3d/releases",
     "issueTracker": "https://github.com/geospace-code/matmap3d/issues",
     "name": "matmap3d",
-    "version": "2.0.0",
     "identifier": "10.5281/zenodo.3966173",
     "description": "Matlab / GNU Octave coordinate conversions for geospace ecef enu eci. Similar to Python PyMap3D.",
     "applicationCategory": "compuation",
