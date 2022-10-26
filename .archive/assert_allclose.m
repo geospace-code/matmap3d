@@ -16,14 +16,14 @@ function assert_allclose(actual, desired, equal_nan, err_msg,notclose,verbose, n
 %
 % if "actual" is within atol OR rtol of "desired", no error is emitted.
 arguments
-  actual {mustBeNumeric,mustBeReal}
-  desired {mustBeNumeric,mustBeReal}
+  actual {mustBeReal}
+  desired {mustBeReal}
   equal_nan (1,1) logical = false
   err_msg (1,1) string = ""
   notclose (1,1) logical = false
   verbose (1,1) logical = false
-  namedargs.rtol (1,1) {mustBeNumeric,mustBeReal,mustBeNonnegative} = 1e-6
-  namedargs.atol (1,1) {mustBeNumeric,mustBeReal,mustBeNonnegative} = 1e-9
+  namedargs.rtol (1,1) {mustBeReal,mustBeNonnegative} = 1e-6
+  namedargs.atol (1,1) {mustBeReal,mustBeNonnegative} = 1e-9
 end
 
 %% compute
