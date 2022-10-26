@@ -67,25 +67,27 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
 
 
 
-  </style></head><body><div class="content"><h2>Contents</h2><div><ul><li><a href="#3">Greenwich hour angles (radians)</a></li><li><a href="#4">Convert into ECEF</a></li></ul></div><h2 id="3">Greenwich hour angles (radians)</h2><h2 id="4">Convert into ECEF</h2><p class="footer"><br><a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2022b</a><br></p></div><!--
+  </style></head><body><div class="content"><h2>Contents</h2><div><ul><li><a href="#2">eci2ecef(utc, x_eci, y_eci, z_eci)</a></li></ul></div><h2 id="2">eci2ecef(utc, x_eci, y_eci, z_eci)</h2><p>rotate ECI coordinates to ECEF because this doesn't account for nutation, etc. error is often &gt; 1%</p><p>x_eci, y_eci, z_eci:  eci position vectors utc: Matlab datetime UTC</p><p>x,y,z:  ECEF position (meters)</p><p class="footer"><br><a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2022b</a><br></p></div><!--
 ##### SOURCE BEGIN #####
 function [x,y,z] = eci2ecef(utc, x_eci, y_eci, z_eci)
+%% eci2ecef(utc, x_eci, y_eci, z_eci)
 % rotate ECI coordinates to ECEF
 % because this doesn't account for nutation, etc. error is often > 1%
 %
 % x_eci, y_eci, z_eci:  eci position vectors
 % utc: Matlab datetime UTC
-
-% x,y,z:  ECEF position
+%
+% x,y,z:  ECEF position (meters)
 arguments
   utc (:,1) datetime
   x_eci (:,1) {mustBeReal,mustBeEqualSize(utc,x_eci)}
   y_eci (:,1) {mustBeReal,mustBeEqualSize(utc,y_eci)}
   z_eci (:,1) {mustBeReal,mustBeEqualSize(utc,z_eci)}
 end
-%% Greenwich hour angles (radians)
+
+% Greenwich hour angles (radians)
 gst = matmap3d.greenwichsrt(juliandate(utc));
-%% Convert into ECEF
+
 x = nan(size(x_eci));
 y = nan(size(x));
 z = nan(size(x));
@@ -96,7 +98,7 @@ for j = 1:length(x)
   y(j) = ecef(2);
   z(j) = ecef(3);
 end
-end % function
+end
 
 ##### SOURCE END #####
 --></body></html>

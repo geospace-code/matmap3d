@@ -67,20 +67,21 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
 
 
 
-  </style></head><body><div class="content"><p class="footer"><br><a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2022b</a><br></p></div><!--
+  </style></head><body><div class="content"><h2>Contents</h2><div><ul><li><a href="#2">aer2eci(utc, az, el, rng, lat, lon, alt)</a></li><li><a href="#3">Inputs</a></li><li><a href="#4">Outputs</a></li></ul></div><h2 id="2">aer2eci(utc, az, el, rng, lat, lon, alt)</h2><p>convert AER (azimuth, elevation, slant range) to ECI NOTE: because underlying ecef2eci() is rotation only, error can be order 1..10%</p><h2 id="3">Inputs</h2><div><ul><li>utc: datetime UTC</li><li>az,el,rng: (degrees, meters)</li><li>lat, lon, alt: latitude, longitude, altiude of observer (degrees, meters)</li></ul></div><h2 id="4">Outputs</h2><div><ul><li>x, y, z:  ECI x, y, z</li></ul></div><p class="footer"><br><a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2022b</a><br></p></div><!--
 ##### SOURCE BEGIN #####
 function [x, y, z] = aer2eci(utc, az, el, rng, lat, lon, alt)
+%% aer2eci(utc, az, el, rng, lat, lon, alt)
 % convert AER (azimuth, elevation, slant range) to ECI
 % NOTE: because underlying ecef2eci() is rotation only, error can be order
 % 1..10%
 %
-% parameters:
-% utc: datetime UTC
-% az,el,rng: (degrees, meters)
-% lat, lon, alt: latitude, longitude, altiude of observer (degrees, meters)
+%%% Inputs
+% * utc: datetime UTC
+% * az,el,rng: (degrees, meters)
+% * lat, lon, alt: latitude, longitude, altiude of observer (degrees, meters)
 %
-% outputs:
-% x, y, z:  ECI x, y, z
+%%% Outputs
+% * x, y, z:  ECI x, y, z
 arguments
   utc datetime
   az {mustBeReal}

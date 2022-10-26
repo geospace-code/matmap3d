@@ -67,10 +67,11 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
 
 
 
-  </style></head><body><div class="content"><h2>Contents</h2><div><ul><li><a href="#2">geodetic2aer   from an observer's perspective, convert target coordinates to azimuth, elevation, slant range.</a></li><li><a href="#3">Inputs</a></li><li><a href="#4">Outputs</a></li></ul></div><h2 id="2">geodetic2aer   from an observer's perspective, convert target coordinates to azimuth, elevation, slant range.</h2><h2 id="3">Inputs</h2><div><ul><li>lat,lon, alt:  ellipsoid geodetic coordinates of point under test (degrees, degrees, meters)</li><li>lat0, lon0, alt0: ellipsoid geodetic coordinates of observer/reference (degrees, degrees, meters)</li><li>spheroid: referenceEllipsoid</li><li>angleUnit: string for angular units. Default 'd': degrees, otherwise Radians</li></ul></div><h2 id="4">Outputs</h2><div><ul><li>az, el, slantrange: look angles and distance to point under test (degrees, degrees, meters)</li><li>az: azimuth clockwise from local north</li><li>el: elevation angle above local horizon</li></ul></div><p>Copyright (c) 2014-2018 SciVision, Inc. Copyright (c) 2013, Felipe Geremia Nievinski</p><p>Redistribution and use in source and binary forms, with or without modification, are permitted provided that the following conditions are met: 1. Redistributions of source code must retain the above copyright notice, this list of conditions and the following disclaimer. 2. Redistributions in binary form must reproduce the above copyright notice, this list of conditions and the following disclaimer in the documentation and/or other materials provided with the distribution. THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.</p><p class="footer"><br><a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2022b</a><br></p></div><!--
+  </style></head><body><div class="content"><h2>Contents</h2><div><ul><li><a href="#2">geodetic2aer</a></li><li><a href="#3">Inputs</a></li><li><a href="#4">Outputs</a></li></ul></div><h2 id="2">geodetic2aer</h2><p>from an observer's perspective, convert target coordinates to azimuth, elevation, slant range.</p><h2 id="3">Inputs</h2><div><ul><li>lat,lon, alt:  ellipsoid geodetic coordinates of point under test (degrees, degrees, meters)</li><li>lat0, lon0, alt0: ellipsoid geodetic coordinates of observer/reference (degrees, degrees, meters)</li><li>spheroid: referenceEllipsoid</li><li>angleUnit: string for angular units. Default 'd': degrees, otherwise Radians</li></ul></div><h2 id="4">Outputs</h2><div><ul><li>az, el, slantrange: look angles and distance to point under test (degrees, degrees, meters)</li><li>az: azimuth clockwise from local north</li><li>el: elevation angle above local horizon</li></ul></div><p class="footer"><br><a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2022b</a><br></p></div><!--
 ##### SOURCE BEGIN #####
 function [az, el, slantRange] = geodetic2aer(lat, lon, alt, lat0, lon0, alt0, spheroid, angleUnit)
-%% geodetic2aer   from an observer's perspective, convert target coordinates to azimuth, elevation, slant range.
+%% geodetic2aer
+% from an observer's perspective, convert target coordinates to azimuth, elevation, slant range.
 %
 %%% Inputs
 % * lat,lon, alt:  ellipsoid geodetic coordinates of point under test (degrees, degrees, meters)
@@ -97,14 +98,6 @@ end
 [az, el, slantRange] = matmap3d.enu2aer(e, n, u, angleUnit);
 
 end
-%%
-% Copyright (c) 2014-2018 SciVision, Inc.
-% Copyright (c) 2013, Felipe Geremia Nievinski
-%
-% Redistribution and use in source and binary forms, with or without modification, are permitted provided that the following conditions are met:
-% 1. Redistributions of source code must retain the above copyright notice, this list of conditions and the following disclaimer.
-% 2. Redistributions in binary form must reproduce the above copyright notice, this list of conditions and the following disclaimer in the documentation and/or other materials provided with the distribution.
-% THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 ##### SOURCE END #####
 --></body></html>

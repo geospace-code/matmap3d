@@ -67,10 +67,11 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
 
 
 
-  </style></head><body><div class="content"><h2>Contents</h2><div><ul><li><a href="#2">aer2geodetic  convert azimuth, elevation, range of target from observer to geodetic coordiantes</a></li><li><a href="#3">Inputs</a></li><li><a href="#4">Outputs</a></li></ul></div><h2 id="2">aer2geodetic  convert azimuth, elevation, range of target from observer to geodetic coordiantes</h2><h2 id="3">Inputs</h2><div><ul><li>az, el, slantrange: look angles and distance to point under test (degrees, degrees, meters)</li><li>az: azimuth clockwise from local north</li><li>el: elevation angle above local horizon</li><li>lat0, lon0, alt0: ellipsoid geodetic coordinates of observer/reference (degrees, degrees, meters)</li><li>spheroid: referenceEllipsoid</li><li>angleUnit: string for angular units. Default 'd': degrees</li></ul></div><h2 id="4">Outputs</h2><div><ul><li>lat1,lon1,alt1: geodetic coordinates of test points (degrees,degrees,meters)</li></ul></div><p>Copyright (c) 2020 SciVision, Inc. Copyright (c) 2013, Felipe Geremia Nievinski</p><p>Redistribution and use in source and binary forms, with or without modification, are permitted provided that the following conditions are met: 1. Redistributions of source code must retain the above copyright notice, this list of conditions and the following disclaimer. 2. Redistributions in binary form must reproduce the above copyright notice, this list of conditions and the following disclaimer in the documentation and/or other materials provided with the distribution. THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.</p><p class="footer"><br><a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2022b</a><br></p></div><!--
+  </style></head><body><div class="content"><h2>Contents</h2><div><ul><li><a href="#2">aer2geodetic(az, el, slantRange, lat0, lon0, alt0, spheroid, angleUnit)</a></li><li><a href="#3">Inputs</a></li><li><a href="#4">Outputs</a></li></ul></div><h2 id="2">aer2geodetic(az, el, slantRange, lat0, lon0, alt0, spheroid, angleUnit)</h2><p>convert azimuth, elevation, range of target from observer to geodetic coordiantes</p><h2 id="3">Inputs</h2><div><ul><li>az, el, slantrange: look angles and distance to point under test (degrees, degrees, meters)</li><li>az: azimuth clockwise from local north</li><li>el: elevation angle above local horizon</li><li>lat0, lon0, alt0: ellipsoid geodetic coordinates of observer/reference (degrees, degrees, meters)</li><li>spheroid: referenceEllipsoid</li><li>angleUnit: string for angular units. Default 'd': degrees</li></ul></div><h2 id="4">Outputs</h2><div><ul><li>lat1,lon1,alt1: geodetic coordinates of test points (degrees,degrees,meters)</li></ul></div><p class="footer"><br><a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2022b</a><br></p></div><!--
 ##### SOURCE BEGIN #####
 function [lat1, lon1, alt1] = aer2geodetic(az, el, slantRange, lat0, lon0, alt0, spheroid, angleUnit)
-%% aer2geodetic  convert azimuth, elevation, range of target from observer to geodetic coordiantes
+%% aer2geodetic(az, el, slantRange, lat0, lon0, alt0, spheroid, angleUnit)
+% convert azimuth, elevation, range of target from observer to geodetic coordiantes
 %
 %%% Inputs
 % * az, el, slantrange: look angles and distance to point under test (degrees, degrees, meters)
@@ -98,14 +99,6 @@ end
 [lat1, lon1, alt1] = matmap3d.ecef2geodetic(spheroid, x, y, z, angleUnit);
 
 end
-%%
-% Copyright (c) 2020 SciVision, Inc.
-% Copyright (c) 2013, Felipe Geremia Nievinski
-%
-% Redistribution and use in source and binary forms, with or without modification, are permitted provided that the following conditions are met:
-% 1. Redistributions of source code must retain the above copyright notice, this list of conditions and the following disclaimer.
-% 2. Redistributions in binary form must reproduce the above copyright notice, this list of conditions and the following disclaimer in the documentation and/or other materials provided with the distribution.
-% THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 ##### SOURCE END #####
 --></body></html>

@@ -67,22 +67,27 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
 
 
 
-  </style></head><body><div class="content"><h2>Contents</h2><div><ul><li><a href="#3">Vallado Eq. 3-42 p. 184, Seidelmann 3.311-1</a></li><li><a href="#4">Eqn. 3-47 p. 188</a></li><li><a href="#5">1/86400 and %(2*pi) implied by units of radians</a></li></ul></div><h2 id="3">Vallado Eq. 3-42 p. 184, Seidelmann 3.311-1</h2><h2 id="4">Eqn. 3-47 p. 188</h2><h2 id="5">1/86400 and %(2*pi) implied by units of radians</h2><p class="footer"><br><a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2022b</a><br></p></div><!--
+  </style></head><body><div class="content"><h2>Contents</h2><div><ul><li><a href="#2">greenwichsrt(Jdate)</a></li><li><a href="#3">Inputs</a></li><li><a href="#4">Outputs</a></li></ul></div><h2 id="2">greenwichsrt(Jdate)</h2><pre>compute greenwich sidereal time from D. Vallado 4th edition</pre><h2 id="3">Inputs</h2><p>Jdate: Julian days from Jan 1, 4713 BCE from juliantime(utc) or juliandate(utc)</p><h2 id="4">Outputs</h2><pre>gst: greenwich sidereal time    [0, 2pi)</pre><p class="footer"><br><a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2022b</a><br></p></div><!--
 ##### SOURCE BEGIN #####
 function gst = greenwichsrt(Jdate)
+%% greenwichsrt(Jdate)
 %  compute greenwich sidereal time from D. Vallado 4th edition
 %
-%  Jdate: Julian days from Jan 1, 4713 BCE from juliantime(utc) or juliandate(utc)
+%%% Inputs
+% Jdate: Julian days from Jan 1, 4713 BCE from juliantime(utc) or juliandate(utc)
+%%% Outputs
 %  gst: greenwich sidereal time    [0, 2pi)
 arguments
   Jdate {mustBeReal,mustBeNonnegative}
 end
-%% Vallado Eq. 3-42 p. 184, Seidelmann 3.311-1
+
+% Vallado Eq. 3-42 p. 184, Seidelmann 3.311-1
 tUT1 = (Jdate - 2451545) / 36525;
-%% Eqn. 3-47 p. 188
+% Eqn. 3-47 p. 188
 gmst_sec = 67310.54841 + (876600 * 3600 + 8640184.812866) * tUT1 + 0.093104 * tUT1 .^ 2 - 6.2e-6 * tUT1 .^ 3;
-%% 1/86400 and %(2*pi) implied by units of radians
+% 1/86400 and %(2*pi) implied by units of radians
 gst = mod(gmst_sec * (2 * pi) / 86400.0, 2 * pi);
+
 end
 
 ##### SOURCE END #####

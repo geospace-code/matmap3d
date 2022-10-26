@@ -67,10 +67,11 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
 
 
 
-  </style></head><body><div class="content"><h2>Contents</h2><div><ul><li><a href="#2">ecef2enuv convert <b>vector projection</b> UVW to ENU</a></li><li><a href="#3">Inputs</a></li><li><a href="#4">Outputs</a></li><li><a href="#5">compute</a></li></ul></div><h2 id="2">ecef2enuv convert <b>vector projection</b> UVW to ENU</h2><h2 id="3">Inputs</h2><div><ul><li>u,v,w: meters</li><li>lat0,lon0: geodetic latitude and longitude (degrees)</li><li>angleUnit: string for angular system. Default 'd' degrees</li></ul></div><h2 id="4">Outputs</h2><div><ul><li>e,n,Up:  East, North, Up vector</li></ul></div><h2 id="5">compute</h2><p>Copyright (c) 2014-2018 SciVision, Inc. Copyright (c) 2013, Felipe Geremia Nievinski</p><p>Redistribution and use in source and binary forms, with or without modification, are permitted provided that the following conditions are met: 1. Redistributions of source code must retain the above copyright notice, this list of conditions and the following disclaimer. 2. Redistributions in binary form must reproduce the above copyright notice, this list of conditions and the following disclaimer in the documentation and/or other materials provided with the distribution. THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.</p><p class="footer"><br><a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2022b</a><br></p></div><!--
+  </style></head><body><div class="content"><h2>Contents</h2><div><ul><li><a href="#2">ecef2enuv</a></li><li><a href="#3">Inputs</a></li><li><a href="#4">Outputs</a></li></ul></div><h2 id="2">ecef2enuv</h2><p>convert <b>vector projection</b> UVW to ENU</p><h2 id="3">Inputs</h2><div><ul><li>u,v,w: meters</li><li>lat0,lon0: geodetic latitude and longitude (degrees)</li><li>angleUnit: string for angular system. Default 'd' degrees</li></ul></div><h2 id="4">Outputs</h2><div><ul><li>e,n,Up:  East, North, Up vector</li></ul></div><p class="footer"><br><a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2022b</a><br></p></div><!--
 ##### SOURCE BEGIN #####
 function [e, n, Up] = ecef2enuv(u, v, w, lat0, lon0, angleUnit)
-%% ecef2enuv convert *vector projection* UVW to ENU
+%% ecef2enuv
+% convert *vector projection* UVW to ENU
 %
 %%% Inputs
 % * u,v,w: meters
@@ -88,7 +89,6 @@ arguments
   angleUnit (1,1) string = "d"
 end
 
-%% compute
 if startsWith(angleUnit, 'd')
   lat0 = deg2rad(lat0);
   lon0 = deg2rad(lon0);
@@ -104,14 +104,6 @@ if abs(e) < 1e-3, e=0; end
 if abs(n) < 1e-3, n=0; end
 if abs(Up) < 1e-3, Up=0; end
 end
-%%
-% Copyright (c) 2014-2018 SciVision, Inc.
-% Copyright (c) 2013, Felipe Geremia Nievinski
-%
-% Redistribution and use in source and binary forms, with or without modification, are permitted provided that the following conditions are met:
-% 1. Redistributions of source code must retain the above copyright notice, this list of conditions and the following disclaimer.
-% 2. Redistributions in binary form must reproduce the above copyright notice, this list of conditions and the following disclaimer in the documentation and/or other materials provided with the distribution.
-% THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 ##### SOURCE END #####
 --></body></html>
