@@ -66,7 +66,7 @@ arguments
   lon2 {mustBeReal,mustBeEqualSize(lat1,lon2)}
 end
 
-%% Supply WGS84 earth ellipsoid axis lengths in meters:
+% Supply WGS84 earth ellipsoid axis lengths in meters:
 a = 6378137; % definitionally
 b = 6356752.31424518; % computed from WGS84 earth flattening coefficient
 % preserve true input latitudes:
@@ -190,4 +190,4 @@ if nargout > 2
     varargout{3} = reshape(rad2deg(a21),keepsize); % to degrees
 end
 
-end % function
+end

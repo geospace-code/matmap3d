@@ -1,4 +1,5 @@
 function [az, el, rng] = eci2aer(utc, x0, y0, z0, lat, lon, alt)
+%% eci2aer(utc, x0, y0, z0, lat, lon, alt)
 % convert ECI to AER (azimuth, elevation, slant range)
 %
 % parameters:
@@ -7,7 +8,7 @@ function [az, el, rng] = eci2aer(utc, x0, y0, z0, lat, lon, alt)
 % lat, lon, alt: latitude, longitude, altiude of observer (degrees, meters)
 %
 % outputs:
-% az,el,rng: aer
+% az,el,rng: Azimuth (degrees), Elevation (degrees), Slant Range (meters)
 arguments
   utc datetime
   x0 {mustBeReal}
