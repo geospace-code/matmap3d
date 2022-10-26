@@ -16,7 +16,7 @@ E = matmap3d.referenceEllipsoid('wgs84', lengthUnit);
 
 end
 %%
-%  Copyright (c) 2014-2018 Michael Hirsch, Ph.D.
+%  Copyright (c) 2014-2018 SciVision, Inc.
 %
 %  Redistribution and use in source and binary forms, with or without modification, are permitted provided that the following conditions are met:
 %  1. Redistributions of source code must retain the above copyright notice, this list of conditions and the following disclaimer.
