@@ -47,10 +47,10 @@ function [lat2,lon2,a21] = vreckon(lat1,lon1,s,a12)
 % (6) Tested but no warranty. Use at your own risk.
 % (7) Ver 1.0, Michael Kleder, November 2007
 arguments
-  lat1 {mustBeNumeric,mustBeReal}
-  lon1 {mustBeNumeric,mustBeReal}
-  s {mustBeNumeric,mustBeReal,mustBeNonnegative}
-  a12 {mustBeNumeric,mustBeReal}
+  lat1 {mustBeReal}
+  lon1 {mustBeReal}
+  s {mustBeReal,mustBeNonnegative}
+  a12 {mustBeReal}
 end
 %% compute
 a = 6378137; % semimajor axis

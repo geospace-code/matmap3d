@@ -9,11 +9,11 @@ function [e, n, Up] = ecef2enuv(u, v, w, lat0, lon0, angleUnit)
 %%% Outputs
 % * e,n,Up:  East, North, Up vector
 arguments
-  u {mustBeNumeric,mustBeReal}
-  v {mustBeNumeric,mustBeReal}
-  w {mustBeNumeric,mustBeReal}
-  lat0 {mustBeNumeric,mustBeReal}
-  lon0 {mustBeNumeric,mustBeReal}
+  u {mustBeReal}
+  v {mustBeReal}
+  w {mustBeReal}
+  lat0 {mustBeReal}
+  lon0 {mustBeReal}
   angleUnit (1,1) string = "d"
 end
 

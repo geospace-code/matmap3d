@@ -18,11 +18,11 @@ function [lat, lon, d] = lookAtSpheroid(lat0, lon0, h0, az, tilt, spheroid, angl
 % https://medium.com/@stephenhartzell/satellite-line-of-sight-intersection-with-earth-d786b4a6a9b6
 % Stephen Hartzell
 arguments
-  lat0 {mustBeNumeric,mustBeReal}
-  lon0 {mustBeNumeric,mustBeReal}
-  h0 {mustBeNumeric,mustBeReal,mustBeNonnegative}
-  az {mustBeNumeric,mustBeReal}
-  tilt {mustBeNumeric,mustBeReal}
+  lat0 {mustBeReal}
+  lon0 {mustBeReal}
+  h0 {mustBeReal,mustBeNonnegative}
+  az {mustBeReal}
+  tilt {mustBeReal}
   spheroid (1,1) matmap3d.referenceEllipsoid = matmap3d.wgs84Ellipsoid()
   angleUnit (1,1) string = "d"
 end

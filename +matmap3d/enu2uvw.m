@@ -10,11 +10,11 @@ function [u,v,w] = enu2uvw(east,north,up,lat0,lon0,angleUnit)
 %%% outputs
 % * u,v,w:   coordinates of test point(s) (meters)
 arguments
-  east {mustBeNumeric,mustBeReal}
-  north {mustBeNumeric,mustBeReal}
-  up {mustBeNumeric,mustBeReal}
-  lat0 {mustBeNumeric,mustBeReal}
-  lon0 {mustBeNumeric,mustBeReal}
+  east {mustBeReal}
+  north {mustBeReal}
+  up {mustBeReal}
+  lat0 {mustBeReal}
+  lon0 {mustBeReal}
   angleUnit (1,1) string = "d"
 end
 %% compute

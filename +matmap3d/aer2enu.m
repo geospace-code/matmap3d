@@ -10,9 +10,9 @@ function [e, n, u] = aer2enu (az, el, slantRange, angleUnit)
 %%% Outputs
 % * e,n,u:  East, North, Up coordinates of test points (meters)
 arguments
-  az {mustBeNumeric,mustBeReal}
-  el {mustBeNumeric,mustBeReal}
-  slantRange {mustBeNumeric,mustBeReal}
+  az {mustBeReal}
+  el {mustBeReal}
+  slantRange {mustBeReal}
   angleUnit (1,1) string = "d"
 end
 %% compute

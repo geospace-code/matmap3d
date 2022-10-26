@@ -10,9 +10,9 @@ function [az, elev, slantRange] = enu2aer(east, north, up, angleUnit)
 % * az: azimuth clockwise from local north
 % * el: elevation angle above local horizon
 arguments
-  east {mustBeNumeric,mustBeReal}
-  north {mustBeNumeric,mustBeReal}
-  up {mustBeNumeric,mustBeReal}
+  east {mustBeReal}
+  north {mustBeReal}
+  up {mustBeReal}
   angleUnit (1,1) string = "d"
 end
 

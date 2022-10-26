@@ -8,9 +8,9 @@ function [x,y,z] = ecef2eci(utc, x0, y0, z0)
 % x,y,z:  ECI position
 arguments
   utc (:,1) datetime
-  x0 (:,1) {mustBeNumeric,mustBeReal,mustBeEqualSize(utc,x0)}
-  y0 (:,1) {mustBeNumeric,mustBeReal,mustBeEqualSize(utc,y0)}
-  z0 (:,1) {mustBeNumeric,mustBeReal,mustBeEqualSize(utc,z0)}
+  x0 (:,1) {mustBeReal,mustBeEqualSize(utc,x0)}
+  y0 (:,1) {mustBeReal,mustBeEqualSize(utc,y0)}
+  z0 (:,1) {mustBeReal,mustBeEqualSize(utc,z0)}
 end
 %% Greenwich hour angles (radians)
 gst = matmap3d.greenwichsrt(juliandate(utc));
@@ -26,7 +26,3 @@ for j = 1:length(x)
   z(j) = eci(3);
 end
 end % function
-
-function mustBeEqualSize(a,b)
-assert(isequal(size(a),size(b)), 'Size of inputs must equal each other')
-end

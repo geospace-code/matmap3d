@@ -60,17 +60,11 @@ function varargout = vdist(lat1,lon1,lat2,lon2)
 % # No warranties; use at your own risk.
 
 arguments
-  lat1 {mustBeNumeric,mustBeReal}
-  lon1 {mustBeNumeric,mustBeReal}
-  lat2 {mustBeNumeric,mustBeReal}
-  lon2 {mustBeNumeric,mustBeReal}
+  lat1 {mustBeReal}
+  lon1 {mustBeReal,mustBeEqualSize(lat1,lon1)}
+  lat2 {mustBeReal,mustBeEqualSize(lat1,lat2)}
+  lon2 {mustBeReal,mustBeEqualSize(lat1,lon2)}
 end
-%% reshape inputs
-keepsize = size(lat1);
-lat1=lat1(:);
-lon1=lon1(:);
-lat2=lat2(:);
-lon2=lon2(:);
 
 %% Supply WGS84 earth ellipsoid axis lengths in meters:
 a = 6378137; % definitionally
@@ -123,11 +117,14 @@ while any(notdone)  % force at least one execution
       break
   end
   lambdaold(notdone) = lambda(notdone);
+
   sinsigma(notdone) = sqrt((cos(U2(notdone)).*sin(lambda(notdone)))...
       .^2+(cos(U1(notdone)).*sin(U2(notdone))-sin(U1(notdone)).*...
       cos(U2(notdone)).*cos(lambda(notdone))).^2); %#ok<*AGROW>
+
   cossigma(notdone) = sin(U1(notdone)).*sin(U2(notdone))+...
       cos(U1(notdone)).*cos(U2(notdone)).*cos(lambda(notdone));
+
   % eliminate rare imaginary portions at limit of numerical precision:
   sinsigma(notdone)=real(sinsigma(notdone));
   cossigma(notdone)=real(cossigma(notdone));
@@ -159,7 +156,7 @@ B = u2./1024.*(256+u2.*(-128+u2.*(74-47.*u2)));
 deltasigma = B.*sin(sigma).*(cos2sigmam+B./4.*(cos(sigma).*(-1+2.*...
     cos2sigmam.^2)-B./6.*cos2sigmam.*(-3+4.*sin(sigma).^2).*(-3+4*...
     cos2sigmam.^2)));
-varargout{1} = reshape(b.*A.*(sigma-deltasigma),keepsize);
+varargout{1} = b.*A.*(sigma-deltasigma);
 if nargout > 1
     % From point #1 to point #2
     % correct sign of lambda for azimuth calcs:
@@ -174,7 +171,7 @@ if nargout > 1
     % from poles:
     a12(lat1tr <= -90) = 0;
     a12(lat1tr >= 90 ) = pi;
-    varargout{2} = reshape(rad2deg(a12),keepsize); % to degrees
+    varargout{2} = rad2deg(a12); % to degrees
 end
 if nargout > 2
     % From point #2 to point #1

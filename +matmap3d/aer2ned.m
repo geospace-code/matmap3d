@@ -10,9 +10,9 @@ function [north, east, down] = aer2ned (az, el, slantRange, angleUnit)
 %%% Outputs
 % * north, east, down:  coordinates of points (meters)
 arguments
-  az {mustBeNumeric,mustBeReal}
-  el {mustBeNumeric,mustBeReal}
-  slantRange {mustBeNumeric,mustBeReal}
+  az {mustBeReal}
+  el {mustBeReal}
+  slantRange {mustBeReal}
   angleUnit (1,1) string = "d"
 end
 

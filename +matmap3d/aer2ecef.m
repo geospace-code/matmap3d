@@ -15,12 +15,12 @@ function [x,y,z] = aer2ecef(az, el, slantRange, lat0, lon0, alt0, spheroid, angl
 % * x,y,z: Earth Centered Earth Fixed (ECEF) coordinates of test point (meters)
 %% sanity checks
 arguments
-  az {mustBeNumeric,mustBeReal}
-  el {mustBeNumeric,mustBeReal}
-  slantRange {mustBeNumeric,mustBeReal, mustBeNonnegative}
-  lat0 {mustBeNumeric,mustBeReal}
-  lon0 {mustBeNumeric,mustBeReal}
-  alt0 {mustBeNumeric,mustBeReal}
+  az {mustBeReal}
+  el {mustBeReal}
+  slantRange {mustBeReal, mustBeNonnegative}
+  lat0 {mustBeReal}
+  lon0 {mustBeReal}
+  alt0 {mustBeReal}
   spheroid (1,1) matmap3d.referenceEllipsoid = matmap3d.wgs84Ellipsoid()
   angleUnit (1,1) string = "d"
 end

@@ -11,12 +11,12 @@ function [north, east, down] = ecef2ned (x, y, z, lat0, lon0, alt0, spheroid, an
 % * North,East,Down: coordinates of points (meters)
 
 arguments
-  x {mustBeNumeric,mustBeReal}
-  y {mustBeNumeric,mustBeReal}
-  z {mustBeNumeric,mustBeReal}
-  lat0 {mustBeNumeric,mustBeReal}
-  lon0 {mustBeNumeric,mustBeReal}
-  alt0 {mustBeNumeric,mustBeReal}
+  x {mustBeReal}
+  y {mustBeReal}
+  z {mustBeReal}
+  lat0 {mustBeReal}
+  lon0 {mustBeReal}
+  alt0 {mustBeReal}
   spheroid (1,1) matmap3d.referenceEllipsoid = matmap3d.wgs84Ellipsoid()
   angleUnit (1,1) string = "d"
 end

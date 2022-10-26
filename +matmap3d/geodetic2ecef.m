@@ -10,9 +10,9 @@ function [x,y,z] = geodetic2ecef(spheroid, lat, lon, alt, angleUnit)
 % * x,y,z:  ECEF coordinates of test point(s) (meters)
 arguments
   spheroid
-  lat {mustBeNumeric,mustBeReal}
-  lon {mustBeNumeric,mustBeReal}
-  alt {mustBeNumeric,mustBeReal}
+  lat {mustBeReal}
+  lon {mustBeReal}
+  alt {mustBeReal}
   angleUnit (1,1) string = "d"
 end
 

@@ -14,9 +14,9 @@ function [lat,lon,alt] = ecef2geodetic(spheroid, x, y, z, angleUnit)
 % Journal of Surveying Engineering. doi: 10.1061/(ASCE)0733-9453
 arguments
   spheroid
-  x {mustBeNumeric,mustBeReal}
-  y {mustBeNumeric,mustBeReal}
-  z {mustBeNumeric,mustBeReal}
+  x {mustBeReal}
+  y {mustBeReal}
+  z {mustBeReal}
   angleUnit (1,1) string = "d"
 end
 

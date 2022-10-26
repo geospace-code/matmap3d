@@ -4,7 +4,7 @@ function gst = greenwichsrt(Jdate)
 %  Jdate: Julian days from Jan 1, 4713 BCE from juliantime(utc) or juliandate(utc)
 %  gst: greenwich sidereal time    [0, 2pi)
 arguments
-  Jdate {mustBeNumeric,mustBeReal,mustBeNonnegative}
+  Jdate {mustBeReal,mustBeNonnegative}
 end
 %% Vallado Eq. 3-42 p. 184, Seidelmann 3.311-1
 tUT1 = (Jdate - 2451545) / 36525;

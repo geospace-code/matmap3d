@@ -12,12 +12,12 @@ function [az, el, slantRange] = geodetic2aer(lat, lon, alt, lat0, lon0, alt0, sp
 % * az: azimuth clockwise from local north
 % * el: elevation angle above local horizon
 arguments
-  lat {mustBeNumeric,mustBeReal}
-  lon {mustBeNumeric,mustBeReal}
-  alt {mustBeNumeric,mustBeReal}
-  lat0 {mustBeNumeric,mustBeReal}
-  lon0 {mustBeNumeric,mustBeReal}
-  alt0 {mustBeNumeric,mustBeReal}
+  lat {mustBeReal}
+  lon {mustBeReal}
+  alt {mustBeReal}
+  lat0 {mustBeReal}
+  lon0 {mustBeReal}
+  alt0 {mustBeReal}
   spheroid (1,1) matmap3d.referenceEllipsoid = matmap3d.wgs84Ellipsoid()
   angleUnit (1,1) string = "d"
 end
