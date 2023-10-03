@@ -14,7 +14,7 @@ function [lat,lon,alt] = ecef2geodetic(spheroid, x, y, z, angleUnit)
 % You, Rey-Jer. (2000). Transformation of Cartesian to Geodetic Coordinates without Iterations.
 % Journal of Surveying Engineering. doi: 10.1061/(ASCE)0733-9453
 arguments
-  spheroid
+  spheroid {mustBeScalarOrEmpty}
   x {mustBeReal}
   y {mustBeReal}
   z {mustBeReal}

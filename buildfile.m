@@ -50,7 +50,7 @@ r = codeIssues;
 files = r.Files;
 
 % remove nuisance functions
-i = contains(files, [mfilename, "buildfile.m", filesep + "private" + filesep, filesep + "+test" + filesep, "Test"]);
+i = contains(files, [mfilename, "buildfile.m", filesep + "private" + filesep, "Test"]);
 files(i) = [];
 
 pkg = what(pkg_name);
