@@ -15,10 +15,10 @@ jobs:
 
     strategy:
       matrix:
-        release: [R2020a, R2020b, R2021b, R2022b]
+        release: [R2020a, R2023b]
 
     steps:
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v4
 
     - name: Install MATLAB
       uses: matlab-actions/setup-matlab@v1
@@ -26,16 +26,13 @@ jobs:
         release: ${{ matrix.release }}
 
     - name: Run Matlab tests (buildtool)
-      if: ${{ matrix.release == 'R2022b' }}
-      timeout-minutes: 15
+      if: ${{ matrix.release >= 'R2022b' }}
+      timeout-minutes: 10
       uses: matlab-actions/run-build@v1
 
     - name: Run tests (manual)
-      if: ${{ matrix.release != 'R2022b' }}
-      timeout-minutes: 15
-      uses: matlab-actions/run-command@v1
+      if: ${{ matrix.release < 'R2022b' }}
+      timeout-minutes: 10
+      uses: matlab-actions/run-tests@v1
       with:
-        command: |
-          r = runtests('matmap3d');
-          assert(~isempty(r), "No tests were run")
-          assertSuccess(r)
+        strict: true
