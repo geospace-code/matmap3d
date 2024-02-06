@@ -21,18 +21,18 @@ jobs:
     - uses: actions/checkout@v4
 
     - name: Install MATLAB
-      uses: matlab-actions/setup-matlab@v1
+      uses: matlab-actions/setup-matlab@v2
       with:
         release: ${{ matrix.release }}
 
     - name: Run Matlab tests (buildtool)
       if: ${{ matrix.release >= 'R2022b' }}
       timeout-minutes: 10
-      uses: matlab-actions/run-build@v1
+      uses: matlab-actions/run-build@v2
 
     - name: Run tests (manual)
       if: ${{ matrix.release < 'R2022b' }}
       timeout-minutes: 10
-      uses: matlab-actions/run-tests@v1
+      uses: matlab-actions/run-tests@v2
       with:
         strict: true
