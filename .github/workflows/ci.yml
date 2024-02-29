@@ -36,3 +36,4 @@ jobs:
       uses: matlab-actions/run-tests@v2
       with:
         strict: true
+        select-by-folder: test

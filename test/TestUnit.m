@@ -1,10 +1,18 @@
-classdef unitTest < matlab.unittest.TestCase
+classdef TestUnit < matlab.unittest.TestCase
 
 properties
 TestData
 end
 
+
+
 methods(TestClassSetup)
+function setup_path(tc)
+import matlab.unittest.fixtures.PathFixture
+cwd = fileparts(mfilename("fullpath"));
+top = fullfile(cwd, "..");
+tc.applyFixture(PathFixture(top))
+end
 
 function setup(tc)
 tc.TestData.atol = 1e-9;
