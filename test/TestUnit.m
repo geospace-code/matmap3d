@@ -237,6 +237,9 @@ tc.verifyEqual([x,y,z],[tc.TestData.xl, tc.TestData.yl, tc.TestData.zl], 'AbsTol
 
 [e,n,u] = matmap3d.ecef2enu(x,y,z,lat,lon,alt, E, angleUnit); % round-trip
 tc.verifyEqual([e,n,u],[tc.TestData.er, tc.TestData.nr, tc.TestData.ur], 'AbsTol', atol, 'RelTol', rtol)
+
+[n1, e1, d] = matmap3d.ecef2ned(x,y,z,lat,lon,alt, E, angleUnit);
+tc.verifyEqual([e,n,u],[e1,n1,-d])
 end
 
 function test_lookAtSpheroid(tc)
