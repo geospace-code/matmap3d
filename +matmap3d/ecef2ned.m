@@ -22,7 +22,7 @@ arguments
   angleUnit (1,1) string = "d"
 end
 
-[east, north, up] = ecef2enu(x,y,z,lat0,lon0,alt0,spheroid,angleUnit);
+[east, north, up] = matmap3d.ecef2enu(x,y,z,lat0,lon0,alt0,spheroid,angleUnit);
 
 down = -up;
 
