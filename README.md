@@ -66,6 +66,6 @@ All other functions should have equivalent accuracy with Matlab vs. Python.
 ### GNU Octave
 
 GNU Octave users should consider the
-[Octave Mapping Toolbox](https://octave.sourceforge.io/mapping/index.html),
+[Octave Mapping Toolbox](https://gnu-octave.github.io/packages/mapping/),
 which added similar functions in
-[version 1.4](http://hg.code.sf.net/p/octave/mapping/file/tip/NEWS).
+[version 1.4.2](http://hg.code.sf.net/p/octave/mapping/file/tip/NEWS).
