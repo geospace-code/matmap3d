@@ -1,6 +1,4 @@
-function [e, n, Up] = ecef2enuv(u, v, w, lat0, lon0, angleUnit)
-%% ecef2enuv
-% convert *vector projection* UVW to ENU
+%% ECEF2ENUV convert *vector projection* UVW to ENU
 %
 %%% Inputs
 % * u,v,w: meters
@@ -9,6 +7,8 @@ function [e, n, Up] = ecef2enuv(u, v, w, lat0, lon0, angleUnit)
 %
 %%% Outputs
 % * e,n,Up:  East, North, Up vector
+
+function [e, n, Up] = ecef2enuv(u, v, w, lat0, lon0, angleUnit)
 arguments
   u {mustBeReal}
   v {mustBeReal}

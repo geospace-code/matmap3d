@@ -1,5 +1,4 @@
-function [lat, lon, alt] = enu2geodetic(east, north, up, lat0, lon0, alt0, spheroid, angleUnit)
-%% enu2geodetic   convert from ENU to geodetic coordinates
+%% ENU2GEODETIC convert from ENU to geodetic coordinates
 %
 %%% Inputs
 % * east,north,up:  ENU coordinates of point(s) (meters)
@@ -9,6 +8,8 @@ function [lat, lon, alt] = enu2geodetic(east, north, up, lat0, lon0, alt0, spher
 %
 %%% outputs
 % * lat,lon,alt: geodetic coordinates of test points (degrees,degrees,meters)
+
+function [lat, lon, alt] = enu2geodetic(east, north, up, lat0, lon0, alt0, spheroid, angleUnit)
 arguments
   east {mustBeReal}
   north {mustBeReal}

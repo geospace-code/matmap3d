@@ -1,12 +1,11 @@
-function [x,y,z] = eci2ecef(utc, x_eci, y_eci, z_eci)
-%% eci2ecef(utc, x_eci, y_eci, z_eci)
-% rotate ECI coordinates to ECEF
+%% ECI2ECEF rotate ECI coordinates to ECEF
 % because this doesn't account for nutation, etc. error is often > 1%
 %
 % x_eci, y_eci, z_eci:  eci position vectors
 % utc: Matlab datetime UTC
 %
 % x,y,z:  ECEF position (meters)
+function [x,y,z] = eci2ecef(utc, x_eci, y_eci, z_eci)
 arguments
   utc (:,1) datetime
   x_eci (:,1) {mustBeReal,mustBeEqualSize(utc,x_eci)}

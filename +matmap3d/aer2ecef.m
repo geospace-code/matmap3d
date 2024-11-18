@@ -1,6 +1,4 @@
-function [x,y,z] = aer2ecef(az, el, slantRange, lat0, lon0, alt0, spheroid, angleUnit)
-%% AER2CEF(az, el, slantRange, lat0, lon0, alt0, spheroid, angleUnit)
-% convert azimuth, elevation, range to target from observer to ECEF coordinates
+%% AER2ECEF convert azimuth, elevation, range to target from observer to ECEF coordinates
 %
 %%%  Inputs
 %
@@ -14,7 +12,9 @@ function [x,y,z] = aer2ecef(az, el, slantRange, lat0, lon0, alt0, spheroid, angl
 %%% outputs
 %
 % * x,y,z: Earth Centered Earth Fixed (ECEF) coordinates of test point (meters)
-%% sanity checks
+
+function [x,y,z] = aer2ecef(az, el, slantRange, lat0, lon0, alt0, spheroid, angleUnit)
+
 arguments
   az {mustBeReal}
   el {mustBeReal}

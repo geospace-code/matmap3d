@@ -1,6 +1,4 @@
-function N = get_radius_normal(lat, E)
-%% get_radius_normal
-% normal along the prime vertical section ellipsoidal radius of curvature
+%% GET_RADIUS_NORMAL normal along the prime vertical section ellipsoidal radius of curvature
 %
 %%% Inputs
 % * lat: geodetic latitude in Radians
@@ -8,6 +6,7 @@ function N = get_radius_normal(lat, E)
 %
 %%% Outputs
 % * N: normal along the prime vertical section ellipsoidal radius of curvature, at a given geodetic latitude.
+function N = get_radius_normal(lat, E)
 arguments
   lat {mustBeReal}
   E (1,1) matmap3d.referenceEllipsoid

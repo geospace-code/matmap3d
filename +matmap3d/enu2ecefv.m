@@ -1,5 +1,4 @@
-function [u, v, w] = enu2ecefv(east, north, up, lat0, lon0, angleUnit)
-%% enu2ecef  convert from ENU to ECEF coordinates
+%% ENU2ECEFV convert from ENU to ECEF coordinates
 %
 %%% Inputs
 % * e,n,u:  East, North, Up coordinates of point(s) (meters)
@@ -8,6 +7,8 @@ function [u, v, w] = enu2ecefv(east, north, up, lat0, lon0, angleUnit)
 %
 %%% outputs
 % * u,v,w:   coordinates of test point(s) (meters)
+
+function [u, v, w] = enu2ecefv(east, north, up, lat0, lon0, angleUnit)
 arguments
   east {mustBeReal}
   north {mustBeReal}

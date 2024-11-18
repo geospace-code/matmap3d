@@ -1,6 +1,4 @@
-function [x, y, z] = enu2ecef(east, north, up, lat0, lon0, alt0, spheroid, angleUnit)
-%% enu2ecef
-% convert from ENU to ECEF coordiantes
+%% ENU2ECEF convert from ENU to ECEF coordiantes
 %
 %%% Inputs
 % * east, north, up: coordinates of test points (meters)
@@ -10,6 +8,7 @@ function [x, y, z] = enu2ecef(east, north, up, lat0, lon0, alt0, spheroid, angle
 %
 %%% outputs
 % * x,y,z: Earth Centered Earth Fixed (ECEF) coordinates of test point (meters)
+function [x, y, z] = enu2ecef(east, north, up, lat0, lon0, alt0, spheroid, angleUnit)
 arguments
   east {mustBeReal}
   north {mustBeReal}

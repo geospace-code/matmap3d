@@ -1,4 +1,3 @@
-function varargout = vdist(lat1,lon1,lat2,lon2)
 %% VDIST - Using the WGS-84 Earth ellipsoid, compute the distance between two points
 %
 % within a few millimeters of accuracy, compute forward
@@ -16,6 +15,7 @@ function varargout = vdist(lat1,lon1,lat2,lon2)
 % * lat1 = GEODETIC latitude of first point (degrees)
 % * lon1 = longitude of first point (degrees)
 % * lat2, lon2 = second point (degrees)
+function varargout = vdist(lat1,lon1,lat2,lon2)
 %
 %%% Original algorithm source:
 %

@@ -1,5 +1,3 @@
-
-function [lat, lon, d] = lookAtSpheroid(lat0, lon0, h0, az, tilt, spheroid, angleUnit)
 %% LOOKATSPHEROID
 % Calculates line-of-sight intersection with Earth (or other ellipsoid) surface from above surface ./ orbit
 %
@@ -18,6 +16,7 @@ function [lat, lon, d] = lookAtSpheroid(lat0, lon0, h0, az, tilt, spheroid, angl
 % Algorithm based on:
 % https://medium.com/@stephenhartzell/satellite-line-of-sight-intersection-with-earth-d786b4a6a9b6
 % Stephen Hartzell
+function [lat, lon, d] = lookAtSpheroid(lat0, lon0, h0, az, tilt, spheroid, angleUnit)
 arguments
   lat0 {mustBeReal}
   lon0 {mustBeReal}

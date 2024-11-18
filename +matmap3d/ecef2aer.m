@@ -1,6 +1,4 @@
-function [az, el, slantRange] = ecef2aer(x, y, z, lat0, lon0, alt0, spheroid, angleUnit)
-%% ecef2aer(x, y, z, lat0, lon0, alt0, spheroid, angleUnit)
-% convert ECEF of target to azimuth, elevation, slant range from observer
+%% ECEF2AER convert ECEF of target to azimuth, elevation, slant range from observer
 %
 %%% Inputs
 % * x,y,z: Earth Centered Earth Fixed (ECEF) coordinates of test point (meters)
@@ -12,6 +10,8 @@ function [az, el, slantRange] = ecef2aer(x, y, z, lat0, lon0, alt0, spheroid, an
 % * az, el, slantrange: look angles and distance to point under test (degrees, degrees, meters)
 % * az: azimuth clockwise from local north
 % * el: elevation angle above local horizon
+function [az, el, slantRange] = ecef2aer(x, y, z, lat0, lon0, alt0, spheroid, angleUnit)
+
 arguments
   x {mustBeReal}
   y {mustBeReal}

@@ -1,5 +1,5 @@
-function [az, el, slantRange] = geodetic2aer(lat, lon, alt, lat0, lon0, alt0, spheroid, angleUnit)
-%% geodetic2aer
+
+%% GEODETIC2AER converts geodetic coordinates to azimuth, elevation, slant range
 % from an observer's perspective, convert target coordinates to azimuth, elevation, slant range.
 %
 %%% Inputs
@@ -12,6 +12,7 @@ function [az, el, slantRange] = geodetic2aer(lat, lon, alt, lat0, lon0, alt0, sp
 % * az, el, slantrange: look angles and distance to point under test (degrees, degrees, meters)
 % * az: azimuth clockwise from local north
 % * el: elevation angle above local horizon
+function [az, el, slantRange] = geodetic2aer(lat, lon, alt, lat0, lon0, alt0, spheroid, angleUnit)
 arguments
   lat {mustBeReal}
   lon {mustBeReal}

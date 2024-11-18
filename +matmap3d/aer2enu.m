@@ -1,6 +1,4 @@
-function [e, n, u] = aer2enu (az, el, slantRange, angleUnit)
-%% aer2enu(az, el, slantRange, angleUnit)
-% convert azimuth, elevation, range to ENU coordinates
+%% AER2ENU convert azimuth, elevation, range to ENU coordinates
 %
 %%% Inputs
 % * az, el, slantrange: look angles and distance to point under test (degrees, degrees, meters)
@@ -10,6 +8,7 @@ function [e, n, u] = aer2enu (az, el, slantRange, angleUnit)
 %
 %%% Outputs
 % * e,n,u:  East, North, Up coordinates of test points (meters)
+function [e, n, u] = aer2enu (az, el, slantRange, angleUnit)
 arguments
   az {mustBeReal}
   el {mustBeReal}

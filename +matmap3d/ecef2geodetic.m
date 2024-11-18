@@ -1,6 +1,4 @@
-function [lat,lon,alt] = ecef2geodetic(spheroid, x, y, z, angleUnit)
-%% ecef2geodetic
-% convert ECEF to geodetic coordinates
+%% ECEF2GEODETIC convert ECEF to geodetic coordinates
 %
 %%% Inputs
 % * x,y,z:  ECEF coordinates of test point(s) (meters)
@@ -13,6 +11,8 @@ function [lat,lon,alt] = ecef2geodetic(spheroid, x, y, z, angleUnit)
 % based on:
 % You, Rey-Jer. (2000). Transformation of Cartesian to Geodetic Coordinates without Iterations.
 % Journal of Surveying Engineering. doi: 10.1061/(ASCE)0733-9453
+
+function [lat,lon,alt] = ecef2geodetic(spheroid, x, y, z, angleUnit)
 arguments
   spheroid {mustBeScalarOrEmpty}
   x {mustBeReal}

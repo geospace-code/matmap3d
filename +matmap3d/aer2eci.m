@@ -1,6 +1,5 @@
-function [x, y, z] = aer2eci(utc, az, el, rng, lat, lon, alt)
-%% aer2eci(utc, az, el, rng, lat, lon, alt)
-% convert AER (azimuth, elevation, slant range) to ECI
+%% AER2ECI convert AER (azimuth, elevation, slant range) to ECI
+%
 % NOTE: because underlying ecef2eci() is rotation only, error can be order
 % 1..10%
 %
@@ -11,6 +10,7 @@ function [x, y, z] = aer2eci(utc, az, el, rng, lat, lon, alt)
 %
 %%% Outputs
 % * x, y, z:  ECI x, y, z
+function [x, y, z] = aer2eci(utc, az, el, rng, lat, lon, alt)
 arguments
   utc datetime
   az {mustBeReal}

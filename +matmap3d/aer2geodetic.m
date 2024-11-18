@@ -1,6 +1,4 @@
-function [lat1, lon1, alt1] = aer2geodetic(az, el, slantRange, lat0, lon0, alt0, spheroid, angleUnit)
-%% aer2geodetic(az, el, slantRange, lat0, lon0, alt0, spheroid, angleUnit)
-% convert azimuth, elevation, range of target from observer to geodetic coordiantes
+%% aer2geodetic convert azimuth, elevation, range of target from observer to geodetic coordiantes
 %
 %%% Inputs
 % * az, el, slantrange: look angles and distance to point under test (degrees, degrees, meters)
@@ -12,6 +10,7 @@ function [lat1, lon1, alt1] = aer2geodetic(az, el, slantRange, lat0, lon0, alt0,
 %
 %%% Outputs
 % * lat1,lon1,alt1: geodetic coordinates of test points (degrees,degrees,meters)
+function [lat1, lon1, alt1] = aer2geodetic(az, el, slantRange, lat0, lon0, alt0, spheroid, angleUnit)
 arguments
   az {mustBeReal}
   el {mustBeReal}

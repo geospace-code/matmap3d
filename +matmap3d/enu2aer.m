@@ -1,6 +1,4 @@
-function [az, elev, slantRange] = enu2aer(east, north, up, angleUnit)
-%% enu2aer
-% convert ENU to azimuth, elevation, slant range
+%% ENU2AER convert ENU to azimuth, elevation, slant range
 %
 %%% Inputs
 % * e,n,u:  East, North, Up coordinates of test points (meters)
@@ -10,6 +8,7 @@ function [az, elev, slantRange] = enu2aer(east, north, up, angleUnit)
 % * az, el, slantrange: look angles and distance to point under test (degrees, degrees, meters)
 % * az: azimuth clockwise from local north
 % * el: elevation angle above local horizon
+function [az, elev, slantRange] = enu2aer(east, north, up, angleUnit)
 arguments
   east {mustBeReal}
   north {mustBeReal}

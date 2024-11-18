@@ -1,6 +1,4 @@
-function [north, east, down] = aer2ned(az, el, slantRange, angleUnit)
-%% aer2ned(az, el, slantRange, angleUnit)
-% convert azimuth, elevation, range to NED coordinates
+%% AER2NED convert azimuth, elevation, range to NED coordinates
 %
 %%% Inputs
 % * az, el, slantrange: look angles and distance to point under test (degrees, degrees, meters)
@@ -10,6 +8,7 @@ function [north, east, down] = aer2ned(az, el, slantRange, angleUnit)
 %
 %%% Outputs
 % * north, east, down:  coordinates of points (meters)
+function [north, east, down] = aer2ned(az, el, slantRange, angleUnit)
 arguments
   az {mustBeReal}
   el {mustBeReal}

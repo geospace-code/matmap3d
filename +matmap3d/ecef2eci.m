@@ -1,6 +1,4 @@
-function [x,y,z] = ecef2eci(utc, x0, y0, z0)
-%% ecef2eci(utc, x0, y0, z0)
-% rotate ECEF coordinates to ECI
+%% ECEF2ECI rotate ECEF coordinates to ECI
 % because this doesn't account for nutation, etc. error is often > 1%
 %
 %%% Inputs
@@ -8,6 +6,8 @@ function [x,y,z] = ecef2eci(utc, x0, y0, z0)
 % utc: time UTC
 %%% Outputs
 % * x,y,z:  ECI position (meters)
+
+function [x,y,z] = ecef2eci(utc, x0, y0, z0)
 arguments
   utc (:,1) datetime
   x0 (:,1) {mustBeReal,mustBeEqualSize(utc,x0)}

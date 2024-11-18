@@ -1,11 +1,11 @@
-function gst = greenwichsrt(Jdate)
-%% greenwichsrt(Jdate)
+%% GREENWICHSRT  Compute greenwich sidereal time from Julian date
 %  compute greenwich sidereal time from D. Vallado 4th edition
 %
 %%% Inputs
 % Jdate: Julian days from Jan 1, 4713 BCE from juliantime(utc) or juliandate(utc)
 %%% Outputs
 %  gst: greenwich sidereal time    [0, 2pi)
+function gst = greenwichsrt(Jdate)
 arguments
   Jdate {mustBeReal,mustBeNonnegative}
 end

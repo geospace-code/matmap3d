@@ -1,5 +1,4 @@
-function [lat2,lon2,a21] = vreckon(lat1,lon1,s,a12)
-% RECKON - Using the WGS-84 Earth ellipsoid, travel a given distance along
+% VRECKON - Using the WGS-84 Earth ellipsoid, travel a given distance along
 %          a given azimuth starting at a given initial point, and return
 %          the endpoint within a few millimeters of accuracy, using
 %          Vincenty's algorithm.
@@ -46,6 +45,7 @@ function [lat2,lon2,a21] = vreckon(lat1,lon1,s,a12)
 %     for nearly antipodal points. (A warning is given by VDIST.)
 % (6) Tested but no warranty. Use at your own risk.
 % (7) Ver 1.0, Michael Kleder, November 2007
+function [lat2,lon2,a21] = vreckon(lat1,lon1,s,a12)
 arguments
   lat1 {mustBeReal}
   lon1 {mustBeReal}

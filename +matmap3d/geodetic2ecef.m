@@ -1,6 +1,4 @@
-function [x,y,z] = geodetic2ecef(spheroid, lat, lon, alt, angleUnit)
-%% geodetic2ecef
-% convert from geodetic to ECEF coordiantes
+%% GEODETIC2ECEF convert from geodetic to ECEF coordiantes
 %
 %%% Inputs
 % * lat,lon, alt:  ellipsoid geodetic coordinates of point(s) (degrees, degrees, meters)
@@ -9,6 +7,7 @@ function [x,y,z] = geodetic2ecef(spheroid, lat, lon, alt, angleUnit)
 %
 %%% outputs
 % * x,y,z:  ECEF coordinates of test point(s) (meters)
+function [x,y,z] = geodetic2ecef(spheroid, lat, lon, alt, angleUnit)
 arguments
   spheroid {mustBeScalarOrEmpty}
   lat {mustBeReal}

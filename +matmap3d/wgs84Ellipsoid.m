@@ -1,6 +1,4 @@
-function E = wgs84Ellipsoid(lengthUnit)
-%% wgs84Ellipsoid
-% generate a WGS84 referenceEllipsoid
+%% WGS84ELLIPSOID - generate a WGS84 referenceEllipsoid
 %
 %%%  Inputs
 %
@@ -9,6 +7,7 @@ function E = wgs84Ellipsoid(lengthUnit)
 %%% Outputs
 %
 % * E: referenceEllipsoid
+function E = wgs84Ellipsoid(lengthUnit)
 arguments
   lengthUnit (1,1) string = "m"
 end
