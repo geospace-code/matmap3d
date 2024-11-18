@@ -1,0 +1,21 @@
+name: "matlab-buildtool"
+
+runs:
+
+  using: "composite"
+
+  steps:
+
+  - name: Run Matlab buildtool
+    if: ${{ matrix.release >= 'R2022b' || matrix.release == 'latest' || matrix.release == 'latest-including-prerelease' }}
+    uses: matlab-actions/run-build@v2
+    with:
+      startup-options: ${{ matrix.startup-options }}
+      tasks: test
+
+
+  - name: Run tests (manual)
+    if: ${{ matrix.release < 'R2022b' && matrix.release != 'latest' && matrix.release != 'latest-including-prerelease' }}
+    uses: matlab-actions/run-tests@v2
+    with:
+      select-by-folder: test

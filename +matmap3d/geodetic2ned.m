@@ -1,14 +1,14 @@
-function [north, east, down] = geodetic2ned(lat, lon, alt, lat0, lon0, alt0, spheroid, angleUnit)
-%% geodetic2ned    convert from geodetic to NED coordinates
+%% GEODETIC2NED   convert from geodetic to NED coordinates
 %
 %%% Inputs
 % * lat,lon, alt:  ellipsoid geodetic coordinates of point under test (degrees, degrees, meters)
 % * lat0, lon0, alt0: ellipsoid geodetic coordinates of observer/reference (degrees, degrees, meters)
 % * spheroid: referenceEllipsoid
 % * angleUnit: string for angular units. Default 'd': degrees
-%
-%%% outputs
-% * e,n,u:  East, North, Up coordinates of test points (meters)
+%% outputs
+% * n,e,d: North, East, Down coordinates of test points (meters)
+
+function [north, east, down] = geodetic2ned(lat, lon, alt, lat0, lon0, alt0, spheroid, angleUnit)
 arguments
   lat {mustBeReal}
   lon {mustBeReal}
