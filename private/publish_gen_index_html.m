@@ -13,6 +13,10 @@ pkg = what("+" + pkg_name);
 % "+" avoids picking up cwd of same name
 assert(~isempty(pkg), pkg_name + " is not detected as a Matlab directory or package")
 
+%% Git info
+repo = gitrepo(pkg.path);
+git_txt = "Git branch / commit: " + repo.CurrentBranch.Name + " " + extractBefore(repo.LastCommit.ID, 8);
+
 %% generate docs
 readme = fullfile(outdir, "index.html");
 
@@ -22,7 +26,8 @@ end
 
 txt = ["<!DOCTYPE html> <head> <title>" + pkg_name + " API</title> <body>", ...
      "<h1>" + pkg_name + " API</h1>", ...
-     tagline, ...
+     "<p>" + tagline + "</p>", ...
+     "<p>" + git_txt + "</p>", ...
      "<h2>API Reference</h2>"];
 fid = fopen(readme, 'w');
 fprintf(fid, join(txt, "\n"));
