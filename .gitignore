@@ -2,5 +2,5 @@ docs/
 resources/
 *.asv
 *.m~
-code-coverage/
-test-results/
+code-coverage.xml
+.buildtool/
