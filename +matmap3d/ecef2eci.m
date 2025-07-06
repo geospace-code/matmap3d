@@ -48,3 +48,12 @@ if nargout > 1
 end
 
 end
+
+%!test
+%! pkg load tablicious
+%! pkg load hdf5oct
+%! eopdata = h5read("private/EOP-All.h5", '/eop');
+%! utc = datetime(2019, 1, 4, 12,0,0);
+%! ecef = [-5762640; -1682738; 3156028];
+%! r_eci = ecef2eci(utc, ecef, [], eopdata);
+%! assert(abs(r_eci - [-2981829.07728415; 5207029.04470791; 3161595.0981204]) < 1e-5 * max(abs(r_eci)))

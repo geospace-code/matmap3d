@@ -13,7 +13,7 @@ arguments
   az {mustBeReal}
   el {mustBeReal}
   slantRange {mustBeReal}
-  angleUnit (1,1) string = "d"
+  angleUnit {mustBeTextScalar} = 'd'
 end
 
 if startsWith(angleUnit,'d')

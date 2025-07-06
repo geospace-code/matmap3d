@@ -13,7 +13,7 @@ arguments
   lat {mustBeReal}
   lon {mustBeReal}
   alt {mustBeReal}
-  angleUnit (1,1) string = "d"
+  angleUnit {mustBeTextScalar} = 'd'
 end
 
 %% defaults

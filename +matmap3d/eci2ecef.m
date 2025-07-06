@@ -18,7 +18,7 @@ mjd_utc = Mjday(utc);
 [~,~,~,TT_UTC] = timediff(UT1_UTC,TAI_UTC);
 
 MJD_UT1 = mjd_utc + UT1_UTC/86400;
-MJD_TT  = mjd_utc + TT_UTC/86400; 
+MJD_TT  = mjd_utc + TT_UTC/86400;
 
 % ICRS to ITRS transformation matrix and its derivative
 P      = PrecMatrix(51544.5, MJD_TT);     % IAU 1976 Precession
@@ -42,3 +42,12 @@ if nargout > 1
 end
 
 end
+
+%!test
+%! pkg load tablicious
+%! pkg load hdf5oct
+%! eopdata = h5read("private/EOP-All.h5", '/eop');
+%! utc = datetime(2019, 1, 4, 12,0,0);
+%! eci = [-2981784; 5207055; 3161595];
+%! r_ecef = eci2ecef(utc, eci, [], eopdata);
+%! assert(abs(r_ecef - [-5762654.65677142; -1682688.09235503; 3156027.98313692]) < 2e-5 * max(abs(r_ecef)))

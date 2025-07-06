@@ -24,7 +24,7 @@ arguments
   az {mustBeReal}
   tilt {mustBeReal}
   spheroid (1,1) matmap3d.referenceEllipsoid = matmap3d.wgs84Ellipsoid()
-  angleUnit (1,1) string = "d"
+  angleUnit {mustBeTextScalar} = 'd'
 end
 
 if startsWith(angleUnit, 'd')

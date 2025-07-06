@@ -18,7 +18,7 @@ arguments
   lon0 {mustBeReal}
   alt0 {mustBeReal}
   spheroid (1,1) matmap3d.referenceEllipsoid = matmap3d.wgs84Ellipsoid()
-  angleUnit (1,1) string = "d"
+  angleUnit {mustBeTextScalar} = 'd'
 end
 
 [x, y, z] = matmap3d.enu2ecef(east, north, up, lat0, lon0, alt0, spheroid, angleUnit);

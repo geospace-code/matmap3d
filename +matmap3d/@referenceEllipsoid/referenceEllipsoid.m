@@ -21,11 +21,11 @@ end
 methods
 function e = referenceEllipsoid(name, lengthUnit)
 arguments
-  name (1,1) string = "wgs84"
-  lengthUnit (1,1) string = "m"
+  name {mustBeTextScalar} = 'wgs84'
+  lengthUnit {mustBeTextScalar} = 'm'
 end
 
-mustBeMember(lengthUnit, ["m", "meters"])
+assert(any(strcmp(lengthUnit, {'m', 'meter', 'meters'})))
 
 switch name
 case 'wgs84'
@@ -53,7 +53,7 @@ case 'grs80'
   e.Eccentricity  = get_eccentricity(e);
   e.MeanRadius = meanradius(e);
   e.Volume = spheroidvolume(e);
-otherwise, error(name + " not yet implemented")
+otherwise, error('%s not yet implemented', name)
 end
 end
 

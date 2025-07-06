@@ -13,7 +13,7 @@ arguments
   east {mustBeReal}
   north {mustBeReal}
   up {mustBeReal}
-  angleUnit (1,1) string = "d"
+  angleUnit {mustBeTextScalar} = 'd'
 end
 
 if abs(east) < 1e-3, east = 0.; end  % singularity, 1 mm precision

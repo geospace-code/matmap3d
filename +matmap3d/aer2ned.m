@@ -13,7 +13,7 @@ arguments
   az {mustBeReal}
   el {mustBeReal}
   slantRange {mustBeReal}
-  angleUnit (1,1) string = "d"
+  angleUnit {mustBeTextScalar} = 'd'
 end
 
 [east, north, up] = matmap3d.aer2enu(az, el, slantRange, angleUnit);

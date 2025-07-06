@@ -18,7 +18,7 @@ arguments
   x {mustBeReal}
   y {mustBeReal}
   z {mustBeReal}
-  angleUnit (1,1) string = "d"
+  angleUnit {mustBeTextScalar} = 'd'
 end
 
 if isempty(spheroid)

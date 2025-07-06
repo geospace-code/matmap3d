@@ -14,7 +14,7 @@ arguments
   up {mustBeReal}
   lat0 {mustBeReal}
   lon0 {mustBeReal}
-  angleUnit (1,1) string = "d"
+  angleUnit {mustBeTextScalar} = 'd'
 end
 
 if startsWith(angleUnit, 'd')
