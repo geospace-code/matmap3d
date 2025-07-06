@@ -6,26 +6,14 @@ runs:
 
   steps:
 
-  - name: Run Matlab buildtool
-    if: ${{ matrix.release >= 'R2024a' }}
+  - name: Check Matlab Syntax
+    if: ${{ matrix.release >= 'R2023b' }}
     uses: matlab-actions/run-build@v2
     with:
-      startup-options: ${{ matrix.startup-options }}
-      tasks: check test
+      tasks: check
 
-
-  - name: Run tests (manual)
-    if: ${{ matrix.release < 'R2024a' }}
-    uses: matlab-actions/run-tests@v2
+  - name: Test Matlab Code
+    if: ${{ matrix.release >= 'R2023b' }}
+    uses: matlab-actions/run-build@v2
     with:
-      source-folder: addpath("${{ github.workspace }}")
-      startup-options: -sd ./test -logfile ${{ matrix.release }}-${{ runner.os }}-test.log
-
-
-  - name: upload logfile
-    if: ${{ hashFiles(matrix.release-runner.os-test.log) != '' }}
-    uses: actions/upload-artifact@v4
-    with:
-      name: ${{ matrix.release }}-${{ runner.os }}-test-log
-      path: ${{ matrix.release }}-${{ runner.os }}-test.log
-      retention-days: 1
+      tasks: test

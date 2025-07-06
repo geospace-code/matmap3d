@@ -3,7 +3,6 @@ classdef TestUnit < matlab.unittest.TestCase
 properties
 atol = 1e-9
 rtol = 1e-6
-E = matmap3d.wgs84Ellipsoid()
 angleUnit='d'
 lat = 42
 lon = -82
@@ -34,58 +33,62 @@ end
 methods(Test)
 
 function test_ellipsoid(tc)
-tc.verifyClass(tc.E, 'matmap3d.referenceEllipsoid')
+tc.verifyClass(matmap3d.wgs84Ellipsoid(), 'matmap3d.referenceEllipsoid')
 end
 
 function test_geodetic2ecef(tc)
 
-[x,y,z] = matmap3d.geodetic2ecef(tc.E, tc.lat, tc.lon, tc.alt, tc.angleUnit);
+E = matmap3d.wgs84Ellipsoid();
+
+[x,y,z] = matmap3d.geodetic2ecef(E, tc.lat, tc.lon, tc.alt, tc.angleUnit);
 tc.verifyEqual([x,y,z], [tc.x0, tc.y0, tc.z0], AbsTol=tc.atol, RelTol=tc.rtol)
 
 [x,y,z] = matmap3d.geodetic2ecef([], 0,0,-1);
-tc.verifyEqual([x,y,z], [tc.E.SemimajorAxis-1,0,0], AbsTol=tc.atol, RelTol=tc.rtol)
+tc.verifyEqual([x,y,z], [E.SemimajorAxis-1,0,0], AbsTol=tc.atol, RelTol=tc.rtol)
 
-[x,y,z] = matmap3d.geodetic2ecef(tc.E, 0,90,-1);
-tc.verifyEqual([x,y,z], [0, tc.E.SemimajorAxis-1,0], AbsTol=tc.atol, RelTol=tc.rtol)
+[x,y,z] = matmap3d.geodetic2ecef(E, 0,90,-1);
+tc.verifyEqual([x,y,z], [0, E.SemimajorAxis-1,0], AbsTol=tc.atol, RelTol=tc.rtol)
 
-[x,y,z] = matmap3d.geodetic2ecef(tc.E, 0,-90,-1);
-tc.verifyEqual([x,y,z], [0, -tc.E.SemimajorAxis+1,0], AbsTol=tc.atol, RelTol=tc.rtol)
+[x,y,z] = matmap3d.geodetic2ecef(E, 0,-90,-1);
+tc.verifyEqual([x,y,z], [0, -E.SemimajorAxis+1,0], AbsTol=tc.atol, RelTol=tc.rtol)
 
-[x,y,z] = matmap3d.geodetic2ecef(tc.E, 90,0,-1);
-tc.verifyEqual([x,y,z], [0,0,tc.E.SemiminorAxis-1], AbsTol=tc.atol, RelTol=tc.rtol)
+[x,y,z] = matmap3d.geodetic2ecef(E, 90,0,-1);
+tc.verifyEqual([x,y,z], [0, 0, E.SemiminorAxis-1], AbsTol=tc.atol, RelTol=tc.rtol)
 
-[x,y,z] = matmap3d.geodetic2ecef(tc.E, 90,15,-1);
-tc.verifyEqual([x,y,z], [0,0,tc.E.SemiminorAxis-1], AbsTol=tc.atol, RelTol=tc.rtol)
+[x,y,z] = matmap3d.geodetic2ecef(E, 90,15,-1);
+tc.verifyEqual([x,y,z], [0,0, E.SemiminorAxis-1], AbsTol=tc.atol, RelTol=tc.rtol)
 
-[x,y,z] = matmap3d.geodetic2ecef(tc.E, -90,0,-1);
-tc.verifyEqual([x,y,z], [0,0,-tc.E.SemiminorAxis+1], AbsTol=tc.atol, RelTol=tc.rtol)
+[x,y,z] = matmap3d.geodetic2ecef(E, -90,0,-1);
+tc.verifyEqual([x,y,z], [0,0, -E.SemiminorAxis+1], AbsTol=tc.atol, RelTol=tc.rtol)
 
 end
 
 function test_ecef2geodetic(tc)
 
-ea = tc.E.SemimajorAxis;
-eb = tc.E.SemiminorAxis;
+E = matmap3d.wgs84Ellipsoid();
 
-[lt, ln, at] = matmap3d.ecef2geodetic(tc.E, tc.x0, tc.y0, tc.z0, tc.angleUnit);
+ea = E.SemimajorAxis;
+eb = E.SemiminorAxis;
+
+[lt, ln, at] = matmap3d.ecef2geodetic(E, tc.x0, tc.y0, tc.z0, tc.angleUnit);
 tc.verifyEqual([lt, ln, at], [tc.lat, tc.lon, tc.alt], AbsTol=tc.atol, RelTol=tc.rtol)
 
 [lt, ln, at] = matmap3d.ecef2geodetic([], ea-1, 0, 0);
 tc.verifyEqual([lt, ln, at], [0, 0, -1], AbsTol=tc.atol, RelTol=tc.rtol)
 
-[lt, ln, at] = matmap3d.ecef2geodetic(tc.E, 0, ea-1, 0);
+[lt, ln, at] = matmap3d.ecef2geodetic(E, 0, ea-1, 0);
 tc.verifyEqual([lt, ln, at], [0, 90, -1], AbsTol=tc.atol, RelTol=tc.rtol)
 
-[lt, ln, at] = matmap3d.ecef2geodetic(tc.E, 0, 0, eb-1);
+[lt, ln, at] = matmap3d.ecef2geodetic(E, 0, 0, eb-1);
 tc.verifyEqual([lt, ln, at], [90, 0, -1], AbsTol=tc.atol, RelTol=tc.rtol)
 
-[lt, ln, at] = matmap3d.ecef2geodetic(tc.E, 0, 0, -eb+1);
+[lt, ln, at] = matmap3d.ecef2geodetic(E, 0, 0, -eb+1);
 tc.verifyEqual([lt, ln, at], [-90, 0, -1], AbsTol=tc.atol, RelTol=tc.rtol)
 
-[lt, ln, at] = matmap3d.ecef2geodetic(tc.E, -ea+1, 0, 0);
+[lt, ln, at] = matmap3d.ecef2geodetic(E, -ea+1, 0, 0);
 tc.verifyEqual([lt, ln, at], [0, 180, -1], AbsTol=tc.atol, RelTol=tc.rtol)
 
-[lt, ln, at] = matmap3d.ecef2geodetic(tc.E, (ea-1000)/sqrt(2), (ea-1000)/sqrt(2), 0);
+[lt, ln, at] = matmap3d.ecef2geodetic(E, (ea-1000)/sqrt(2), (ea-1000)/sqrt(2), 0);
 tc.verifyEqual([lt,ln,at], [0,45,-1000], AbsTol=tc.atol, RelTol=tc.rtol)
 
 end
@@ -113,66 +116,74 @@ end
 
 function test_ecef2aer(tc)
 
-[a, e, r] = matmap3d.ecef2aer(tc.xl, tc.yl, tc.zl, tc.lat, tc.lon, tc.alt, tc.E, tc.angleUnit);
+E = matmap3d.wgs84Ellipsoid();
+
+[a, e, r] = matmap3d.ecef2aer(tc.xl, tc.yl, tc.zl, tc.lat, tc.lon, tc.alt, E, tc.angleUnit);
 % round-trip
 tc.verifyEqual([a,e,r], [tc.az, tc.el, tc.srange], AbsTol=tc.atol, RelTol=tc.rtol)
 
 % singularity check
-[a, e, r] = matmap3d.ecef2aer(tc.E.SemimajorAxis-1, 0, 0, 0,0,0, tc.E, tc.angleUnit);
+[a, e, r] = matmap3d.ecef2aer(E.SemimajorAxis-1, 0, 0, 0,0,0, E, tc.angleUnit);
 tc.verifyEqual([a,e,r], [0, -tc.a90, 1], AbsTol=tc.atol, RelTol=tc.rtol)
 
-[a, e, r] = matmap3d.ecef2aer(-tc.E.SemimajorAxis+1, 0, 0, 0, 2*tc.a90,0, tc.E, tc.angleUnit);
+[a, e, r] = matmap3d.ecef2aer(-E.SemimajorAxis+1, 0, 0, 0, 2*tc.a90,0, E, tc.angleUnit);
 tc.verifyEqual([a,e,r], [0, -tc.a90, 1], AbsTol=tc.atol, RelTol=tc.rtol)
 
-[a, e, r] = matmap3d.ecef2aer(0, tc.E.SemimajorAxis-1, 0,0, tc.a90,0, tc.E, tc.angleUnit);
+[a, e, r] = matmap3d.ecef2aer(0, E.SemimajorAxis-1, 0,0, tc.a90,0, E, tc.angleUnit);
 tc.verifyEqual([a,e,r], [0, -tc.a90, 1], AbsTol=tc.atol, RelTol=tc.rtol)
 
-[a, e, r] = matmap3d.ecef2aer(0, -tc.E.SemimajorAxis+1, 0,0, -tc.a90,0, tc.E, tc.angleUnit);
+[a, e, r] = matmap3d.ecef2aer(0, -E.SemimajorAxis+1, 0,0, -tc.a90,0, E, tc.angleUnit);
 tc.verifyEqual([a,e,r], [0, -tc.a90, 1], AbsTol=tc.atol, RelTol=tc.rtol)
 
-[a, e, r] = matmap3d.ecef2aer(0, 0, tc.E.SemiminorAxis-1, tc.a90, 0, 0, tc.E, tc.angleUnit);
+[a, e, r] = matmap3d.ecef2aer(0, 0, E.SemiminorAxis-1, tc.a90, 0, 0, E, tc.angleUnit);
 tc.verifyEqual([a,e,r], [0, -tc.a90, 1], AbsTol=tc.atol, RelTol=tc.rtol)
 
-[a, e, r] = matmap3d.ecef2aer(0,  0, -tc.E.SemiminorAxis+1,-tc.a90,0,0, tc.E, tc.angleUnit);
+[a, e, r] = matmap3d.ecef2aer(0,  0, -E.SemiminorAxis+1,-tc.a90,0,0, E, tc.angleUnit);
 tc.verifyEqual([a,e,r], [0, -tc.a90, 1], AbsTol=tc.atol, RelTol=tc.rtol)
 
-[a, e, r] = matmap3d.ecef2aer((tc.E.SemimajorAxis-1000)/sqrt(2), (tc.E.SemimajorAxis-1000)/sqrt(2), 0, 0, 45, 0);
+[a, e, r] = matmap3d.ecef2aer((E.SemimajorAxis-1000)/sqrt(2), (E.SemimajorAxis-1000)/sqrt(2), 0, 0, 45, 0);
 tc.verifyEqual([a,e,r],[0,-90,1000], AbsTol=tc.atol, RelTol=tc.rtol)
 
-[x,y,z] = matmap3d.aer2ecef(tc.az, tc.el, tc.srange, tc.lat, tc.lon, tc.alt,tc.E, tc.angleUnit);
+[x,y,z] = matmap3d.aer2ecef(tc.az, tc.el, tc.srange, tc.lat, tc.lon, tc.alt, E, tc.angleUnit);
 tc.verifyEqual([x,y,z], [tc.xl, tc.yl, tc.zl], AbsTol=tc.atol, RelTol=tc.rtol)
 
-[a,e,r] = matmap3d.ecef2aer(x,y,z, tc.lat, tc.lon, tc.alt, tc.E, tc.angleUnit);
+[a,e,r] = matmap3d.ecef2aer(x,y,z, tc.lat, tc.lon, tc.alt, E, tc.angleUnit);
 tc.verifyEqual([a,e,r], [tc.az, tc.el, tc.srange], AbsTol=tc.atol, RelTol=tc.rtol)
 end
 
 function test_geodetic2aer(tc)
 
-[lt,ln,at] = matmap3d.aer2geodetic(tc.az, tc.el, tc.srange, tc.lat, tc.lon, tc.alt, tc.E, tc.angleUnit);
+E = matmap3d.wgs84Ellipsoid();
+
+[lt,ln,at] = matmap3d.aer2geodetic(tc.az, tc.el, tc.srange, tc.lat, tc.lon, tc.alt, E, tc.angleUnit);
 tc.verifyEqual([lt,ln,at], [tc.lat1, tc.lon1, tc.alt1], AbsTol=2*tc.atol_dist)
 
-[a, e, r] = matmap3d.geodetic2aer(lt,ln,at, tc.lat, tc.lon, tc.alt, tc.E, tc.angleUnit); % round-trip
+[a, e, r] = matmap3d.geodetic2aer(lt,ln,at, tc.lat, tc.lon, tc.alt, E, tc.angleUnit); % round-trip
 tc.verifyEqual([a,e,r], [tc.az, tc.el, tc.srange], AbsTol=tc.atol, RelTol=tc.rtol)
 end
 
 function test_geodetic2enu(tc)
 
-[e, n, u] = matmap3d.geodetic2enu(tc.lat, tc.lon, tc.alt-1, tc.lat, tc.lon, tc.alt, tc.E, tc.angleUnit);
+E = matmap3d.wgs84Ellipsoid();
+
+[e, n, u] = matmap3d.geodetic2enu(tc.lat, tc.lon, tc.alt-1, tc.lat, tc.lon, tc.alt, E, tc.angleUnit);
 tc.verifyEqual([e,n,u], [0,0,-1], AbsTol=tc.atol, RelTol=tc.rtol)
 
-[lt, ln, at] = matmap3d.enu2geodetic(e,n,u,tc.lat,tc.lon,tc.alt, tc.E, tc.angleUnit); % round-trip
+[lt, ln, at] = matmap3d.enu2geodetic(e,n,u,tc.lat,tc.lon,tc.alt, E, tc.angleUnit); % round-trip
 tc.verifyEqual([lt, ln, at],[tc.lat, tc.lon, tc.alt-1], AbsTol=tc.atol, RelTol=tc.rtol)
 end
 
 function test_enu2ecef(tc)
 
-[x, y, z] = matmap3d.enu2ecef(tc.er, tc.nr, tc.ur, tc.lat,tc.lon,tc.alt, tc.E, tc.angleUnit);
+E = matmap3d.wgs84Ellipsoid();
+
+[x, y, z] = matmap3d.enu2ecef(tc.er, tc.nr, tc.ur, tc.lat,tc.lon,tc.alt, E, tc.angleUnit);
 tc.verifyEqual([x,y,z],[tc.xl, tc.yl, tc.zl], AbsTol=tc.atol, RelTol=tc.rtol)
 
-[e,n,u] = matmap3d.ecef2enu(x,y,z,tc.lat,tc.lon,tc.alt, tc.E, tc.angleUnit); % round-trip
+[e,n,u] = matmap3d.ecef2enu(x,y,z,tc.lat,tc.lon,tc.alt, E, tc.angleUnit); % round-trip
 tc.verifyEqual([e,n,u],[tc.er, tc.nr, tc.ur], AbsTol=tc.atol, RelTol=tc.rtol)
 
-[n1, e1, d] = matmap3d.ecef2ned(x,y,z,tc.lat,tc.lon,tc.alt, tc.E, tc.angleUnit);
+[n1, e1, d] = matmap3d.ecef2ned(x,y,z,tc.lat,tc.lon,tc.alt, E, tc.angleUnit);
 tc.verifyEqual([e,n,u],[e1,n1,-d])
 end
 
@@ -209,6 +220,15 @@ ecef = [-5762640; -1682738; 3156028];
 utc = datetime(2019, 1, 4, 12,0,0);
 r_eci = matmap3d.ecef2eci(utc, ecef);
 tc.verifyEqual(r_eci, [-2981829.07728415; 5207029.04470791; 3161595.0981204], RelTol=1e-5)
+end
+
+function test_ecef2eci_null(tc)
+E = matmap3d.wgs84Ellipsoid();
+
+[x, y, z] = matmap3d.geodetic2ecef(E, 0, 0, 0);
+t = datetime(2000, 1, 1, 12, 0, 0, TimeZone='UTCLeapSeconds');
+r_eci = matmap3d.ecef2eci(t, [x;y;z]);
+tc.verifyEqual(r_eci, [1158174.72525987; -6272101.9503871; -143.138407305876], RelTol=tc.rtol)
 end
 
 

@@ -4,13 +4,12 @@ plan = buildplan(localfunctions);
 
 addpath(plan.RootFolder)
 
-plan.DefaultTasks = "test";
-
 pkg_name = "+matmap3d";
 
-plan("check") = matlab.buildtool.tasks.CodeIssuesTask(pkg_name, Results="CodeIssues.sarif", ...
-  IncludeSubfolders=true, WarningThreshold=0);
-plan("test") = matlab.buildtool.tasks.TestTask("test", TestResults="TestResults.xml", Strict=false);
+if ~isMATLABReleaseOlderThan("R2023b")
+  plan("check") = matlab.buildtool.tasks.CodeIssuesTask(pkg_name, IncludeSubfolders=true, WarningThreshold=0);
+  plan("test") = matlab.buildtool.tasks.TestTask("test", Strict=false);
+end
 
 if ~isMATLABReleaseOlderThan("R2024a")
   plan("coverage") = matlab.buildtool.tasks.TestTask(Description="code coverage", SourceFiles="test", Strict=false, CodeCoverageResults="code-coverage.xml");
