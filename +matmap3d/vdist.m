@@ -15,6 +15,9 @@
 % * lat1 = GEODETIC latitude of first point (degrees)
 % * lon1 = longitude of first point (degrees)
 % * lat2, lon2 = second point (degrees)
+%
+% from https://www.mathworks.com/matlabcentral/fileexchange/8607-vectorized-geodetic-distance-and-azimuth-on-the-wgs84-earth-ellipsoid
+
 function varargout = vdist(lat1,lon1,lat2,lon2)
 %
 %%% Original algorithm source:
@@ -66,6 +69,7 @@ arguments
   lon2 {mustBeReal,mustBeEqualSize(lat1,lon2)}
 end
 
+keepsize = size(lat1);
 % Supply WGS84 earth ellipsoid axis lengths in meters:
 a = 6378137; % definitionally
 b = 6356752.31424518; % computed from WGS84 earth flattening coefficient
