@@ -60,9 +60,6 @@ PyMap3d can be accessed from Matlab by commands like:
 lla = py.pymap3d.geodetic2ecef(x,y,z)
 ```
 
-In particular, since PyMap3D uses Astropy for ECI transformations the accuracy will generally be better for `eci2*` or `*2eci` functions.
-All other functions should have equivalent accuracy with Matlab vs. Python.
-
 ### GNU Octave
 
 GNU Octave users should consider the

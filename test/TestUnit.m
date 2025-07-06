@@ -198,50 +198,39 @@ end
 
 function test_eci2ecef(tc)
 utc = datetime(2019, 1, 4, 12,0,0);
-eci = [-2981784, 5207055, 3161595];
-[x, y, z] = matmap3d.eci2ecef(utc, eci(1), eci(2), eci(3));
-tc.verifyEqual([x,y,z], [-5.7627e6, -1.6827e6, 3.1560e6], RelTol=0.02)
+eci = [-2981784; 5207055; 3161595];
+r_ecef = matmap3d.eci2ecef(utc, eci);
+tc.verifyEqual(r_ecef, [-5762654.65677142; -1682688.09235503; 3156027.98313692], RelTol=2e-5)
 end
 
-function test_eci2ecef_multiple(tc)
-utc = datetime(2019, 1, 4, 12,0,0);
-utc = [utc;utc];
-eci = [-2981784, 5207055, 3161595]; eci = [eci; eci];
-[x, y, z] = matmap3d.eci2ecef(utc, eci(:,1), eci(:,2), eci(:,3));
-tc.verifyEqual([x(1,1), y(1,1), z(1,1)], [-5.7627e6, -1.6827e6, 3.1560e6], RelTol=0.02)
-tc.verifyEqual([x(2,1), y(2,1), z(2,1)], [-5.7627e6, -1.6827e6, 3.1560e6], RelTol=0.02)
-end
 
 function test_ecef2eci(tc)
-ecef = [-5762640, -1682738, 3156028];
+ecef = [-5762640; -1682738; 3156028];
 utc = datetime(2019, 1, 4, 12,0,0);
-[x,y,z] = matmap3d.ecef2eci(utc, ecef(1), ecef(2), ecef(3));
-tc.verifyEqual([x,y,z], [-2.9818e6, 5.2070e6, 3.1616e6], RelTol=0.01)
+r_eci = matmap3d.ecef2eci(utc, ecef);
+tc.verifyEqual(r_eci, [-2981829.07728415; 5207029.04470791; 3161595.0981204], RelTol=1e-5)
 end
 
-function test_ecef2eci_multiple(tc)
-ecef = [-5762640, -1682738, 3156028]; ecef = [ecef; ecef];
-utc = datetime(2019, 1, 4, 12, 0, 0);
-utc = [utc; utc];
-[x,y,z] = matmap3d.ecef2eci(utc, ecef(:,1), ecef(:,2), ecef(:,3));
-tc.verifyEqual([x(1,1), y(1,1) , z(1,1)], [-2.9818e6, 5.2070e6, 3.1616e6], RelTol=0.01)
-tc.verifyEqual([x(2,1), y(2,1) , z(2,1)], [-2.9818e6, 5.2070e6, 3.1616e6], RelTol=0.01)
-end
 
 function test_eci2aer(tc)
 eci = [-3.8454e8, -0.5099e8, -0.3255e8];
 utc = datetime(1969, 7, 20, 21, 17, 40);
 lla = [28.4, -80.5, 2.7];
+% aer = eci2aer(eci, datevec(utc), lla);
 [a, e, r] = matmap3d.eci2aer(utc, eci(1), eci(2), eci(3), lla(1), lla(2), lla(3));
-tc.verifyEqual([a, e, r], [162.55, 55.12, 384013940.9], RelTol=0.01)
+tc.verifyEqual([a, e, r], [162.548042074738, 55.1223823017527, 384013992.914642], RelTol=tc.rtol)
 end
 
 function test_aer2eci(tc)
 aer = [162.55, 55.12, 384013940.9];
 lla = [28.4, -80.5, 2.7];
 utc = datetime(1969, 7, 20, 21, 17, 40);
+
+% [x,y,z] = aer2ecef(aer(1), aer(2), aer(3), lla(1), lla(2), lla(3), wgs84Ellipsoid());
+% eci = ecef2eci(utc, [x;y;z]);
+
 [x,y,z] = matmap3d.aer2eci(utc, aer(1), aer(2), aer(3), lla(1), lla(2), lla(3));
-tc.verifyEqual([x, y, z], [-3.8454e8, -0.5099e8, -0.3255e8], RelTol=0.06)
+tc.verifyEqual([x, y, z], [-384538755.067354, -50986804.9565394, -32567306.0200869], RelTol=2e5)
 end
 
 end

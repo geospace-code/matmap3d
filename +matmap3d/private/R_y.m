@@ -1,0 +1,23 @@
+%% R_Y rotation matrix around y-axis
+%  Input:
+%    angle       angle of rotation [rad]
+%
+%  Output:
+%    rotmat      rotation matrix
+%
+% Last modified:   2018/01/27   Meysam Mahooti
+%
+% Meysam Mahooti (2025).
+% ECI2ECEF & ECEF2ECI Transformations
+% https://www.mathworks.com/matlabcentral/fileexchange/61957-eci2ecef-ecef2eci-transformations)
+% MATLAB Central File Exchange.
+
+function rotmat = R_y(angle)
+
+C = cos(angle);
+S = sin(angle);
+rotmat = [ C   0   -S;
+       0   1    0;
+       S   0    C ];
+
+end
