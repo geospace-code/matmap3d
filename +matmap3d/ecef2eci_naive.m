@@ -1,5 +1,5 @@
-%% ECEF2ECI rotate ECEF coordinates to ECI
-% because this doesn't account for nutation, etc. error is often > 1%
+%% ECEF2ECI_NAIVE rotate ECEF coordinates to ECI
+% because this doesn't account for nutation, etc. error is generally significant
 %
 %%% Inputs
 % x0, y0, z0:  ECEF position (meters)
@@ -7,7 +7,7 @@
 %%% Outputs
 % * x,y,z:  ECI position (meters)
 
-function [x,y,z] = ecef2eci(utc, x0, y0, z0)
+function [x,y,z] = ecef2eci_naive(utc, x0, y0, z0)
 arguments
   utc (:,1) datetime
   x0 (:,1) {mustBeReal,mustBeEqualSize(utc,x0)}
@@ -19,9 +19,9 @@ end
 gst = matmap3d.greenwichsrt(juliandate(utc));
 
 % Convert into ECEF
-x = nan(size(gst));
-y = nan(size(x));
-z = nan(size(x));
+x = nan(like=gst);
+y = nan(like=gst);
+z = nan(like=gst);
 
 for j = 1:length(x)
   eci = matmap3d.R3(gst(j)).' * [x0(j), y0(j), z0(j)].';

@@ -1,8 +1,5 @@
 %% AER2ECI convert AER (azimuth, elevation, slant range) to ECI
 %
-% NOTE: because underlying ecef2eci() is rotation only, error can be order
-% 1..10%
-%
 %%% Inputs
 % * utc: datetime UTC
 % * az,el,rng: (degrees, meters)
