@@ -12,10 +12,10 @@
 
 function publish_gen_index_html(pkg_name, tagline, project_url, outdir)
 arguments
-  pkg_name (1,1) string
-  tagline (1,1) string
-  project_url (1,1) string
-  outdir (1,1) string
+  pkg_name {mustBeTextScalar}
+  tagline {mustBeTextScalar}
+  project_url {mustBeTextScalar}
+  outdir {mustBeTextScalar}
 end
 
 pkg = what("+" + pkg_name);
@@ -24,7 +24,7 @@ assert(~isempty(pkg), pkg_name + " is not detected as a Matlab directory or pack
 
 %% Git info
 repo = gitrepo(pkg.path);
-git_txt = "Git branch / commit: " + repo.CurrentBranch.Name + " " + extractBefore(repo.LastCommit.ID, 8);
+git_txt = "Git branch / commit: " + repo.CurrentBranch.Name + " " + repo.LastCommit.ID{1}(1:8);
 
 %% generate docs
 readme = fullfile(outdir, "index.html");

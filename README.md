@@ -24,7 +24,7 @@ which means `import matmap3d` statements allow scoped use of this code.
 Optionally, run self-tests:
 
 ```matlab
-buildtool
+buildtool check test
 ```
 
 ### Functions

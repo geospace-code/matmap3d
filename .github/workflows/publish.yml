@@ -21,6 +21,7 @@ concurrency:
   group: "pages"
   cancel-in-progress: false
 
+
 jobs:
 
   deploy:
@@ -46,7 +47,10 @@ jobs:
       - name: Run Matlab buildtool
         uses: matlab-actions/run-build@v2
         with:
-          tasks: test publish
+          tasks: publish
+# don't run "test" task as then even "clean" will leave Matlab in cached state where
+# it won't publish due to thinking a function is a Mex file. Error is
+# "Error using publish Only MATLAB code can be published"
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3

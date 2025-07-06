@@ -6,6 +6,10 @@ on:
     - "**.m"
     - ".github/workflows/ci.yml"
 
+# avoid wasted runs
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
 
 jobs:
 
@@ -15,7 +19,7 @@ jobs:
 
     strategy:
       matrix:
-        release: [R2020b, latest]
+        release: [R2020b, R2025a]
 
     steps:
     - uses: actions/checkout@v4

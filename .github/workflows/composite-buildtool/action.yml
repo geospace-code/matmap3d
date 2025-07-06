@@ -7,7 +7,7 @@ runs:
   steps:
 
   - name: Run Matlab buildtool
-    if: ${{ matrix.release >= 'R2022b' || startsWith(matrix.release, 'latest') }}
+    if: ${{ matrix.release >= 'R2022b' }}
     uses: matlab-actions/run-build@v2
     with:
       startup-options: ${{ matrix.startup-options }}
@@ -15,7 +15,7 @@ runs:
 
 
   - name: Run tests (manual)
-    if: ${{ matrix.release < 'R2022b' && !startsWith(matrix.release, 'latest') }}
+    if: ${{ matrix.release < 'R2022b' }}
     uses: matlab-actions/run-tests@v2
     with:
       select-by-folder: test
