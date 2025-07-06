@@ -4,3 +4,5 @@ resources/
 *.m~
 code-coverage.xml
 .buildtool/
+*.sarif
+*.xml

@@ -2,6 +2,8 @@ function plan = buildfile
 
 plan = buildplan(localfunctions);
 
+addpath(plan.RootFolder)
+
 plan.DefaultTasks = "test";
 
 pkg_name = "+matmap3d";
