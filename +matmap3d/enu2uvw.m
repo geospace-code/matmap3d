@@ -7,17 +7,12 @@
 %
 %%% outputs
 % * u,v,w:   coordinates of test point(s) (meters)
-function [u,v,w] = enu2uvw(east,north,up,lat0,lon0,angleUnit)
-arguments
-  east {mustBeReal}
-  north {mustBeReal}
-  up {mustBeReal}
-  lat0 {mustBeReal}
-  lon0 {mustBeReal}
-  angleUnit {mustBeTextScalar} = 'd'
+function [u,v,w] = enu2uvw(east, north, up, lat0, lon0, angleUnit)
+if nargin < 6
+  angleUnit = 'd';
 end
 
-if startsWith(angleUnit, 'd')
+if strncmp(angleUnit, 'd', 1)
   lat0 = deg2rad(lat0);
   lon0 = deg2rad(lon0);
 end

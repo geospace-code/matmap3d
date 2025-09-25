@@ -62,13 +62,6 @@ function varargout = vdist(lat1,lon1,lat2,lon2)
 %            above in (9).
 % # No warranties; use at your own risk.
 
-arguments
-  lat1 {mustBeReal}
-  lon1 {mustBeReal,mustBeEqualSize(lat1,lon1)}
-  lat2 {mustBeReal,mustBeEqualSize(lat1,lat2)}
-  lon2 {mustBeReal,mustBeEqualSize(lat1,lon2)}
-end
-
 keepsize = size(lat1);
 % Supply WGS84 earth ellipsoid axis lengths in meters:
 a = 6378137; % definitionally

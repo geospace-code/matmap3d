@@ -7,10 +7,6 @@
 %%% Outputs
 % * N: normal along the prime vertical section ellipsoidal radius of curvature, at a given geodetic latitude.
 function N = get_radius_normal(lat, E)
-arguments
-  lat {mustBeReal}
-  E (1,1) matmap3d.referenceEllipsoid
-end
 
 if isempty(E)
   E = matmap3d.wgs84Ellipsoid();

@@ -10,15 +10,11 @@
 % * lat,lon,alt: geodetic coordinates of test points (degrees,degrees,meters)
 
 function [lat, lon, alt] = enu2geodetic(east, north, up, lat0, lon0, alt0, spheroid, angleUnit)
-arguments
-  east {mustBeReal}
-  north {mustBeReal}
-  up {mustBeReal}
-  lat0 {mustBeReal}
-  lon0 {mustBeReal}
-  alt0 {mustBeReal}
-  spheroid (1,1) matmap3d.referenceEllipsoid = matmap3d.wgs84Ellipsoid()
-  angleUnit {mustBeTextScalar} = 'd'
+if nargin < 7 || isempty(spheroid)
+  spheroid = matmap3d.referenceEllipsoid();
+end
+if nargin < 8
+  angleUnit = 'd';
 end
 
 [x, y, z] = matmap3d.enu2ecef(east, north, up, lat0, lon0, alt0, spheroid, angleUnit);

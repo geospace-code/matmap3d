@@ -11,15 +11,11 @@
 %%% Outputs
 % * lat1,lon1,alt1: geodetic coordinates of test points (degrees,degrees,meters)
 function [lat1, lon1, alt1] = aer2geodetic(az, el, slantRange, lat0, lon0, alt0, spheroid, angleUnit)
-arguments
-  az {mustBeReal}
-  el {mustBeReal}
-  slantRange {mustBeReal,mustBeNonnegative}
-  lat0 {mustBeReal}
-  lon0 {mustBeReal}
-  alt0 {mustBeReal}
-  spheroid (1,1) matmap3d.referenceEllipsoid = matmap3d.wgs84Ellipsoid()
-  angleUnit {mustBeTextScalar} = 'd'
+if nargin < 7 || isempty(spheroid)
+  spheroid = matmap3d.wgs84Ellipsoid();
+end
+if nargin < 8
+  angleUnit = 'd';
 end
 
 [x, y, z] = matmap3d.aer2ecef(az, el, slantRange, lat0, lon0, alt0, spheroid, angleUnit);

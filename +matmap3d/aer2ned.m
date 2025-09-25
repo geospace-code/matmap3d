@@ -9,11 +9,8 @@
 %%% Outputs
 % * north, east, down:  coordinates of points (meters)
 function [north, east, down] = aer2ned(az, el, slantRange, angleUnit)
-arguments
-  az {mustBeReal}
-  el {mustBeReal}
-  slantRange {mustBeReal}
-  angleUnit {mustBeTextScalar} = 'd'
+if nargin < 4
+  angleUnit = 'd';
 end
 
 [east, north, up] = matmap3d.aer2enu(az, el, slantRange, angleUnit);

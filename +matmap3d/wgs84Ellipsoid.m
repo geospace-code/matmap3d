@@ -8,8 +8,8 @@
 %
 % * E: referenceEllipsoid
 function E = wgs84Ellipsoid(lengthUnit)
-arguments
-  lengthUnit {mustBeTextScalar} = 'm'
+if nargin < 1
+  lengthUnit = 'm';
 end
 
 E = matmap3d.referenceEllipsoid('wgs84', lengthUnit);

@@ -13,12 +13,8 @@
 % Journal of Surveying Engineering. doi: 10.1061/(ASCE)0733-9453
 
 function [lat,lon,alt] = ecef2geodetic(spheroid, x, y, z, angleUnit)
-arguments
-  spheroid {mustBeScalarOrEmpty}
-  x {mustBeReal}
-  y {mustBeReal}
-  z {mustBeReal}
-  angleUnit {mustBeTextScalar} = 'd'
+if nargin < 5
+  angleUnit = 'd';
 end
 
 if isempty(spheroid)
@@ -59,7 +55,7 @@ inside = (x.^2 ./ a.^2) + (y.^2 ./ a.^2) + (z.^2 ./ b.^2) < 1;
 alt(inside) = -alt(inside);
 
 
-if startsWith(angleUnit, 'd')
+if strncmp(angleUnit, 'd', 1)
   lat = rad2deg(lat);
   lon = rad2deg(lon);
 end

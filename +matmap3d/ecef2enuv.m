@@ -9,16 +9,11 @@
 % * e,n,Up:  East, North, Up vector
 
 function [e, n, Up] = ecef2enuv(u, v, w, lat0, lon0, angleUnit)
-arguments
-  u {mustBeReal}
-  v {mustBeReal}
-  w {mustBeReal}
-  lat0 {mustBeReal}
-  lon0 {mustBeReal}
-  angleUnit {mustBeTextScalar} = 'd'
+if nargin < 6
+  angleUnit = 'd';
 end
 
-if startsWith(angleUnit, 'd')
+if strncmp(angleUnit, 'd', 1)
   lat0 = deg2rad(lat0);
   lon0 = deg2rad(lon0);
 end

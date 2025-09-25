@@ -11,16 +11,11 @@
 % * az: azimuth clockwise from local north
 % * el: elevation angle above local horizon
 function [az, el, slantRange] = ecef2aer(x, y, z, lat0, lon0, alt0, spheroid, angleUnit)
-
-arguments
-  x {mustBeReal}
-  y {mustBeReal}
-  z {mustBeReal}
-  lat0 {mustBeReal}
-  lon0 {mustBeReal}
-  alt0 {mustBeReal}
-  spheroid (1,1) matmap3d.referenceEllipsoid = matmap3d.wgs84Ellipsoid()
-  angleUnit {mustBeTextScalar} = 'd'
+if nargin < 7 || isempty(spheroid)
+  spheroid = matmap3d.wgs84Ellipsoid();
+end
+if nargin < 8
+  angleUnit = 'd';
 end
 
 [e, n, u] = matmap3d.ecef2enu(x, y, z, lat0, lon0, alt0, spheroid, angleUnit);

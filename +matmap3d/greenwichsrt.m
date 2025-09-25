@@ -6,9 +6,6 @@
 %%% Outputs
 %  gst: greenwich sidereal time    [0, 2pi)
 function gst = greenwichsrt(Jdate)
-arguments
-  Jdate {mustBeReal,mustBeNonnegative}
-end
 
 % Vallado Eq. 3-42 p. 184, Seidelmann 3.311-1
 tUT1 = (Jdate - 2451545) / 36525;

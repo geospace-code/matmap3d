@@ -8,12 +8,8 @@
 %%% outputs
 % * x,y,z:  ECEF coordinates of test point(s) (meters)
 function [x,y,z] = geodetic2ecef(spheroid, lat, lon, alt, angleUnit)
-arguments
-  spheroid {mustBeScalarOrEmpty}
-  lat {mustBeReal}
-  lon {mustBeReal}
-  alt {mustBeReal}
-  angleUnit {mustBeTextScalar} = 'd'
+if nargin < 5
+  angleUnit = 'd';
 end
 
 %% defaults
@@ -21,7 +17,7 @@ if isempty(spheroid)
   spheroid = matmap3d.wgs84Ellipsoid();
 end
 
-if startsWith(angleUnit, 'd')
+if strncmp(angleUnit, 'd', 1)
   lat = deg2rad(lat);
   lon = deg2rad(lon);
 end

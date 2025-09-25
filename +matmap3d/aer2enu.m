@@ -9,14 +9,11 @@
 %%% Outputs
 % * e,n,u:  East, North, Up coordinates of test points (meters)
 function [e, n, u] = aer2enu (az, el, slantRange, angleUnit)
-arguments
-  az {mustBeReal}
-  el {mustBeReal}
-  slantRange {mustBeReal}
-  angleUnit {mustBeTextScalar} = 'd'
+if nargin < 4
+  angleUnit = 'd';
 end
 
-if startsWith(angleUnit,'d')
+if strncmp(angleUnit, 'd', 1)
   az = deg2rad(az);
   el = deg2rad(el);
 end

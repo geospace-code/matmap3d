@@ -9,15 +9,11 @@
 %%% outputs
 % * east,north,up: coordinates of points (meters)
 function [east, north, up] = geodetic2enu(lat, lon, alt, lat0, lon0, alt0, spheroid, angleUnit)
-arguments
-  lat {mustBeReal}
-  lon {mustBeReal}
-  alt {mustBeReal}
-  lat0 {mustBeReal}
-  lon0 {mustBeReal}
-  alt0 {mustBeReal}
-  spheroid (1,1) matmap3d.referenceEllipsoid = matmap3d.wgs84Ellipsoid()
-  angleUnit {mustBeTextScalar} = 'd'
+if nargin < 7 || isempty(spheroid)
+  spheroid = matmap3d.wgs84Ellipsoid();
+end
+if nargin < 8 || isempty(angleUnit)
+  angleUnit = 'd';
 end
 
 [x1,y1,z1] = matmap3d.geodetic2ecef(spheroid, lat,lon,alt,angleUnit);

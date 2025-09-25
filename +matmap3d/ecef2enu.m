@@ -11,15 +11,11 @@
 % * East, North, Up coordinates of test points (meters)
 
 function [east, north, up] = ecef2enu(x, y, z, lat0, lon0, alt0, spheroid, angleUnit)
-arguments
-  x {mustBeReal}
-  y {mustBeReal}
-  z {mustBeReal}
-  lat0 {mustBeReal}
-  lon0 {mustBeReal}
-  alt0 {mustBeReal}
-  spheroid (1,1) matmap3d.referenceEllipsoid = matmap3d.wgs84Ellipsoid()
-  angleUnit {mustBeTextScalar} = 'd'
+if nargin < 7 || isempty(spheroid)
+  spheroid = matmap3d.wgs84Ellipsoid();
+end
+if nargin < 8
+  angleUnit = 'd';
 end
 
 [x0, y0, z0] = matmap3d.geodetic2ecef(spheroid, lat0, lon0, alt0, angleUnit);

@@ -8,16 +8,11 @@
 %%% Outputs
 % * x, y, z:  ECI x, y, z
 function [x, y, z] = aer2eci(utc, az, el, rng, lat, lon, alt, spheroid, angleUnit)
-arguments
-  utc datetime
-  az {mustBeReal}
-  el {mustBeReal}
-  rng {mustBeReal, mustBeNonnegative}
-  lat {mustBeReal}
-  lon {mustBeReal}
-  alt {mustBeReal}
-  spheroid (1,1) matmap3d.referenceEllipsoid = matmap3d.wgs84Ellipsoid()
-  angleUnit {mustBeTextScalar} = 'd'
+if nargin < 8 || isempty(spheroid)
+  spheroid = matmap3d.wgs84Ellipsoid();
+end
+if nargin < 9
+  angleUnit = 'd';
 end
 
 [x1, y1, z1] = matmap3d.aer2ecef(az, el, rng, lat, lon, alt, spheroid, angleUnit);

@@ -8,12 +8,6 @@
 % * x,y,z:  ECI position (meters)
 
 function [x,y,z] = ecef2eci_naive(utc, x0, y0, z0)
-arguments
-  utc (:,1) datetime
-  x0 (:,1) {mustBeReal,mustBeEqualSize(utc,x0)}
-  y0 (:,1) {mustBeReal,mustBeEqualSize(utc,y0)}
-  z0 (:,1) {mustBeReal,mustBeEqualSize(utc,z0)}
-end
 
 % Greenwich hour angles (radians)
 gst = matmap3d.greenwichsrt(juliandate(utc));

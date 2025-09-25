@@ -9,11 +9,8 @@
 % * az: azimuth clockwise from local north
 % * el: elevation angle above local horizon
 function [az, elev, slantRange] = enu2aer(east, north, up, angleUnit)
-arguments
-  east {mustBeReal}
-  north {mustBeReal}
-  up {mustBeReal}
-  angleUnit {mustBeTextScalar} = 'd'
+if nargin < 4
+  angleUnit = 'd';
 end
 
 if abs(east) < 1e-3, east = 0.; end  % singularity, 1 mm precision
@@ -26,7 +23,7 @@ slantRange = hypot(r,up);
 elev = atan2(up,r);
 az = mod(atan2(east, north), 2*pi);
 
-if startsWith(angleUnit,'d')
+if strncmp(angleUnit, 'd', 1)
   elev = rad2deg(elev);
   az = rad2deg(az);
 end

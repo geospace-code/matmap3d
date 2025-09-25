@@ -8,15 +8,6 @@
 % outputs:
 % az,el,rng: Azimuth (degrees), Elevation (degrees), Slant Range (meters)
 function [az, el, rng] = eci2aer(utc, x0, y0, z0, lat, lon, alt)
-arguments
-  utc datetime
-  x0 {mustBeReal}
-  y0 {mustBeReal}
-  z0 {mustBeReal}
-  lat {mustBeReal}
-  lon {mustBeReal}
-  alt {mustBeReal}
-end
 
 az = nan(like=x0);
 el = nan(like=x0);
