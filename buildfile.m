@@ -2,8 +2,6 @@ function plan = buildfile
 
 plan = buildplan(localfunctions);
 
-addpath(plan.RootFolder)
-
 if ~isMATLABReleaseOlderThan("R2024a")
   plan("coverage") = matlab.buildtool.tasks.TestTask(Description="code coverage", SourceFiles="test", Strict=false, CodeCoverageResults="code-coverage.xml");
 end

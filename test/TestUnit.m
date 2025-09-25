@@ -1,4 +1,5 @@
-classdef TestUnit < matlab.unittest.TestCase
+classdef (SharedTestFixtures={ matlab.unittest.fixtures.PathFixture(fileparts(fileparts(mfilename('fullpath'))))}) ...
+  TestUnit < matlab.unittest.TestCase
 
 properties
 atol = 1e-9
