@@ -174,6 +174,7 @@ tc.verifyEqual([e,n,u], [0,0,-1], AbsTol=tc.atol, RelTol=tc.rtol)
 tc.verifyEqual([lt, ln, at],[tc.lat, tc.lon, tc.alt-1], AbsTol=tc.atol, RelTol=tc.rtol)
 end
 
+
 function test_enu2ecef(tc)
 
 E = matmap3d.wgs84Ellipsoid();
@@ -186,7 +187,20 @@ tc.verifyEqual([e,n,u],[tc.er, tc.nr, tc.ur], AbsTol=tc.atol, RelTol=tc.rtol)
 
 [n1, e1, d] = matmap3d.ecef2ned(x,y,z,tc.lat,tc.lon,tc.alt, E, tc.angleUnit);
 tc.verifyEqual([e,n,u],[e1,n1,-d])
+
 end
+
+
+function test_enu_vector(tc)
+uvw = [27.9799, -1.0990, -15.7723];
+lat0 = 17.4114;
+lon0 = 78.270;
+[e,n,u] = matmap3d.ecef2enuv(uvw(1), uvw(2), uvw(3), lat0,  lon0);
+[u,v,w] = matmap3d.enu2ecefv(e,n,u, lat0, lon0);
+tc.verifyEqual([u,v,w], uvw, AbsTol=1e-3)
+end
+
+
 
 function test_lookAtSpheroid(tc)
 
