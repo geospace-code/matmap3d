@@ -19,7 +19,7 @@ jobs:
 
     strategy:
       matrix:
-        release: [R2023b, R2025a]
+        release: [R2023b, R2025b]
 
     steps:
     - uses: actions/checkout@v5
