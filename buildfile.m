@@ -9,28 +9,29 @@ if ~isfolder(reportDir)
   mkdir(reportDir);
 end
 
+if isMATLABReleaseOlderThan('R2023a')
+  plan('test') = matlab.buildtool.Task(Actions=@(context) legacy_test(context, test_root));
+else
+  plan('test') = matlab.buildtool.tasks.TestTask(test_root, SourceFiles=pkgDir);
+end
+
 if ~isMATLABReleaseOlderThan('R2024a')
 
-  plan('coverage') = matlab.buildtool.tasks.TestTask(test_root, ...
-    Description="Run code coverage", ...
-    SourceFiles=pkgDir, ...
-    Strict=false);
-  plan('coverage').DisableIncremental = true;
-
   coverageReport = fullfile(reportDir, 'coverage-report.html');
-  %try
-  addCodeCoverage(plan("coverage"), matlabtest.plugins.codecoverage.StandaloneReport(coverageReport));
-  %catch
-  %  plan("coverage").addCodeCoverage(coverageReport);
-  %end
+  try
+    report = matlabtest.plugins.codecoverage.StandaloneReport(coverageReport);
+  catch
+    report = coverageReport;
+  end
+  plan('coverage') = plan('test').addCodeCoverage(report);
+  plan('coverage').DisableIncremental = true;
 end
 
 end
 
 
-function testTask(context)
-r = runtests(fullfile(context.Plan.RootFolder, "test"), Strict=false);
-% Parallel Computing Toolbox takes more time to startup than is worth it for this task
+function legacy_test(~, test_root)
+r = runtests(test_root);
 
 assert(~isempty(r), 'No tests were run')
 assertSuccess(r)

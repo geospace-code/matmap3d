@@ -172,6 +172,9 @@ tc.verifyEqual([e,n,u], [0,0,-1], AbsTol=tc.atol, RelTol=tc.rtol)
 
 [lt, ln, at] = matmap3d.enu2geodetic(e,n,u,tc.lat,tc.lon,tc.alt, tc.E, tc.angleUnit); % round-trip
 tc.verifyEqual([lt, ln, at],[tc.lat, tc.lon, tc.alt-1], AbsTol=tc.atol, RelTol=tc.rtol)
+
+[n1, e1, d] = matmap3d.geodetic2ned(tc.lat, tc.lon, tc.alt-1, tc.lat, tc.lon, tc.alt, tc.E, tc.angleUnit);
+tc.verifyEqual([e,n,u],[e1,n1,-d], AbsTol=tc.atol, RelTol=tc.rtol)
 end
 
 

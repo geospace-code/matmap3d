@@ -16,14 +16,7 @@ if nargin < 8 || isempty(angleUnit)
   angleUnit = 'd';
 end
 
-[x1,y1,z1] = matmap3d.geodetic2ecef(spheroid, lat,lon,alt,angleUnit);
-[x2,y2,z2] = matmap3d.geodetic2ecef(spheroid, lat0,lon0,alt0,angleUnit);
-
-dx = x1-x2;
-dy = y1-y2;
-dz = z1-z2;
-
-[east, north, up] = matmap3d.ecef2enuv(dx, dy, dz, lat0, lon0, angleUnit);
+[east, north, up] = matmap3d.geodetic2enu(lat, lon, alt, lat0, lon0, alt0, spheroid, angleUnit);
 
 down = -up;
 
