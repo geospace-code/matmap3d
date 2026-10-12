@@ -5,6 +5,7 @@ on:
     paths:
     - "**.m"
     - ".github/workflows/ci.yml"
+  pull_request:
 
 # avoid wasted runs
 concurrency:
@@ -19,11 +20,23 @@ jobs:
 
     strategy:
       matrix:
-        release: [R2023b, R2025b]
+        release: [latest]
 
     steps:
     - uses: actions/checkout@v6
 
-    - uses: ./.github/workflows/composite-install-matlab
+    - name: Install MATLAB
+      uses: matlab-actions/setup-matlab@v2
+      with:
+        release: ${{ matrix.release }}
+        cache: true
 
-    - uses: ./.github/workflows/composite-buildtool
+    - name: Check Matlab Syntax
+      uses: matlab-actions/run-build@v2
+      with:
+        tasks: check
+
+    - name: Test Matlab Code
+      uses: matlab-actions/run-build@v2
+      with:
+        tasks: test
